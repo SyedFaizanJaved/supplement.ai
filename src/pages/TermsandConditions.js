@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { ArrowLeft } from "lucide-react";
 import styles from "./TermsandConditions.module.css";
-import { Button } from "../components/ui/button";
 
 const TermsAndConditions = () => {
   const navigate = useNavigate();
