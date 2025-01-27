@@ -1,11 +1,12 @@
-import { SupplementCard } from "./SupplementCard";
+import React from 'react';
+import SupplementCard from "./SupplementCard";
 import styles from './SupplementsGrid.module.css';
 
-export const SupplementsGrid = ({ recommendations }) => {
-  if (recommendations.length === 0) {
+const SupplementsGrid = ({ recommendations }) => {
+  if (!recommendations?.length) {
     return (
       <div className={styles.emptyState}>
-        No supplement recommendations available yet.
+        <p>No supplement recommendations available yet.</p>
       </div>
     );
   }
@@ -16,15 +17,23 @@ export const SupplementsGrid = ({ recommendations }) => {
         <SupplementCard
           key={supplement.id}
           id={supplement.id}
-          name={supplement.supplement_name}
+          supplement_name={supplement.supplement_name}
           dosage={supplement.dosage}
+          timing={supplement.timing}
+          recommended_time={supplement.recommended_time}
+          recommended_date={supplement.recommended_date}
           reason={supplement.reason}
-          cost={supplement.estimated_cost}
-          companyName={supplement.company_name}
-          productUrl={supplement.product_url}
-          imageUrl={supplement.image_url}
+          company_name={supplement.company_name}
+          product_url={supplement.product_url}
+          image_url={supplement.image_url}
+          benefits={supplement.benefits}
+          precautions={supplement.precautions}
+          category={supplement.category}
+          priority={supplement.priority}
         />
       ))}
     </div>
   );
 };
+
+export default SupplementsGrid;

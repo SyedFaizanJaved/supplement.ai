@@ -7,20 +7,19 @@
   background-color: var(--muted);
   padding: 0.25rem;
   color: var(--muted-foreground);
-  gap: 0.25rem; /* Add consistent spacing between tabs */
-  overflow-x: auto; /* Enable horizontal scroll */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  gap: 0.25rem; 
+  overflow-x: auto; 
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
-/* Hide scrollbar for Chrome/Safari */
 .tabsList::-webkit-scrollbar {
   display: none;
 }
 
-/* Container to ensure tabs stay centered */
 .tabsList > div {
   display: inline-flex;
+  background-color: var(--background);
   min-width: min-content;
   margin: 0 auto;
 }
@@ -31,14 +30,14 @@
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  background-color: #93a2b8;
+  background-color: #dfe3eb;
   border-radius: 0.25rem;
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s ease;
-  flex: 0 0 auto; /* Prevent shrinking */
-  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+  flex: 0 0 auto;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .tabsTrigger:focus-visible {

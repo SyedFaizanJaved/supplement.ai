@@ -1,141 +1,151 @@
 {
-    "supplementRecommendations": [
-      {
-        "id": "sup_001",
-        "supplement_name": "Vitamin D3 + K2",
-        "dosage": "5000 IU D3 / 100mcg K2",
-        "timing": "Morning with breakfast",
-        "reason": "Bone health, immune support, and cardiovascular function",
-        "company_name": "Thorne Research",
-        "product_url": "https://www.thorne.com/products/dp/vitamin-d-k2-liquid",
-        "image_url": "/images/supplements/vitamin-d3-k2.jpg",
-        "benefits": [
-          "Supports calcium absorption",
-          "Enhances immune system function",
-          "Promotes heart health",
-          "Improves mood and mental clarity"
-        ],
-        "precautions": [
-          "Take with fatty meals for better absorption",
-          "Monitor blood levels periodically",
-          "Consult physician if taking blood thinners"
-        ],
-        "category": "Essential Vitamins",
-        "priority": "High",
-        "created_at": "2025-01-21T08:00:00Z"
-      },
-      {
-        "id": "sup_002",
-        "supplement_name": "Omega-3 Fish Oil",
-        "dosage": "2000mg (1000mg EPA/DHA)",
-        "timing": "Split between morning and evening meals",
-        "reason": "Brain health, inflammation reduction, and joint support",
-        "company_name": "Nordic Naturals",
-        "product_url": "https://www.nordicnaturals.com/ultimate-omega",
-        "image_url": "/images/supplements/omega-3.jpg",
-        "benefits": [
-          "Supports cognitive function",
-          "Reduces inflammation",
-          "Promotes heart health",
-          "Improves joint mobility"
-        ],
-        "precautions": [
-          "Keep refrigerated after opening",
-          "Take with meals to prevent fishy burps",
-          "Discontinue 2 weeks before surgery"
-        ],
-        "category": "Essential Fatty Acids",
-        "priority": "High",
-        "created_at": "2025-01-21T08:00:00Z"
-      },
-      {
-        "id": "sup_003",
-        "supplement_name": "Magnesium Glycinate",
-        "dosage": "400mg",
-        "timing": "Evening before bed",
-        "reason": "Sleep quality, muscle recovery, and stress management",
-        "company_name": "Pure Encapsulations",
-        "product_url": "https://www.pureencapsulations.com/magnesium-glycinate",
-        "image_url": "/images/supplements/magnesium.jpg",
-        "benefits": [
-          "Improves sleep quality",
-          "Reduces muscle tension",
-          "Supports stress response",
-          "Aids in energy production"
-        ],
-        "precautions": [
-          "Start with lower dose to assess tolerance",
-          "May have mild laxative effect",
-          "Space apart from certain medications"
-        ],
-        "category": "Minerals",
-        "priority": "Medium",
-        "created_at": "2025-01-21T08:00:00Z"
-      },
-      {
-        "id": "sup_004",
-        "supplement_name": "Probiotic Complex",
-        "dosage": "50 billion CFU",
-        "timing": "Morning on empty stomach",
-        "reason": "Gut health, immune support, and digestive function",
-        "company_name": "Jarrow Formulas",
-        "product_url": "https://jarrow.com/products/jarro-dophilus-eps",
-        "image_url": "/images/supplements/probiotic.jpg",
-        "benefits": [
-          "Improves digestive health",
-          "Strengthens immune system",
-          "Enhances nutrient absorption",
-          "Supports mental health"
-        ],
-        "precautions": [
-          "Keep refrigerated",
-          "Take on empty stomach",
-          "Start slowly if sensitive"
-        ],
-        "category": "Digestive Health",
-        "priority": "Medium",
-        "created_at": "2025-01-21T08:00:00Z"
-      },
-      {
-        "id": "sup_005",
-        "supplement_name": "CoQ10 (Ubiquinol)",
-        "dosage": "100mg",
-        "timing": "Morning with fatty meal",
-        "reason": "Energy production, heart health, and antioxidant support",
-        "company_name": "Quicksilver Scientific",
-        "product_url": "https://www.quicksilverscientific.com/coq10",
-        "image_url": "/images/supplements/coq10.jpg",
-        "benefits": [
-          "Supports heart health",
-          "Increases energy levels",
-          "Provides antioxidant protection",
-          "Enhances exercise performance"
-        ],
-        "precautions": [
-          "Take with fatty meals",
-          "Monitor if on blood thinners",
-          "May increase energy - avoid late day dosing"
-        ],
-        "category": "Antioxidants",
-        "priority": "Medium",
-        "created_at": "2025-01-21T08:00:00Z"
-      }
-    ],
-    "categories": [
-      "Essential Vitamins",
-      "Essential Fatty Acids",
-      "Minerals",
-      "Digestive Health",
-      "Antioxidants"
-    ],
-    "priorityLevels": [
-      "High",
-      "Medium",
-      "Low"
-    ],
-    "metadata": {
-      "lastUpdated": "2025-01-21T08:00:00Z",
-      "version": "1.0.0",
-      "totalSupplements": 5
+  "supplementRecommendations": [
+    {
+      "id": "sup_001",
+      "supplement_name": "Vitamin D3 + K2",
+      "dosage": "5000 IU D3 / 100mcg K2",
+      "timing": "Morning with breakfast",
+      "recommended_time": "8:00 AM",
+      "recommended_date": "2025-01-27",
+      "reason": "Bone health, immune support, and cardiovascular function",
+      "company_name": "Thorne Research",
+      "product_url": "https://www.thorne.com/products/dp/vitamin-d-k2-liquid",
+      "image_url": "/images/supplements/vitamin-d3-k2.jpg",
+      "benefits": [
+        "Supports calcium absorption",
+        "Enhances immune system function",
+        "Promotes heart health",
+        "Improves mood and mental clarity"
+      ],
+      "precautions": [
+        "Take with fatty meals for better absorption",
+        "Monitor blood levels periodically",
+        "Consult physician if taking blood thinners"
+      ],
+      "category": "Essential Vitamins",
+      "priority": "High",
+      "created_at": "2025-01-21T08:00:00Z"
+    },
+    {
+      "id": "sup_002",
+      "supplement_name": "Omega-3 Fish Oil",
+      "dosage": "2000mg (1000mg EPA/DHA)",
+      "timing": "Split between morning and evening meals",
+      "recommended_time": "6:40 PM",
+      "recommended_date": "2025-01-27",
+      "reason": "Brain health, inflammation reduction, and joint support",
+      "company_name": "Nordic Naturals",
+      "product_url": "https://www.nordicnaturals.com/ultimate-omega",
+      "image_url": "/images/supplements/omega-3.jpg",
+      "benefits": [
+        "Supports cognitive function",
+        "Reduces inflammation",
+        "Promotes heart health",
+        "Improves joint mobility"
+      ],
+      "precautions": [
+        "Keep refrigerated after opening",
+        "Take with meals to prevent fishy burps",
+        "Discontinue 2 weeks before surgery"
+      ],
+      "category": "Essential Fatty Acids",
+      "priority": "High",
+      "created_at": "2025-01-21T08:00:00Z"
+    },
+    {
+      "id": "sup_003",
+      "supplement_name": "Magnesium Glycinate",
+      "dosage": "400mg",
+      "timing": "Evening before bed",
+      "recommended_time": "9:00 PM",
+      "recommended_date": "2025-01-27",
+      "reason": "Sleep quality, muscle recovery, and stress management",
+      "company_name": "Pure Encapsulations",
+      "product_url": "https://www.pureencapsulations.com/magnesium-glycinate",
+      "image_url": "/images/supplements/magnesium.jpg",
+      "benefits": [
+        "Improves sleep quality",
+        "Reduces muscle tension",
+        "Supports stress response",
+        "Aids in energy production"
+      ],
+      "precautions": [
+        "Start with lower dose to assess tolerance",
+        "May have mild laxative effect",
+        "Space apart from certain medications"
+      ],
+      "category": "Minerals",
+      "priority": "Medium",
+      "created_at": "2025-01-21T08:00:00Z"
+    },
+    {
+      "id": "sup_004",
+      "supplement_name": "Probiotic Complex",
+      "dosage": "50 billion CFU",
+      "timing": "Morning on empty stomach",
+      "recommended_time": "7:00 AM",
+      "recommended_date": "2025-01-27",
+      "reason": "Gut health, immune support, and digestive function",
+      "company_name": "Jarrow Formulas",
+      "product_url": "https://jarrow.com/products/jarro-dophilus-eps",
+      "image_url": "/images/supplements/probiotic.jpg",
+      "benefits": [
+        "Improves digestive health",
+        "Strengthens immune system",
+        "Enhances nutrient absorption",
+        "Supports mental health"
+      ],
+      "precautions": [
+        "Keep refrigerated",
+        "Take on empty stomach",
+        "Start slowly if sensitive"
+      ],
+      "category": "Digestive Health",
+      "priority": "Medium",
+      "created_at": "2025-01-21T08:00:00Z"
+    },
+    {
+      "id": "sup_005",
+      "supplement_name": "CoQ10 (Ubiquinol)",
+      "dosage": "100mg",
+      "timing": "Morning with fatty meal",
+      "recommended_time": "8:00 AM",
+      "recommended_date": "2025-01-27",
+      "reason": "Energy production, heart health, and antioxidant support",
+      "company_name": "Quicksilver Scientific",
+      "product_url": "https://www.quicksilverscientific.com/coq10",
+      "image_url": "/images/supplements/coq10.jpg",
+      "benefits": [
+        "Supports heart health",
+        "Increases energy levels",
+        "Provides antioxidant protection",
+        "Enhances exercise performance"
+      ],
+      "precautions": [
+        "Take with fatty meals",
+        "Monitor if on blood thinners",
+        "May increase energy - avoid late day dosing"
+      ],
+      "category": "Antioxidants",
+      "priority": "Medium",
+      "created_at": "2025-01-21T08:00:00Z"
     }
+  ],
+  "categories": [
+    "Essential Vitamins",
+    "Essential Fatty Acids",
+    "Minerals",
+    "Digestive Health",
+    "Antioxidants"
+  ],
+  "priorityLevels": [
+    "High",
+    "Medium",
+    "Low"
+  ],
+  "metadata": {
+    "lastUpdated": "2025-01-27T07:00:00Z",
+    "version": "1.0.1",
+    "totalSupplements": 5
   }
+}

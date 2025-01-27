@@ -3,10 +3,10 @@ import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { Share } from "lucide-react";
 import { supabase } from "../integrations/supabase/client";
-import { SupplementsGrid } from "./supplements/SupplementsGrid";
+import SupplementsGrid from "./supplements/SupplementsGrid";
 import { useToast } from "../ui/use-toast";
-import styles from './SupplementPlan.module.css';
-import supplementsData from '../../data/supplements.json';
+import styles from "./SupplementPlan.module.css";
+import supplementsData from "../../data/supplements.json";
 
 export const SupplementPlan = () => {
   const [recommendations, setRecommendations] = useState([]);
@@ -16,7 +16,9 @@ export const SupplementPlan = () => {
   useEffect(() => {
     const fetchSupplements = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) {
           setRecommendations(supplementsData.supplementRecommendations);
           setLoading(false);
@@ -24,20 +26,22 @@ export const SupplementPlan = () => {
         }
 
         const { data, error } = await supabase
-          .from('supplement_recommendations')
-          .select('id, supplement_name, dosage, reason, company_name, product_url, image_url')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false });
+          .from("supplement_recommendations")
+          .select(
+            "id, supplement_name, dosage, reason, company_name, product_url, image_url"
+          )
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
 
         if (error) {
-          console.error('Error fetching supplements:', error);
+          console.error("Error fetching supplements:", error);
           // Fallback to default recommendations
           setRecommendations(supplementsData.supplementRecommendations);
         } else {
           setRecommendations(data || supplementsData.supplementRecommendations);
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
         setRecommendations(supplementsData.supplementRecommendations);
       } finally {
         setLoading(false);
@@ -47,13 +51,13 @@ export const SupplementPlan = () => {
     fetchSupplements();
 
     const channel = supabase
-      .channel('schema-db-changes')
+      .channel("schema-db-changes")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: '*',
-          schema: 'public',
-          table: 'supplement_recommendations'
+          event: "*",
+          schema: "public",
+          table: "supplement_recommendations",
         },
         () => {
           fetchSupplements();
@@ -69,16 +73,16 @@ export const SupplementPlan = () => {
   const handleShare = async () => {
     try {
       await navigator.share({
-        title: 'My Supplement Plan',
-        text: 'Check out my personalized supplement plan!',
-        url: window.location.href
+        title: "My Supplement Plan",
+        text: "Check out my personalized supplement plan!",
+        url: window.location.href,
       });
     } catch (error) {
-      console.error('Error sharing:', error);
+      console.error("Error sharing:", error);
       toast({
         title: "Sharing not supported",
         description: "Your browser doesn't support sharing functionality.",
-        variant: "destructive"
+        variant: "destructive",
       });
     }
   };

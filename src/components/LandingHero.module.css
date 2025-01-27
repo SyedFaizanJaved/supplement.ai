@@ -9,19 +9,12 @@
   --light-teal: #99f6e4;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 .navigationBar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   background-color: white;
-  z-index: 100;
   border-bottom: 1px solid #f3f4f6;
 }
 
@@ -59,7 +52,7 @@
   font-weight: 500;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem;
+  padding: .7rem;
   border-radius: 0.5rem;
   transition: all 0.2s ease;
 }

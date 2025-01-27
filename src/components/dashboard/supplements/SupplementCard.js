@@ -1,103 +1,164 @@
-import { useState } from "react";
-import { ThumbsUp, ThumbsDown, DollarSign } from "lucide-react";
-import { useToast } from "../../ui/use-toast";
-import { supabase } from "../../integrations/supabase/client";
-import styles from './SupplementCard.module.css';
+import React, { useState } from "react";
+import {
+  ThumbsUp,
+  ThumbsDown,
+  Clock,
+  AlertCircle,
+  Calendar,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../ui/tooltip";
+import styles from "./SupplementCard.module.css";
 
-export const SupplementCard = ({
+const SupplementCard = ({
   id,
-  name,
+  supplement_name,
   dosage,
+  timing,
+  recommended_time,
+  recommended_date,
   reason,
-  cost,
-  companyName,
-  productUrl,
-  imageUrl
+  company_name,
+  product_url,
+  image_url,
+  benefits,
+  precautions,
+  category,
+  priority,
 }) => {
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submitFeedback = async (isHelpful, followedRecommendation) => {
+  const handleFeedback = async (isHelpful) => {
     setIsSubmitting(true);
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("User not authenticated");
+    setIsSubmitting(false);
+  };
 
-      const { error } = await supabase.functions.invoke('track-ai-metrics', {
-        body: {
-          userId: user.id,
-          recommendationId: id,
-          isHelpful,
-          followedRecommendation,
-          budgetFit: true,
-          feedback: `User ${isHelpful ? 'found' : 'did not find'} the recommendation helpful`,
-        }
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Thank you for your feedback!",
-        description: "Your input helps us improve our recommendations.",
-      });
-
-    } catch (error) {
-      console.error('Error submitting feedback:', error);
-      toast({
-        title: "Error submitting feedback",
-        description: "Please try again later.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
+  const getPriorityClass = (priority) => {
+    switch (priority) {
+      case "High":
+        return styles.priorityHigh;
+      case "Medium":
+        return styles.priorityMedium;
+      case "Low":
+        return styles.priorityLow;
+      default:
+        return styles.priorityMedium;
     }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
   return (
     <div className={styles.card}>
-      <div className={styles.header}>
-        <div>
-          <h3 className={styles.title}>{name}</h3>
-          <p className={styles.dosage}>{dosage}</p>
+      <div className={styles.cardHeader}>
+        <div className={styles.headerContent}>
+          <div className={styles.titleContainer}>
+            <h3 className={styles.title}>{supplement_name}</h3>
+            <p className={styles.dosage}>{dosage}</p>
+          </div>
         </div>
-        {imageUrl && (
-          <img 
-            src={imageUrl} 
-            alt={name} 
-            className={styles.image}
-          />
-        )}
       </div>
 
-      <p className={styles.reason}>{reason}</p>
+      <div className={styles.cardContent}>
+        <p className={styles.reason}>{reason}</p>
 
-      <div className={styles.costContainer}>
-        <DollarSign className={styles.dollarIcon} />
-        <span>${cost}/month</span>
+        <div className={styles.scheduleContainer}>
+          <h4 className={styles.scheduleTitle}>Recommended Schedule</h4>
+          <div className={styles.scheduleInfo}>
+            <div className={styles.scheduleRow}>
+              <Clock className={styles.icon} />
+              <span className={styles.timeLabel}>Time:</span>
+              <span className={styles.timeValue}>{recommended_time}</span>
+            </div>
+            <div className={styles.separator} />
+            <div className={styles.scheduleRow}>
+              <Calendar className={styles.icon} />
+              <span className={styles.timeLabel}>Start:</span>
+              <span className={styles.timeValue}>
+                {formatDate(recommended_date)}
+              </span>
+            </div>
+            <div className={styles.separator} />
+            <div className={styles.scheduleRow}>
+              <AlertCircle className={styles.icon} />
+              <span className={styles.timeLabel}>Notes:</span>
+              <span className={styles.timeValue}>{timing}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.metaContainer}>
+          <div className={styles.metaInfo}>
+            <span className={getPriorityClass(priority)}>
+              {priority} Priority
+            </span>
+            <span className={styles.category}>• {category}</span>
+          </div>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className={styles.precautionsButton}>
+                <AlertCircle className={styles.icon} />
+                Precautions
+              </TooltipTrigger>
+              <TooltipContent>
+                <ul className={styles.precautionsList}>
+                  {precautions.map((precaution, index) => (
+                    <li key={index} className={styles.precautionsItem}>
+                      {precaution}
+                    </li>
+                  ))}
+                </ul>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+
+        <div className={styles.benefitsContainer}>
+          <p className={styles.benefitsTitle}>Benefits:</p>
+          <ul className={styles.benefitsList}>
+            {benefits.map((benefit, index) => (
+              <li key={index} className={styles.benefitItem}>
+                <span className={styles.benefitDot} />
+                {benefit}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <div className={styles.footer}>
-        {productUrl && (
-          <button 
-            className={styles.viewProductButton}
-            onClick={() => window.open(productUrl, '_blank')}
+      <div className={styles.cardFooter}>
+        {product_url && (
+          <button
+            className={styles.productButton}
+            onClick={() => window.open(product_url, "_blank")}
           >
-            View Product
+            View on {company_name}
           </button>
         )}
 
-        <div className={styles.feedbackButtons}>
+        <div className={styles.feedbackContainer}>
           <button
-            className={`${styles.feedbackButton} ${isSubmitting ? styles.disabled : ''}`}
-            onClick={() => submitFeedback(true, true)}
+            className={styles.feedbackButton}
+            onClick={() => handleFeedback(true)}
             disabled={isSubmitting}
           >
             <ThumbsUp className={styles.icon} />
             Helpful
           </button>
           <button
-            className={`${styles.feedbackButton} ${isSubmitting ? styles.disabled : ''}`}
-            onClick={() => submitFeedback(false, false)}
+            className={styles.feedbackButton}
+            onClick={() => handleFeedback(false)}
             disabled={isSubmitting}
           >
             <ThumbsDown className={styles.icon} />
@@ -108,3 +169,5 @@ export const SupplementCard = ({
     </div>
   );
 };
+
+export default SupplementCard;

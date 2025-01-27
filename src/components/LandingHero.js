@@ -17,14 +17,14 @@ import styles from "./LandingHero.module.css";
             SupplementScribe.ai
           </h1>
           <div className={styles.navigationButtons}>
-            <Button
+            <button
               variant="ghost"
               onClick={() => navigate("/content")}
               className={styles.contentButton}
             >
               <BookOpen className={styles.buttonIcon} />
               Content
-            </Button>
+            </button>
             {/* <Button variant="ghost" className={styles.menuButton}>
               <Menu className={styles.menuIcon} />
             </Button> */}
@@ -46,13 +46,13 @@ import styles from "./LandingHero.module.css";
                   Discover your perfect supplement plan in minutes—backed by your blood tests, genetics, and health goals.
                 </p>
                 <div className={styles.buttonGroup}>
-                  <Button
+                  <button
                     size="lg"
                     onClick={() => navigate("/input")}
                     className={styles.getStartedButton}
                   >
                     Get Started →
-                  </Button>
+                  </button>
                   <button
                     size="lg"
                     onClick={() => navigate("/dashboard")}
