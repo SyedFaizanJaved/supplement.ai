@@ -1,0 +1,146 @@
+.container {
+  min-height: 100vh;
+  background-color: #fff;
+  width: 100%;
+}
+
+.content {
+  width: 100%;
+  padding: 2rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.backButton {
+  margin-bottom: 1.5rem;
+  background-color: #fff;
+}
+
+.backButton:hover {
+  background-color: #f37218;
+  color: #fff;
+}
+
+.backButtons {
+  margin-bottom: 1.5rem;
+  background-color: #fff;
+  color : var(--primary);
+}
+
+.backButtons:hover {
+  background-color: #f37218;
+  color: #fff;
+}
+
+.backIcon {
+  margin-right: 0.5rem;
+  height: 1rem;
+  width: 1rem;
+}
+
+.section {
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #164f63;
+  margin-bottom: 1.5rem;
+}
+
+.tabs {
+  width: 100%;
+}
+
+.tabsList {
+  display: inline-flex;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  background-color: #93a2b8;
+  padding: 0.25rem;
+}
+
+.tabTrigger {
+  flex: 1;
+}
+
+.tabContent {
+  margin-top: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color:#164f63;
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  color: #666;
+}
+
+.cardButton {
+  margin-top: 1rem;
+    background-color: #fff;
+    color: var(--primary);
+  }
+  
+  .cardButton:hover {
+    background-color: #f37218;
+    color: #fff;
+  }
+
+.videoPlaceholder {
+  aspect-ratio: 16 / 9;
+  background-color: #e0e0e0;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}

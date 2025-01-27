@@ -1,0 +1,33 @@
+.textarea {
+    display: flex;
+    width: 100%;
+    min-height: 80px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db; /* border-input */
+    background-color: #f9fafb; /* background */
+    font-size: 14px; /* text-sm */
+    color: #4b5563; /* text-muted-foreground */
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s ease;
+  
+    /* Placeholder style */
+    &::placeholder {
+      color: #9ca3af; /* muted-foreground */
+    }
+  
+    /* Focus styles */
+    &:focus-visible {
+      outline: none;
+      ring: 2px solid #6b7280; /* ring-ring */
+      ring-offset: 2px;
+    }
+  
+    /* Disabled styles */
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+  

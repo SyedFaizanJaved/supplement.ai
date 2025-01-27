@@ -1,0 +1,51 @@
+.card {
+    padding: 1rem;
+  }
+  
+  .heading {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .description {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .selectTrigger {
+    background-color: #fff;
+    color:var(--tertiary);
+  }
+
+  .selectTrigger:focus {
+    border: 1px solid #000;
+  }
+  
+  .selectContent {
+    background-color: #fff;
+  }
+  
+  .textarea {
+    min-height: 100px;
+    min-width: -webkit-fill-available;
+    border-radius:5px;
+    border:1px solid #e1e8f0;
+    padding: 0.5rem;
+  }
+  
+  .submitButton {
+    width: 100%;
+    background-color: #0790b3;
+  }
+  
+  .submitButton:hover {
+    background-color: rgba(59, 130, 246, 0.9);
+  }

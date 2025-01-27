@@ -1,0 +1,20 @@
+.section {
+    margin-bottom: 32px;
+  }
+  
+  .heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  .subheading {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .paragraph {
+    margin-bottom: 16px;
+  }
+  

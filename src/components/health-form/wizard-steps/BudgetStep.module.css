@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.heading {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.selectTrigger {
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.selectContent {
+  background: transparent;
+  backdrop-filter: blur(40px);
+}

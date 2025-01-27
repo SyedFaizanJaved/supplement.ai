@@ -1,0 +1,21 @@
+.formItem {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.labelError {
+  color:  var(--tertiary);
+}
+
+.formDescription {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.formMessage {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color:  var(--tertiary);
+}
+

@@ -1,0 +1,68 @@
+.card {
+  padding: 1rem;
+  height: calc(100vh - 12rem);
+  overflow-y: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #324154;
+}
+
+.subtitle {
+  color: #6b7280;
+}
+
+.buttonGroup {
+  display: flex;
+  background-color : var(--light);
+
+  gap: 0.5rem;
+}
+
+.referButton {
+  display: flex;
+  background-color : var(--light);
+  color : var(--tertiary);
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.referButton:hover {
+  background-color: orange;
+  color: white;
+}
+
+.referIcon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 1.5rem;
+  }
+
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

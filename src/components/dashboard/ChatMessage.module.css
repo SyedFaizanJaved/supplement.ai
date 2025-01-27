@@ -1,0 +1,94 @@
+.chatMessage {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.userMessage {
+  justify-content: flex-end;
+}
+
+.assistantMessage {
+  justify-content: flex-start;
+}
+
+.messageContainer {
+  display: flex;
+  gap: 0.75rem;
+  max-width: 85%;
+}
+
+.userContainer {
+  flex-direction: row-reverse;
+}
+
+.assistantContainer {
+  flex-direction: row;
+}
+
+.avatar {
+  height: 2rem;
+  width: 2rem;
+  flex-shrink: 0;
+}
+
+.messageContent {
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.userContent {
+  background-color: #007bff;
+  color: white;
+}
+
+.assistantContent {
+  background-color: #f1f3f5;
+}
+
+.introMessage {
+  font-size: 1.125rem;
+}
+
+.prose {
+  max-width: none;
+}
+
+.listItem {
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.paragraph {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.emptyParagraph {
+  margin-bottom: 1rem;
+}
+
+.timestampContainer {
+  padding: 0.25rem 0.5rem;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #6c757d;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.messageContainer:hover .timestamp {
+  opacity: 1;
+}
+
+.link {
+  color: #007bff;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.link:hover {
+  color: rgba(0, 123, 255, 0.8);
+}

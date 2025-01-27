@@ -1,0 +1,42 @@
+.container {
+    weight: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+  }
+  
+  .backButton {
+    display: flex;
+    align-items: center;
+    border-radius:5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+  }
+
+  .backButton:hover {
+    transition: 0.3s;
+    background-color: orange;
+    color: white;
+  }
+  
+  .backIcon {
+    margin-right: 0.5rem;
+  }
+  
+  .title {
+    font-size: 1.875rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .accordion {
+    width: 100%;
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+  
+  

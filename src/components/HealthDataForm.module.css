@@ -1,0 +1,125 @@
+.card {
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.optionRow{
+ margin-top: 8px;
+  font-weight:500;
+}
+
+.tic{
+  margin-right: 10px;
+}
+
+.termsContainer {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.termsLabel {
+  font-size: 0.95rem;
+  font-weight: 500;
+  display:flex;
+  gap:3px;
+}
+
+.termsLabel[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.termsLink {
+  color: var(--secondary);
+}
+
+.termsLink:hover {
+  text-decoration: underline;
+}
+
+.npbutton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.previousButton {
+  min-width: 100px;
+  margin-bottom: 10px;
+  background-color: orange;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.previousButton:hover {
+  background-color: darkorange;
+}
+
+.nextButton {
+  min-width: 100px;
+  align-item :left;
+  margin-bottom: 10px;
+  background-color: var(--secondary);
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.nextButton:hover {
+  background-color: #84c9d9;
+}
+
+.submitButton {
+  padding:10px;
+  width: 100%;
+  background-color:var(--secondary);
+  border : none;
+  color : var(--light);
+}
+
+.submitButton:hover {
+  background-color: #84c9d9;
+  color: var(--light);
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.loader {
+  height: 1rem;
+  width: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

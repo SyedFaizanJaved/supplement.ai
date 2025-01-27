@@ -1,0 +1,130 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: box-shadow 0.2s ease;
+}
+
+.container:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.editContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.goalNameInput {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.descriptionTextarea {
+  min-height: 80px;
+  resize: none;
+  font-size: 0.875rem;
+}
+
+.progressInputContainer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.numberInput {
+  width: 8rem;
+}
+
+.divider {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.saveButton {
+  background-color: #fa7516;
+  color: white;
+}
+
+.saveButton:hover {
+  background-color: #e66c13;
+}
+
+.deleteButton {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.trashIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.viewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.goalName {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #324154;
+  display: block;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+.progressContainer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.progressText {
+  color: #6b7280;
+}
+
+.progressBar {
+  height: 0.5rem;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.editButton {
+  padding: 0.25rem;
+  color: #6b7280;
+}
+
+.editIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.editButton:hover {
+  color: #fa7516;
+  background-color: rgba(250, 117, 22, 0.1);
+}

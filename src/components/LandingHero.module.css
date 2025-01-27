@@ -1,0 +1,353 @@
+:root {
+  --primary-gradient-start: #06b6d4;
+  --primary-gradient-end: #14b8a6;
+  --text-dark-gray: #4c5663;
+  --text-light-gray: #4b5563;
+  --background-light: #edfeff;
+  --background-light-end: #edfcfa;
+  --teal-accent: #0d9488;
+  --light-teal: #99f6e4;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.navigationBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  z-index: 100;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.navigationContent {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 .3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.navigationButtons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.contentButton {
+  background: #fff;
+  border: none;
+  color: var(--text-dark-gray);
+  font-size: 16px;
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.contentButton:hover {
+  background-color: #f37218;
+  color: #fff;
+}
+
+.buttonIcon {
+  height: 1rem;
+  width: 1rem;
+}
+
+/* Hero Container */
+.heroContainer {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, var(--background-light), var(--background-light-end));
+  padding-top: 4rem;
+}
+
+.heroContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.mainContentWrapper {
+  margin: 4rem 0;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .gridContainer {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .textContent {
+    text-align: left;
+  }
+}
+
+.mainHeading {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@media (min-width: 768px) {
+  .mainHeading {
+    font-size: 3.6rem;
+    line-height:1;
+  }
+}
+
+.subheading {
+  font-size: 1rem;
+  color: var(--text-light-gray);
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .subheading {
+    font-size: 1.25rem;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1rem;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .buttonGroup {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+}
+
+.getStartedButton {
+  background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+  color: white;
+  font-size: 1.125rem;
+  border: none;
+  height: 3.5rem;
+  padding: 0 2rem;
+  border-radius: 9999px;
+  transition: transform 0.2s ease;
+}
+
+.getStartedButton:hover {
+  transform: scale(1.05);
+  background: linear-gradient(to right, #14b8a1, #14b8);
+}
+
+.dashboardButton,
+.howItWorksButton {
+  min-width: 180px;
+  border: 2px solid var(--light-teal);
+  color: #0f756d;
+  background-color: #fff;
+  height: 3.5rem;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+
+.dashboardButton:hover,
+.howItWorksButton:hover {
+  background-color: #edfeff;
+  color: #06b6d9;
+}
+
+.imageContainer {
+  width: 100%;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.imageWrapper {
+  position: relative;
+  height: 300px;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+@media (min-width: 768px) {
+  .imageWrapper {
+    height: 400px;
+  }
+}
+
+.imageWrapper:hover {
+  transform: scale(1.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.heroImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20, 184, 166, 0.2), transparent);
+}
+
+/* Features Grid */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .featuresGrid {
+    grid-template-columns: repeat(4, 1fr);
+    margin: 2rem 0 3rem;
+  }
+}
+
+.featureItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.featureIcon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.shieldIcon {
+  height: 2rem;
+  width: 2rem;
+  color: var(--teal-accent);
+}
+
+.featureTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--teal-accent);
+}
+
+.featureDescription {
+  color: var(--text-light-gray);
+  line-height: 1.6;
+}
+
+/* Footer Links */
+.footerLinks {
+  padding: 1rem 0;
+}
+
+.footerLinksContent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (max-width: 480px) {
+  .footerLinksContent {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.footerLink {
+  transition: color 0.3s;
+  white-space: nowrap;
+}
+
+.footerLink:hover {
+  color: var(--teal-accent);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fadeIn { animation: fadeIn 0.5s ease-out; }
+.fadeInDelayed200 { animation: fadeIn 0.5s ease-out 0.2s backwards; }
+.fadeInDelayed400 { animation: fadeIn 0.5s ease-out 0.4s backwards; }
+.fadeInDelayed600 { animation: fadeIn 0.5s ease-out 0.6s backwards; }
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  .logo { font-size: 1.25rem; }
+  .navigationContent { height: 3.5rem; }
+  .contentButton { font-size: 14px; }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

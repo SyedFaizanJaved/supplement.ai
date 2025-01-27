@@ -1,0 +1,26 @@
+.section {
+    margin-bottom: 32px;
+  }
+  
+  .heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  .paragraph {
+    margin-bottom: 16px;
+  }
+  
+  .noticeBox {
+    margin-top: 32px;
+    padding: 16px;
+    background-color: #F9FAFB;
+    border-radius: 8px;
+  }
+  
+  .noticeText {
+    font-size: 14px;
+    color: #4B5563;
+  }
+  

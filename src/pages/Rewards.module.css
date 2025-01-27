@@ -1,0 +1,133 @@
+.container {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, white, #f0f8ff);
+    padding: 4rem 2rem;
+  }
+  
+  .backButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    background: none;
+    padding: 0.8rem;
+    border-radius:5px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .backButton:hover {
+    transition: 0.3s;
+    background-color: #f37218;
+    color:#fff;
+  }
+  
+  .backIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .content {
+    max-width: 55rem;
+    margin: 0 auto;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .giftIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #3498db;
+  }
+  
+  .pageTitle {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #1a1a1a;
+  }
+  
+  .subtitle {
+    color: #666;
+    margin-bottom: 2rem;
+    margin-left: 2.25rem;
+  }
+  
+  .rewardsSection {
+    space-y: 2rem;
+  }
+  
+  .referralProgram {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  .referralTiers {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .tierCard {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background-color: white;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .tierCard:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tierContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .tierTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .tierReward {
+    color: #3498db;
+    margin-top: 0.25rem;
+    font-weight: 500;
+  }
+  
+  .tierBadge {
+    height: 2.5rem;
+    width: 2.5rem;
+    background-color: #e6f2ff;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .tierBadge span {
+    color: #3498db;
+    font-weight: bold;
+    font-size: 0.875rem;
+  }
+  
+  .revenueShareText {
+    color: #666;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+  }

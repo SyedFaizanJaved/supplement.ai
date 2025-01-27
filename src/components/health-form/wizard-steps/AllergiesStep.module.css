@@ -1,0 +1,79 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.heading {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.allergyGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.otherAllergiesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.otherAllergiesInput {
+  display: flex;
+  gap: 8px;
+}
+
+.addButton {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+}
+
+.allergiesBadgeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.allergyBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #f0f0f0;
+  color: black;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.removeBadgeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+}
+
+.removeBadgeButton:hover {
+  color: red;
+}
+
+.removeIcon {
+  width: 12px;
+  height: 12px;
+}

@@ -1,0 +1,140 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.uploadSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.uploadGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+
+.uploadControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.uploadButton {
+  width: 100%;
+  display: flex;
+  color: var(--tertiary);
+  border: 1px solid #e1e8f0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.uploadButton:hover:not(:disabled) {
+  color: var(--light);
+  background-color: #fa7516;
+}
+
+.uploadButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #fff;
+  color: #9ba1ab;
+  border-color: #e1e8f0;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.successText {
+  font-size: 14px;
+  color: #16a34a;
+}
+
+.labelWithTooltip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tooltipTrigger {
+  display: inline-flex;
+  height: 20px;
+  width: 20px;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+
+.tooltipContent {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tooltipText {
+  padding: 6px;
+  font-size: 14px;
+  background-color: var(--light);
+  color: var(--tertiary);
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkboxLabel {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.purchaseButton {
+  width: 100%;
+  display: flex;
+  color: var(--tertiary);
+  border: 1px solid #e1e8f0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.purchaseButton:hover {
+  color: var(--light);
+  background-color: #fa7516;
+}
+
+.icon {
+  height: 16px;
+  width: 16px;
+}
+
+.spinIcon {
+  height: 16px;
+  width: 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

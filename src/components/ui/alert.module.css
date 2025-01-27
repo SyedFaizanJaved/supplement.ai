@@ -1,0 +1,46 @@
+.alert {
+    position: relative;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    padding: 1rem;
+  }
+  
+  .alert > svg ~ * {
+    padding-left: 1.75rem;
+  }
+  
+  .alert > svg + div {
+    transform: translateY(-3px);
+  }
+  
+  .alert > svg {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+  }
+  
+  .default {
+    background-color: #ffffff;
+    color: #111827;
+  }
+  
+  .destructive {
+    border-color: rgba(239, 68, 68, 0.5);
+    color: #ef4444;
+  }
+  
+  .title {
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.025em;
+  }
+  
+  .description {
+    font-size: 0.875rem;
+  }
+  
+  .description p {
+    line-height: 1.625;
+  }

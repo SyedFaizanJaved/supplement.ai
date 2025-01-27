@@ -1,0 +1,93 @@
+.container {
+    padding: 24px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #164f63;
+    margin: 0;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+  }
+  
+  .value {
+    margin: 0;
+    font-weight: 500;
+    color: #1f2937;
+  }
+  
+  .select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+  
+  .textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+  }
+  
+  .textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+  
+  .preformatted {
+    background-color: #dfe3eb;
+    border-radius: 6px;
+    padding: 12px;
+  }
+  
+  .pre {
+    margin: 0;
+    white-space: pre-line;
+    font-size: 14px;
+    color: var(--tertiary);
+    font-weight: 500;
+    font-family: inherit;
+  }

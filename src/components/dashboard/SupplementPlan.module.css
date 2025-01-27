@@ -1,0 +1,33 @@
+.card {
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #324154;
+}
+
+.shareButton {
+  display: flex;
+  align-items: center;
+  border:1px solid #e1e8f0;
+  gap: 0.5rem;
+}
+
+.shareButton:hover {
+  background-color: #fa7516;
+  color: var(--light);
+}
+
+.shareIcon {
+  height: 1rem;
+  width: 1rem;
+}

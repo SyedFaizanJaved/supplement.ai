@@ -1,0 +1,41 @@
+.bubbleButton {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    text-align: left;
+    transition: all 0.2s ease;
+    border: 2px solid;
+}
+
+.bubbleButton:hover {
+    border-color: rgba(0, 123, 255, 0.5);
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.selected {
+    border-color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.unselected {
+    border-color: #e0e0e0;
+    background-color: white;
+}
+
+.buttonContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.label {
+    color: #324154;
+    font-weight: 600;
+}
+
+.description {
+    margin-top:8px;
+    font-size: 0.875rem;
+    color: #6c757d;
+}

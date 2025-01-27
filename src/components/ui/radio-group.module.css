@@ -1,0 +1,42 @@
+.radioGroup {
+  display: grid;
+  gap: 0.5rem; /* equivalent to gap-2 */
+}
+
+.radioGroupItem {
+  aspect-ratio: 1;
+  height: 1rem; /* equivalent to h-4 */
+  width: 1rem; /* equivalent to w-4 */
+  border-radius: 9999px; /* equivalent to rounded-full */
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  background-color: var(--light);
+}
+
+.radioGroupItem:focus {
+  outline: none;
+}
+
+.radioGroupItem:focus-visible {
+  ring: 2px;
+  ring-offset: 2px;
+  ring-color: #2563eb;
+}
+
+.radioGroupItem:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.radioGroupIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle {
+  height: 0.625rem; /* equivalent to h-2.5 */
+  width: 0.625rem; /* equivalent to w-2.5 */
+  fill: currentColor;
+  color: currentColor;
+}

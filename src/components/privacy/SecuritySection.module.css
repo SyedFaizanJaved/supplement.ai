@@ -1,0 +1,26 @@
+.section {
+    margin-bottom: 32px;
+  }
+  
+  .heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  .subHeading {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .list {
+    margin-left: 24px;
+    margin-bottom: 16px;
+    list-style-type: disc;
+  }
+  
+  .list li {
+    margin-bottom: 4px;
+  }
+  

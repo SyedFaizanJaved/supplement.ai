@@ -1,0 +1,120 @@
+.dialogContent {
+  max-width: 42%;
+  border: 2px solid rgba(#0891b233, 0.2);
+  margin: 0 auto; /* Center the dialog */
+  padding: 1.5rem;
+  width: 100%; /* Allow content to fill available space */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.dialogTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  word-wrap: break-word; /* Prevent text overflow */
+}
+
+.stepsGrid {
+  display: grid;
+  gap: 2rem;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.stepIcon {
+  flex-shrink: 0;
+}
+
+.stepIcon svg {
+  width: 2rem;
+  height: 2rem;
+  color: var(--secondary);
+}
+
+.stepTitle {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--primary);
+  margin-bottom: 0.7rem;
+}
+
+.stepDescription {
+  color: var(--tertiary);
+  word-wrap: break-word; /* Ensure text wraps properly */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive breakpoints */
+@media screen and (max-width: 1200px) {
+  .dialogContent {
+    max-width: 60%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .dialogContent {
+    max-width: 75%;
+  }
+  
+  .dialogTitle {
+    font-size: 1.35rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dialogContent {
+    max-width: 85%;
+    padding: 1.25rem;
+  }
+  
+  .stepsGrid {
+    gap: 1.5rem;
+  }
+  
+  .stepTitle {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .dialogContent {
+    max-width: 95%;
+    padding: 1rem;
+  }
+  
+  .stepsGrid {
+    gap: 1.25rem;
+  }
+  
+  .step {
+    gap: 0.75rem;
+  }
+  
+  .stepIcon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .dialogTitle {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+}

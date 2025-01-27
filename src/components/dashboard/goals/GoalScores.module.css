@@ -1,0 +1,202 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .currentScoreSection {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .currentScoreHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .trophyIcon {
+    height: 20px;
+    width: 20px;
+    color: #3b82f6;
+    margin-right: 8px;
+  }
+  
+  .currentScoreTitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .currentScoreContent {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  
+  .currentScoreValue {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3b82f6;
+  }
+  
+  .currentScoreMax {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-left: 5px;
+  }
+  
+  .progressBar {
+    height: 12px;
+    background-color: #3b82f6;
+    border-radius: 6px;
+  }
+  
+  .addScoreSection {
+    display: flex;
+    align-items: center;
+    background-color: #f9fafb;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    margin-top: 15px;
+  }
+  
+  .trendingIcon {
+    height: 16px;
+    width: 16px;
+    color: #6b7280;
+    margin-right: 10px;
+  }
+  
+  .scoreInput {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+  }
+  
+  .addScoreButton {
+    padding: 8px 15px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .addScoreButton:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+  }
+  
+  .historySection {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+  }
+  
+  .historyHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .historyIcon {
+    height: 16px;
+    width: 16px;
+    color: #6b7280;
+    margin-right: 8px;
+  }
+  
+  .historyTitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .historyList {
+    space-y: 12px;
+  }
+  
+  .historyItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+  }
+  
+  .historyItem:hover {
+    background-color: #f9fafb;
+  }
+  
+  .historyItemContent {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .scoreBadge {
+    background-color: #e5e7eb;
+    color: #374151;
+    padding: 5px 10px;
+    border-radius: 9999px;
+    font-weight: 500;
+  }
+  
+  .scoreDate {
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+  
+  .historyItemProgress {
+    height: 8px;
+    background-color: #3b82f6;
+    border-radius: 4px;
+  }
+  
+  .noScoresMessage {
+    text-align: center;
+    color: #6b7280;
+    padding: 15px 0;
+    font-size: 0.875rem;
+  }
+  
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 250px;
+    text-align: center;
+  }
+  
+  .toast-default {
+    background-color: #10b981;
+    color: white;
+  }
+  
+  .toast-destructive {
+    background-color: #ef4444;
+    color: white;
+  }
+  
+  .toastTitle {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .toastDescription {
+    font-size: 0.875rem;
+  }

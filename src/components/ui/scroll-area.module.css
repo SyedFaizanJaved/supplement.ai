@@ -1,0 +1,48 @@
+.root {
+  position: relative;
+  overflow: hidden;
+}
+
+.viewport {
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+}
+
+.scrollbar {
+  display: flex;
+  touch-action: none;
+  user-select: none;
+  transition: colors 150ms ease;
+}
+
+.scrollbarVertical {
+  height: 100%;
+  width: 10px; /* w-2.5 converted to pixels */
+  border-left: 1px solid transparent;
+  padding: 1px;
+}
+
+.scrollbarHorizontal {
+  height: 10px; /* h-2.5 converted to pixels */
+  flex-direction: column;
+  border-top: 1px solid transparent;
+  padding: 1px;
+}
+
+.thumb {
+  position: relative;
+  flex: 1;
+  border-radius: 9999px; /* rounded-full */
+  background-color: var(--border-color, #e5e7eb); /* bg-border converted to a CSS variable with fallback */
+}
+
+/* Hover states can be added if needed */
+.thumb:hover {
+  background-color: var(--border-hover-color, #d1d5db);
+}
+
+/* Active states can be added if needed */
+.thumb:active {
+  background-color: var(--border-active-color, #9ca3af);
+}

@@ -1,0 +1,66 @@
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .vitaminDCard,
+  .b12Card,
+  .ironCard {
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+  
+  .vitaminDCard {
+    background-color: rgba(var(--primary-rgb), 0.1);
+  }
+  
+  .b12Card {
+    background-color: rgba(var(--accent-rgb), 0.1);
+  }
+  
+  .ironCard {
+    background-color: rgba(var(--secondary-rgb), 0.1);
+  }
+  
+  .vitaminDTitle {
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+  
+  .b12Title {
+    font-weight: 600;
+    color: var(--accent-color);
+  }
+  
+  .ironTitle {
+    font-weight: 600;
+    color: var(--secondary-color);
+  }
+  
+  .statusText {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    margin-top: 0.25rem;
+  }
+  
+  .progressBar {
+    margin-top: 0.5rem;
+  }
+  
+  /* Media query for medium screens and above */
+  @media (min-width: 768px) {
+    .gridContainer {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  :root {
+    --primary-color: #0070f3;
+    --primary-rgb: 0, 112, 243;
+    --accent-color: #fa7516;
+    --accent-rgb: 217, 70, 239;
+    --secondary-color: #6b7280;
+    --secondary-rgb: 107, 114, 128;
+    --muted-foreground: #6b7280;
+  }

@@ -1,0 +1,154 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 6rem);
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(to bottom, white, #f9f9f9);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.botIconWrapper {
+  padding: 0.5rem;
+  background-color: rgba(0, 123, 255, 0.1);
+  border-radius: 0.5rem;
+}
+
+.botIcon {
+  height: 1.5rem;
+  width: 1.5rem;
+  color: #007bff;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.title {
+  font-size: 1.9rem;
+  font-weight: 600;
+  background: linear-gradient(to right, #007bff, #6c757d, #f27318);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  color: var(--tertiary);
+  font-size: 0.9rem;
+}
+
+.clearButton {
+  color: var(--tertiary);
+  border: none;
+  background-color:transparent;
+}
+
+.clearButton:hover {
+  color: #dc3545;
+  color:var(--tertiary);
+}
+
+.clearIcon {
+  height: 1rem;
+  width: 1rem;
+  margin-right: 0.3rem;
+}
+
+.quickRepliesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.quickReplyCard {
+  padding: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quickReplyCard:hover {
+  background-color: #f8f9fa;
+}
+
+.quickReplyTitle {
+  font-weight: 500;
+  color: #6c757d;
+  transition: color 0.3s;
+}
+
+.quickReplyCard:hover .quickReplyTitle {
+  color: #007bff;
+}
+
+.quickReplyDescription {
+  font-size: 0.875rem;
+  color: #868e96;
+  margin-top: 0.25rem;
+}
+
+.scrollArea {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.typingIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6c757d;
+  animation: pulse 1.5s infinite;
+}
+
+.loadingIcon {
+  height: 1.25rem;
+  width: 1.25rem;
+  animation: spin 1s linear infinite;
+}
+
+.inputContainer {
+  padding: 1.5rem;
+  border-top: 1px solid #f0f0f0;
+  background: linear-gradient(to top, #f9f9f9, white);
+}
+
+.inputWrapper {
+  max-width: 58rem;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

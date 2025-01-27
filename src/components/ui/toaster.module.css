@@ -1,0 +1,32 @@
+.toastContent {
+    display: grid;
+    gap: 0.25rem;
+  }
+  
+  /* Animation keyframes */
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  
+  /* Add these classes to the Toast component if you haven't already */
+  .toastEnter {
+    animation: slideIn 0.2s ease-out;
+  }
+  
+  .toastExit {
+    animation: slideOut 0.2s ease-in forwards;
+  }

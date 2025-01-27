@@ -1,0 +1,44 @@
+{
+  "healthGoals": [
+    {
+      "id": "1",
+      "goal_name": "Daily Step Count",
+      "description": "Increase daily step count to 10,000 steps",
+      "progress": 1000,
+      "target": 10000,
+      "category": "fitness"
+    },
+    {
+      "id": "2", 
+      "goal_name": "Strength Training",
+      "description": "Perform strength training 3 times per week",
+      "progress": 1,
+      "target": 3,
+      "category": "fitness"
+    },
+    {
+      "id": "3",
+      "goal_name": "Protein Intake",
+      "description": "Consume 100g of protein daily",
+      "progress": 66,
+      "target": 100,
+      "category": "nutrition"
+    },
+    {
+      "id": "4",
+      "goal_name": "Meditation",
+      "description": "Practice meditation for 15 minutes daily",
+      "progress": 10,
+      "target": 15,
+      "category": "wellness"
+    },
+    {
+      "id": "5",
+      "goal_name": "Blood Pressure Monitoring",
+      "description": "Monitor and log blood pressure weekly",
+      "progress":4,
+      "target": 7,
+      "category": "biomarkers"
+    }
+  ]
+}

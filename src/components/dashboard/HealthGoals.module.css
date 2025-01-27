@@ -1,0 +1,144 @@
+.healthGoalsCard {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 24px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color:#324154;
+}
+
+.helpButton {
+  background-color: #fff;
+  border: 1px solid #fff;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.helpupButton {
+  margin-top: 8px;
+  background-color: #fff;
+  border:none;
+}
+
+.helpButton:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.helpIcon {
+  color: #6b7280;
+  width: 16px;
+  height: 16px;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .contentGrid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.tabsList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+  background-color: #93a2b8;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.goalsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.goalCard {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* .addGoalButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 22px;
+  border: 2px dashed #324154;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #324154;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.addGoalButton:hover {
+  border-color: #9ca3af;
+  background-color: #f37218;
+  color: #fff;
+} */
+
+.plusIcon {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.popoverContent {
+  max-width: 300px;
+  padding: 12px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.editButton {
+  background-color: #fff;
+  color: #324154;
+}
+
+.editButton:hover {
+  background-color: #f37218;
+  color: #fff;
+}
+
+.symptomTrackerSection {
+  width: 100%;
+}

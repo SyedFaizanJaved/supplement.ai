@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16px;
+}
+
+.ageField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.genderField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 16px;
+}
+
+.radioOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.heightContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.heightInputs {
+  display: flex;
+  gap: 8px;
+}
+
+.heightField {
+  flex: 1;
+}
+
+.weightField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

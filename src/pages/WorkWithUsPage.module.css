@@ -1,0 +1,143 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--light);
+    padding: 1.5rem;
+  }
+  
+  .backButton {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: var(--light);
+    margin-bottom: 1.5rem;
+    color : #000;
+    border-radius:5px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .backButton:hover {
+    background-color: orange;
+    transition: 0.2s;
+    color: white;
+  }
+  
+  .pageTitle {
+    font-size: 1.875rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: 1152px;
+    margin: 0 auto;
+  }
+  
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: box-shadow 0.2s ease-in-out;
+    border-radius: 8px;
+    border: 1px solid #e1e8f0;
+    background-color: var(--light);
+  }
+  
+  .card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cardHeader {
+    padding: 1.5rem 1.5rem 0;
+  }
+  
+  .cardTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.04em;
+    color: var(--tertiary);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    color: var(--secondary);
+  }
+  
+  .cardContent {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .description {
+    font-size: 1rem;
+    letter-spacing: 0.04rem;
+    line-height: 1.5;
+    color: var(--tertiary);
+    margin-bottom: 1rem;
+  }
+  
+  .button {
+    width: 100%;
+    margin-top: auto;
+    padding: 0.7rem 1rem;
+    background-color: var(--secondary);
+    color: white;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .button:hover {
+    transition: 0.3s;
+    background-color: var(--primary);
+  }
+  
+  .dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    max-width: 28rem;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .dialogOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  

@@ -1,0 +1,137 @@
+.card {
+    width: 100%;
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.stepTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.progressBar {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.progressStep {
+    flex: 1;
+    height: 0.25rem;
+    border-radius: 9999px;
+}
+
+.activeStep {
+    background-color: #007bff;
+}
+
+.inactiveStep {
+    background-color: #e0e0e0;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.navigationContainer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1rem;
+}
+
+.previousButton {
+    background-color:#fff;
+    display: flex;
+    color:var(--primary);
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.nextButton {
+    background-color: var(--secondary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.submitButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.previousButton:hover {
+    background-color:orange;
+    color: #fff;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    gap: 0.75rem;
+}
+
+.nextButton:hover{
+    background-color: var(--secondary);
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    gap: 0.75rem;
+}
+
+.submitButton:hover {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    gap: 0.75rem;
+}
+
+.buttonIcon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.spinningIcon {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+    .card {
+        padding: 1rem;
+    }
+
+    .stepTitle {
+        font-size: 1.25rem;
+    }
+
+    .navigationContainer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .previousButton,
+    .nextButton,
+    .submitButton {
+        width: 100%;
+    }
+}

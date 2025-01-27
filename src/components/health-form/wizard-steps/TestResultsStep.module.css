@@ -1,0 +1,106 @@
+.container {
+    gap: 1.5rem;
+  }
+  
+  .gridContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .gridContainer {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .uploadSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .labelBase {
+    font-size: 1rem;
+  }
+  
+  .uploadBox {
+    border: 2px dashed #e0e0e0;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .uploadIcon {
+    margin: 0 auto;
+    height: 3rem;
+    width: 3rem;
+    color: var(--primary);
+  }
+  
+  .uploadLabel {
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  .hiddenInput {
+    display: none;
+  }
+  
+  .uploadButton {
+    width: 100%;
+  }
+  
+  .buttonIcon {
+    margin-right: 0.5rem;
+    height: 1rem;
+    width: 1rem;
+  }
+  
+  .spinningLoader {
+    margin-right: 0.5rem;
+    height: 1rem;
+    width: 1rem;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .checkboxContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+  
+  .checkboxWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .checkboxLabel {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .purchaseButton {
+    padding: 10px 10px;
+    border:1px solid #e1e8f0;
+    border-radius:5px;
+    background-color: #fff;
+    color:var(--primary);
+    width: 100%;
+  }
+
+  .purchaseButton:hover {
+    transition:0.3s;
+    background-color:orange;
+    color: #fff;
+  }
