@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button } from "../../ui/button";
-import { Users } from "lucide-react";
+import { Users, ArrowRight, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from './FinalStep.module.css';
 
-export const FinalStep = (props) => {
+export const FinalStep = ({ formData, isSubmitting, onSubmit }) => {
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const navigate = useNavigate();
 
@@ -14,6 +14,14 @@ export const FinalStep = (props) => {
 
     const handleFamilyPlanNavigation = () => {
         navigate('/family-plan');
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (acceptedTerms) {
+            onSubmit();
+        }
     };
 
     return (
@@ -31,14 +39,38 @@ export const FinalStep = (props) => {
                 </label>
             </div>
 
+            <div className={styles.buttonContainer}>        
             <Button 
-                onClick={handleFamilyPlanNavigation}
-                disabled={!acceptedTerms}
-                className={styles.familyButton}
-            >
-                <Users className={styles.buttonIcon} />
-                Want to help your family too?
-            </Button>
+                    type="button"
+                    onClick={handleFamilyPlanNavigation}
+                    disabled={!acceptedTerms}
+                    variant="secondary"
+                    className={styles.familyButton}
+                >
+                    <Users className={styles.buttonIcon} />
+                    Want to help your family too?
+                </Button>
+                
+                <Button 
+                    type="button"
+                    onClick={handleSubmit}
+                    disabled={!acceptedTerms || isSubmitting}
+                    className={`${styles.submitButton} ${styles.mainButton}`}
+                >
+                    {isSubmitting ? (
+                        <>
+                            <Loader2 className={`${styles.buttonIcon} ${styles.spinningIcon}`} />
+                            Processing...
+                        </>
+                    ) : (
+                        <>
+                            Continue to Payment
+                            <ArrowRight className={styles.buttonIcon} />
+                        </>
+                    )}
+                </Button>
+
+            </div>
         </div>
     );
 };

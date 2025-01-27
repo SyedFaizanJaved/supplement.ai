@@ -8,7 +8,7 @@ import { Form } from "../ui/form";
 import { useToast } from "../hooks/use-toast";
 import { healthFormSchema } from "../schemas/healthFormSchema";
 import { submitHealthFormData } from "../utils/healthFormSubmission";
-import { Loader2, ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PersonalInfoStep } from "./wizard-steps/PersonalInfoStep";
 import { HealthMetricsStep } from "./wizard-steps/HealthMetricsStep";
 import { ActivityLevelStep } from "./wizard-steps/ActivityLevelStep";
@@ -25,7 +25,7 @@ import styles from './StepWizard.module.css';
 
 const steps = [
   "Personal Information",
-  "Health Metrics",
+  "Health Metrics", 
   "Activity Level",
   "Health Goals",
   "Allergies",
@@ -39,7 +39,7 @@ const steps = [
 ];
 
 export const StepWizard = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(11);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -73,9 +73,9 @@ export const StepWizard = () => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const handleSubmit = async (data) => {
     if (isSubmitting) return;
-
+    
     try {
       setIsSubmitting(true);
       await submitHealthFormData(data);
@@ -94,6 +94,7 @@ export const StepWizard = () => {
         description: error.message || "An error occurred while submitting the form. Please try again.",
         variant: "destructive",
       });
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -139,6 +140,21 @@ export const StepWizard = () => {
     return false;
   };
 
+  const handleNextOrSubmit = async () => {
+    if (currentStep === steps.length - 1) {
+      const isValid = await form.trigger();
+      if (!isValid) {
+        toast({
+          title: "Validation Error",
+          description: "Please check all fields are filled correctly.",
+          variant: "destructive",
+        });
+      }
+    } else {
+      await validateCurrentStep();
+    }
+  };
+
   const renderStep = () => {
     const formData = form.getValues();
     
@@ -166,7 +182,14 @@ export const StepWizard = () => {
       case 10:
         return <BudgetStep form={form} />;
       case 11:
-        return <FinalStep form={form} formData={formData} isSubmitting={isSubmitting} />;
+        return (
+          <FinalStep 
+            form={form} 
+            formData={formData} 
+            isSubmitting={isSubmitting} 
+            onSubmit={() => form.handleSubmit(handleSubmit)()}
+          />
+        );
       default:
         return null;
     }
@@ -191,7 +214,7 @@ export const StepWizard = () => {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className={styles.formContainer}>
+        <form onSubmit={(e) => e.preventDefault()} className={styles.formContainer}>
           {renderStep()}
 
           <div className={styles.navigationContainer}>
@@ -206,32 +229,14 @@ export const StepWizard = () => {
               Previous
             </Button>
 
-            {currentStep < steps.length - 1 ? (
+            {currentStep < steps.length - 1 && (
               <Button
                 type="button"
-                onClick={validateCurrentStep}
+                onClick={handleNextOrSubmit}
                 className={styles.nextButton}
               >
                 Next
                 <ArrowRight className={styles.buttonIcon} />
-              </Button>
-            ) : (
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className={styles.submitButton}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className={`${styles.buttonIcon} ${styles.spinningIcon}`} />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    Continue to Payment
-                    <ArrowRight className={styles.buttonIcon} />
-                  </>
-                )}
               </Button>
             )}
           </div>

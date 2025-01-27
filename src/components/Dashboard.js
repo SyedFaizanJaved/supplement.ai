@@ -8,7 +8,6 @@ import { SupplementPlan } from "./dashboard/SupplementPlan";
 import { HealthGoals } from "./dashboard/HealthGoals";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { useIsMobile } from "./hooks/use-mobile";
-import { supabase } from "./integrations/supabase/client";
 import { useToast } from "./hooks/use-toast";
 import styles from './Dashboard.module.css';
 

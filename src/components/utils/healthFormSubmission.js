@@ -1,80 +1,40 @@
-import { supabase } from "../integrations/supabase/client";
+import { supabase } from "../integrations/supabase/client"; 
 
-export const submitHealthFormData = async (formData) => {
+export const submitHealthFormData = async (data) => {
   try {
-    console.log('Starting form submission with data:', formData);
+    // Convert medical conditions array to string array for database storage
+    const medicalConditionsForDb = data.medicalConditions.map(
+      (condition) =>
+        condition.specification
+          ? `${condition.condition} - ${condition.specification}`
+          : condition.condition
+    );
 
-    // Convert strings to arrays by splitting on commas and trimming whitespace
-    const convertToArray = (str) => {
-      // Handle null/undefined/non-string inputs
-      if (str == null) return [];
-      
-      // Ensure input is converted to string
-      const strValue = String(str).trim();
-      
-      return strValue ? strValue.split(',').map(item => item.trim()) : [];
-    };
+    const { error } = await supabase.from("pending_health_profiles").insert({
+      email: data.email,
+      password: data.password,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      age: parseInt(data.age),
+      gender: data.gender,
+      height: parseFloat(data.height),
+      weight: parseFloat(data.weight),
+      activity_level: data.activityLevel,
+      medical_conditions: medicalConditionsForDb,
+      allergies: data.allergies,
+      current_medications: data.currentMedications,
+      health_goals: data.healthGoals.join(", "),
+      monthly_supplement_budget: parseFloat(data.monthlyBudget),
+      sleep_hours: parseFloat(data.sleepHours),
+      smoking_status: data.smokingStatus,
+      alcohol_consumption: data.alcoholConsumption,
+    });
 
-    // First clean up expired profiles
-    await supabase
-      .from('pending_health_profiles')
-      .delete()
-      .lt('expires_at', new Date().toISOString());
+    if (error) throw error;
 
-    // Check for existing non-expired profile with this email
-    const { data: existingProfiles, error: checkError } = await supabase
-      .from('pending_health_profiles')
-      .select('id')
-      .eq('email', formData.email)
-      .gt('expires_at', new Date().toISOString());
-
-    if (checkError) {
-      console.error('Error checking existing profiles:', checkError);
-      throw new Error('Error checking existing profiles');
-    }
-
-    if (existingProfiles && existingProfiles.length > 0) {
-      throw new Error('An account with this email already exists');
-    }
-
-    // Insert new profile
-    const { data, error } = await supabase
-      .from('pending_health_profiles')
-      .insert([
-        {
-          email: formData.email,
-          password: formData.password,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          age: parseInt(formData.age),
-          gender: formData.gender,
-          height: parseFloat(formData.height),
-          weight: parseFloat(formData.weight),
-          activity_level: formData.activityLevel,
-          medical_conditions: convertToArray(formData.medicalConditions),
-          allergies: convertToArray(formData.allergies),
-          current_medications: convertToArray(formData.currentMedications),
-          health_goals: formData.healthGoals,
-          monthly_supplement_budget: parseFloat(formData.monthlyBudget),
-        }
-      ])
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Supabase error:', error);
-      throw new Error(error.message);
-    }
-
-    if (!data) {
-      throw new Error('Failed to create profile');
-    }
-
-    console.log('Successfully created profile:', data.id);
-    return data;
-
+    return { success: true };
   } catch (error) {
-    console.error('Submission error:', error);
-    throw error;
+    console.error("Error submitting health form data:", error);
+    throw new Error(error.message || "Failed to submit health form data");
   }
 };
