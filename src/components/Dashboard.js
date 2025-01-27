@@ -22,14 +22,14 @@ export const Dashboard = () => {
       title: "Create an account to save your progress",
       description: "Sign up to unlock all features and track your health journey.",
       action: (
-        <Button
+        <button
           onClick={() => navigate("/input")}
           variant="default"
           size="sm"
           className={styles.signButton}
         >
           Sign Up
-        </Button>
+        </button>
       ),
       duration: 5000,
     });
