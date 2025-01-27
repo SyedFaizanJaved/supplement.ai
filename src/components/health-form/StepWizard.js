@@ -39,7 +39,7 @@ const steps = [
 ];
 
 export const StepWizard = () => {
-  const [currentStep, setCurrentStep] = useState(11);
+  const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
