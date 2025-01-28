@@ -8,6 +8,9 @@ import styles from "./HealthGoalsStep.module.css";
 
 export const HealthGoalsStep = ({ form }) => {
   const [newGoal, setNewGoal] = useState("");
+  // Use form.watch to get reactive updates
+  const otherHealthGoals = form.watch("otherHealthGoals") || [];
+
   const healthGoalOptions = [
     {
       value: "weight_management",
@@ -71,10 +74,8 @@ export const HealthGoalsStep = ({ form }) => {
 
   const handleRemoveCustomGoal = (index) => {
     const currentGoals = form.getValues("otherHealthGoals") || [];
-    form.setValue(
-      "otherHealthGoals",
-      currentGoals.filter((_, i) => i !== index)
-    );
+    const updatedGoals = currentGoals.filter((_, i) => i !== index);
+    form.setValue("otherHealthGoals", updatedGoals);
   };
 
   return (
@@ -120,12 +121,16 @@ export const HealthGoalsStep = ({ form }) => {
               }
             }}
           />
-          <button className={styles.addbutton} type="button" onClick={handleAddCustomGoal}>
+          <button 
+            className={styles.addbutton} 
+            type="button" 
+            onClick={handleAddCustomGoal}
+          >
             Add
           </button>
         </div>
         <div className={styles.customGoalsList}>
-          {form.getValues("otherHealthGoals")?.map((goal, index) => (
+          {otherHealthGoals.map((goal, index) => (
             <div key={index} className={styles.customGoalItem}>
               <span>{goal}</span>
               <Button

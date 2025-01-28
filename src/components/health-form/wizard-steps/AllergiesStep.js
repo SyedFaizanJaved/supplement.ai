@@ -13,22 +13,50 @@ import { X } from "lucide-react";
 import styles from './AllergiesStep.module.css';
 
 const ALLERGY_OPTIONS = [
-  "No Allergies",
-  "Seasonal",
-  "Dairy",
-  "Gluten",
-  "Shellfish",
-  "Nuts",
-  "Latex"
+  {
+    label: "Seasonal",
+    description: "Pollen, dust mites, animal dander"
+  },
+  {
+    label: "Food",
+    description: "Common food allergies"
+  },
+  {
+    label: "Insect Stings",
+    description: "Bee, wasp, hornet stings"
+  },
+  {
+    label: "Dairy",
+    description: "Milk and dairy products"
+  },
+  {
+    label: "Gluten",
+    description: "Wheat and related proteins"
+  },
+  {
+    label: "Shellfish",
+    description: "Crustaceans and mollusks"
+  },
+  {
+    label: "Nuts",
+    description: "Tree nuts and peanuts"
+  },
+  {
+    label: "Latex",
+    description: "Natural rubber latex"
+  }
 ];
 
 export const AllergiesStep = ({ form }) => {
   const [otherAllergies, setOtherAllergies] = useState("");
   const allergies = form.watch("allergies") || [];
+  const hasNoAllergies = form.watch("hasNoAllergies") || false;
 
-  const handleAllergyChange = (allergy, checked) => {
-    if (allergy === "No Allergies") {
-      if (checked) {
+  const handleAllergyChange = (allergyLabel, checked) => {
+    if (allergyLabel === "No Allergies") {
+      const newHasNoAllergies = !hasNoAllergies;
+      form.setValue("hasNoAllergies", newHasNoAllergies);
+      if (newHasNoAllergies) {
         form.setValue("allergies", []);
       }
       return;
@@ -36,17 +64,18 @@ export const AllergiesStep = ({ form }) => {
 
     const currentAllergies = form.getValues("allergies") || [];
     if (checked) {
-      form.setValue("allergies", [...currentAllergies, allergy]);
+      form.setValue("hasNoAllergies", false);
+      form.setValue("allergies", [...currentAllergies, allergyLabel]);
     } else {
       form.setValue(
         "allergies",
-        currentAllergies.filter((a) => a !== allergy)
+        currentAllergies.filter((a) => a !== allergyLabel)
       );
     }
   };
 
   const handleOtherAllergyAdd = () => {
-    if (otherAllergies.trim()) {
+    if (otherAllergies.trim() && !hasNoAllergies) {
       const currentAllergies = form.getValues("allergies") || [];
       form.setValue("allergies", [...currentAllergies, otherAllergies.trim()]);
       setOtherAllergies("");
@@ -61,28 +90,32 @@ export const AllergiesStep = ({ form }) => {
     );
   };
 
-  const hasNoAllergies = allergies.length === 0;
-
   return (
     <div className={styles.container}>
       <div className={styles.contentWrapper}>
         <h2 className={styles.heading}>Do you have any allergies?</h2>
         
-        <div className={styles.allergyGrid}>
+        <div className={styles.allergyMainGrid}>
           <BubbleOption
             label="I don't have any allergies"
             isSelected={hasNoAllergies}
             onClick={() => handleAllergyChange("No Allergies", !hasNoAllergies)}
+            className={styles.noAllergiesOption}
           />
           
-          {!hasNoAllergies && ALLERGY_OPTIONS.slice(1).map((allergy) => (
-            <BubbleOption
-              key={allergy}
-              label={allergy}
-              isSelected={allergies.includes(allergy)}
-              onClick={() => handleAllergyChange(allergy, !allergies.includes(allergy))}
-            />
-          ))}
+          <div className={styles.allergyOptionsGrid}>
+            {!hasNoAllergies && ALLERGY_OPTIONS.map(({ label, description }) => (
+              <BubbleOption
+                key={label}
+                label={label}
+                description={description}
+                isSelected={allergies.includes(label)}
+                onClick={() => handleAllergyChange(label, !allergies.includes(label))}
+                disabled={hasNoAllergies}
+                className={styles.allergyOption}
+              />
+            ))}
+          </div>
         </div>
 
         {!hasNoAllergies && (
@@ -145,3 +178,5 @@ export const AllergiesStep = ({ form }) => {
     </div>
   );
 };
+
+export default AllergiesStep;

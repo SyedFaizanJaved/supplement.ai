@@ -1,277 +1,117 @@
 .card {
-  width: 100%;
-  border:1px solid #dfe3eb;
-  border-radius: 0.5rem;
-  max-width: 24rem;
-  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: #fff;
+  max-width: 400px;
+  margin: 16px auto;
 }
 
-.cardHeader {
-  padding: 1rem;
-}
-
-.headerContent {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.titleContainer {
+.container {
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  height: 100%;
 }
 
-.title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.dosage {
-  font-size: 0.875rem;
-  color: #6B7280;
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .image {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 0.5rem;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
   object-fit: cover;
 }
 
-.timing {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
+.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-.timingText {
-  color: #4B5563;
+.subtitle {
+  font-size: 1rem;
+  color: #555;
+  margin: 4px 0 0;
 }
 
-.cardContent {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.description {
+  margin: 16px 0;
+  font-size: 1rem;
+  color: #333;
+  flex-grow: 1;
 }
 
-.reason {
-  font-size: 0.875rem;
-  color: #4B5563;
+.details {
+  margin: 16px 0;
 }
 
-.metaContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.metaInfo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.priorityHigh {
-  font-size: 0.875rem;
+.detailsTitle {
+  font-size: 1.1rem;
   font-weight: 500;
-  color: #EF4444;
+  margin-bottom: 8px;
 }
 
-.priorityMedium {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #F59E0B;
+.dosage {
+  font-size: 0.95rem;
+  color: #555;
 }
 
-.priorityLow {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #10B981;
-}
-
-.category {
-  font-size: 0.875rem;
-  color: #6B7280;
-}
-
-.timeInfo {
+.footer {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin-top: 0.5rem;
+  justify-content: flex-end;
+  margin-top: auto;
 }
 
-.timeItem {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #4B5563;
-}
-
-.recommendedDate {
-  font-size: 0.75rem;
-  color: #6B7280;
-  margin-left: 1.5rem;
-}
-
-.precautionsButton {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.875rem;
-  color: #6B7280;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.precautionsList {
-  background-color: #dfe3eb;
-  list-style-type: disc;
-  border-radius: 0.375rem;
-  padding: 1rem 1.25rem;
-}
-
-.precautionsItem {
-  font-size: 0.875rem;
-}
-
-.scheduleContainer {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  background-color: #F8FAFC;
-  border-radius: 0.375rem;
-  border: 1px solid #E2E8F0;
-}
-
-.scheduleTitle {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #475569;
-  margin-bottom: 0.5rem;
-}
-
-.scheduleInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.scheduleRow {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #64748B;
-}
-
-.timeLabel {
-  min-width: 4rem;
-  font-weight: 500;
-  color: #475569;
-}
-
-.timeValue {
-  color: #1E293B;
-}
-
-.separator {
-  height: 1px;
-  background-color: #E2E8F0;
-  margin: 0.5rem 0;
-}
-
-.benefitsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.benefitsTitle {
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.benefitsList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.benefitItem {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #4B5563;
-}
-
-.benefitDot {
-  width: 0.25rem;
-  height: 0.25rem;
-  background-color: #9CA3AF;
-  border-radius: 9999px;
-}
-
-.cardFooter {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.productButton {
+.viewButton {
   width: 100%;
-  background-color: #111827;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  background-color:#334155;
 }
 
-.productButton:hover {
-  background-color: #1F2937;
-}
-
-.feedbackContainer {
-  display: flex;
-  gap: 0.5rem;
+.viewButton:hover {
   width: 100%;
+  background-color: #334d9c;
 }
 
-.feedbackButton {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid #E5E7EB;
-  border-radius: 0.375rem;
-  background: transparent;
-  cursor: pointer;
-  transition: background-color 0.2s;
+@media (max-width: 480px) {
+  .card {
+    max-width: 100%;
+    margin: 16px 0;
+  }
+
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+  }
+
+  .detailsTitle {
+    font-size: 1rem;
+  }
+
+  .dosage {
+    font-size: 0.85rem;
+  }
 }
 
-.feedbackButton:hover {
-  background-color: #F3F4F9;
-}
-
-.feedbackButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.icon {
-  width: 1rem;
-  height: 1rem;
-}

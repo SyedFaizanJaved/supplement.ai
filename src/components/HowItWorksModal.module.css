@@ -1,10 +1,11 @@
 .dialogContent {
-  max-width: 42%;
+  max-width: 43%;
   border: 2px solid rgba(#0891b233, 0.2);
-  margin: 0 auto; /* Center the dialog */
+  margin: 0 auto; 
   padding: 1.5rem;
-  width: 100%; /* Allow content to fill available space */
-  box-sizing: border-box; /* Include padding in width calculation */
+  z-index: 100;
+  width: 100%; 
+  box-sizing: border-box; 
 }
 
 .dialogTitle {

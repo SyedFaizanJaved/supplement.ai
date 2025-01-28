@@ -1,0 +1,115 @@
+.subTrigger {
+    display: flex;
+    cursor: default;
+    user-select: none;
+    align-items: center;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  .subTrigger[data-state="open"] {
+    background-color: var(--accent-color, #f4f4f5);
+  }
+  
+  .subTrigger:focus {
+    background-color: var(--accent-color, #f4f4f5);
+  }
+  
+  .subTrigger.inset {
+    padding-left: 32px;
+  }
+  
+  .chevronRight {
+    margin-left: auto;
+    height: 16px;
+    width: 16px;
+  }
+  
+  .subContent {
+    z-index: 50;
+    min-width: 15rem;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--border-color, #e4e4e7);
+    background-color: var(--popover-color, white);
+    padding: 4px;
+    color: var(--text-color, #18181b);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .content {
+    composes: subContent;
+  }
+  
+  .menuItem {
+    position: relative;
+    display: flex;
+    cursor: default;
+    user-select: none;
+    color: #000;
+    align-items: center;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 14px;
+    outline: none;
+    transition: background-color 150ms ease;
+  }
+  
+  .menuItem:focus {
+    background-color: #334155;
+    color: #fff;
+  }
+  
+  .menuItem.inset {
+    padding-left: 32px;
+  }
+  
+  .menuItem[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  .checkboxItem {
+    composes: menuItem;
+    padding-left: 32px;
+    padding-right: 8px;
+  }
+  
+  .itemIndicator {
+    position: absolute;
+    left: 8px;
+    display: flex;
+    height: 14px;
+    width: 14px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .radioItem {
+    composes: checkboxItem;
+  }
+  
+  .label {
+    padding: 6px 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .label.inset {
+    padding-left: 32px;
+  }
+  
+  .separator {
+    margin: 4px -4px;
+    height: 1px;
+    background-color: var(--muted-color, #e4e4e7);
+  }
+  
+  .shortcut {
+    margin-left: auto;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+  }
