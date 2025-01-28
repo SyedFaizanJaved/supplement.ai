@@ -86,23 +86,23 @@ export const SupplementPlan = () => {
 
   const generatePDF = () => {
     const pdf = new jsPDF()
-    pdf.setFontSize(20)
-    pdf.text("Personalized Supplement Plan", 20, 20)
+    pdf.setFontSize(15)
+    pdf.text("Personalized Supplement Plan", 15, 20)
     pdf.setFontSize(12)
 
     let yOffset = 40
     Object.entries(recommendations).forEach(([name, data], index) => {
       if (yOffset > 250) {
         pdf.addPage()
-        yOffset = 20
+        yOffset = 15
       }
-      pdf.setFontSize(16)
-      pdf.text(name, 20, yOffset)
-      yOffset += 10
       pdf.setFontSize(12)
-      pdf.text(`Benefits: ${data.Benefits}`, 20, yOffset)
+      pdf.text(name, 15, yOffset)
       yOffset += 10
-      pdf.text(`Dosage: ${data["Medical-Grade Supplements"]["Dosage & Instructions"]}`, 20, yOffset)
+      pdf.setFontSize(9)
+      pdf.text(`Benefits: ${data.Benefits}`, 15, yOffset)
+      yOffset += 10
+      pdf.text(`Dosage: ${data["Medical-Grade Supplements"]["Dosage & Instructions"]}`, 15, yOffset)
       yOffset += 20
     })
 
