@@ -1,22 +1,22 @@
-import React, { Suspense, lazy } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Toaster } from "./components/ui/toaster";
-// import { AuthWrapper } from "./components/AuthWrapper";
-import { LoadingSpinner } from "./components/ui/loading-spinner";
-import styles from "./App.module.css";
-import FamilyPlanPage from "./pages/FamilyPlanPage";
+import React, { Suspense, lazy } from "react"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { Toaster } from "./components/ui/toaster"
+import { LoadingSpinner } from "./components/ui/loading-spinner"
+import styles from "./App.module.css"
 
-const Index = lazy(() => import("./pages/Index"));
-const InputPage = lazy(() => import("./pages/InputPage"));
-const DashboardPage = lazy(() => import("./pages/DashboardPage"));
-const PaymentPage = lazy(() => import("./pages/PaymentPage"));
-const ContentPage = lazy(() => import("./pages/Content"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
-const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
-const WorkWithUsPage = lazy(() => import("./pages/WorkWithUsPage"));
-const RewardsPage = lazy(() => import("./pages/Rewards"));
-const TermsandConditions = lazy(() => import("./pages/TermsandConditions"));
-const StudentsPage = lazy(() => import("./pages/Student"));
+const Index = lazy(() => import("./pages/Index"))
+const InputPage = lazy(() => import("./pages/InputPage"))
+const DashboardPage = lazy(() => import("./pages/DashboardPage"))
+const PaymentPage = lazy(() => import("./pages/PaymentPage"))
+const ContentPage = lazy(() => import("./pages/Content"))
+const AboutPage = lazy(() => import("./pages/AboutPage"))
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"))
+const WorkWithUsPage = lazy(() => import("./pages/WorkWithUsPage"))
+const RewardsPage = lazy(() => import("./pages/Rewards"))
+const Login = lazy(() => import("./pages/Login"))
+const TermsandConditions = lazy(() => import("./pages/TermsandConditions"))
+const StudentsPage = lazy(() => import("./pages/Student"))
+const FamilyPlanPage = lazy(() => import("./pages/FamilyPlanPage"))
 
 const router = createBrowserRouter([
   {
@@ -32,6 +32,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<LoadingSpinner />}>
         <InputPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <Login />
       </Suspense>
     ),
   },
@@ -110,22 +118,20 @@ const router = createBrowserRouter([
   {
     path: "/students",
     element: (
-      <>
-        <Suspense fallback={<LoadingSpinner />}>
-          <StudentsPage />
-        </Suspense>
-      </>
+      <Suspense fallback={<LoadingSpinner />}>
+        <StudentsPage />
+      </Suspense>
     ),
   },
-]);
+])
 
 function App() {
   return (
     <div className={styles.app}>
-      <RouterProvider router={router} />
       <Toaster />
+      <RouterProvider router={router} />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

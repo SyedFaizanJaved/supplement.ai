@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "./ui/button";
 import { useNavigate, Link } from "react-router-dom";
 import { HowItWorksModal } from "./HowItWorksModal";
-import { BookOpen, ShieldCheck } from "lucide-react";
+import { BookOpen, LogIn, ShieldCheck } from "lucide-react";
 import styles from "./LandingHero.module.css";
 
  const LandingHero = () => {
@@ -24,6 +23,13 @@ import styles from "./LandingHero.module.css";
             >
               <BookOpen className={styles.buttonIcon} />
               Content
+            </button>
+            <button
+              onClick={() => navigate("/login")}
+              className={styles.LoginButton}
+            >
+              <LogIn className={styles.buttonIcon} />
+              Login
             </button>
             {/* <Button variant="ghost" className={styles.menuButton}>
               <Menu className={styles.menuIcon} />
