@@ -1,19 +1,25 @@
 .card {
   padding: 1rem;
-  height: calc(100vh - 12rem);
+  height: 100%;
+  max-height: calc(100vh - 4rem);
   overflow-y: auto;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.titleWrapper {
+  width: 100%;
 }
 
 .title {
@@ -24,21 +30,26 @@
 
 .subtitle {
   color: #6b7280;
+  font-size: 0.875rem;
 }
 
 .buttonGroup {
   display: flex;
-  background-color : var(--light);
-
+  flex-wrap: wrap;
   gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .referButton {
   display: flex;
-  background-color : var(--light);
-  color : var(--tertiary);
   align-items: center;
   gap: 0.5rem;
+  background-color: var(--light);
+  color: var(--tertiary);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .referButton:hover {
@@ -57,12 +68,62 @@
   gap: 1rem;
 }
 
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .card {
+    padding: 1.25rem;
+  }
+
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .titleWrapper {
+    width: auto;
+  }
+
+  .buttonGroup {
+    margin-top: 0;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   .card {
     padding: 1.5rem;
+    max-height: calc(100vh - 6rem);
+  }
+
+  .container {
+    gap: 1.5rem;
   }
 
   .gridContainer {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .card {
+    max-height: calc(100vh - 8rem);
+  }
+
+  .gridContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .card {
+    max-height: calc(100vh - 10rem);
+  }
+
+  .gridContainer {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
