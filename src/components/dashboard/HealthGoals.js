@@ -1,84 +1,71 @@
-import { Button } from "../ui/button";
-import { Plus, HelpCircle } from "lucide-react";
-import { Card } from "../ui/card";
-import { useToast } from "../ui/use-toast";
-import { supabase } from "../integrations/supabase/client";
-import { GoalItem } from "./goals/GoalItem";
-import { SymptomTracker } from "./goals/SymptomTracker";
-import { XPStore } from "./goals/XPStore";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { addHealthGoal } from "../../api/healthGoalsApi";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { useState, useEffect } from "react";
-import styles from "./HealthGoals.module.css";
+import React, { useState, useEffect } from "react"
+import { Button } from "../ui/button"
+import { HelpCircle } from "lucide-react"
+import { Card } from "../ui/card"
+import { useToast } from "../ui/use-toast"
+import { supabase } from "../integrations/supabase/client"
+import { GoalItem } from "./goals/GoalItem"
+import { SymptomTracker } from "./goals/SymptomTracker"
+import { XPStore } from "./goals/XPStore"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { addHealthGoal } from "../../api/healthGoalsApi"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import AddGoalDialog from "../ui/addgoaldialog"
+import styles from "./HealthGoals.module.css"
+import initialGoalsData from "../../data/healthGoals.json"
 
-export const HealthGoals = () => {
-  const [goals, setGoals] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const { toast } = useToast();
+const HealthGoals = () => {
+  const [goals, setGoals] = useState(initialGoalsData.healthGoals)
+  const [isEditing, setIsEditing] = useState(false)
+  const { toast } = useToast()
 
   const fetchGoals = async () => {
     const {
       data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return;
+    } = await supabase.auth.getUser()
+    if (!user) return
 
     const { data, error } = await supabase
       .from("health_goals")
       .select("id, goal_name, description, progress, target, category")
       .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
 
     if (error) {
-      console.error("Error fetching goals:", error);
-      return;
+      console.error("Error fetching goals:", error)
+      return
     }
 
     const formattedGoals = (data || []).map((goal) => ({
       ...goal,
       progress: Number(goal.progress) || 0,
       target: Number(goal.target) || 100,
-    }));
+    }))
 
-    setGoals(formattedGoals);
-  };
+    setGoals(formattedGoals)
+  }
 
   const handleSave = () => {
-    setIsEditing(false);
+    setIsEditing(false)
     toast({
       title: "Changes saved successfully",
       description: "Your health goals have been updated.",
-    });
-  };
+    })
+  }
 
-  const handleAddGoal = async (category) => {
+  const handleAddGoal = async (newGoal) => {
     try {
-      await addHealthGoal({
-        goal_name: "New Goal",
-        description: "Click edit to modify this goal",
-        target: 100,
-        progress: 0,
-        category,
-      });
-
-      toast({
-        title: "Goal added",
-        description: "New goal has been created successfully.",
-      });
-
-      fetchGoals();
+      const addedGoal = await addHealthGoal(newGoal)
+      setGoals((prevGoals) => [...prevGoals, addedGoal])
+      return true
     } catch (error) {
-      console.error("Error adding goal:", error);
-      toast({
-        title: "Error",
-        description: "Failed to add goal. Please try again.",
-        variant: "destructive",
-      });
+      console.error("Error adding goal:", error)
+      return false
     }
-  };
+  }
 
   useEffect(() => {
-    fetchGoals();
+    fetchGoals()
 
     const channel = supabase
       .channel("schema-db-changes")
@@ -90,18 +77,18 @@ export const HealthGoals = () => {
           table: "health_goals",
         },
         () => {
-          fetchGoals();
-        }
+          fetchGoals()
+        },
       )
-      .subscribe();
+      .subscribe()
 
     return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
+      supabase.removeChannel(channel)
+    }
+  }, [supabase]) // Added supabase to the dependency array
 
   const renderGoalsList = (category) => {
-    const filteredGoals = goals.filter((goal) => goal.category === category);
+    const filteredGoals = goals.filter((goal) => goal.category === category)
 
     return (
       <div className={styles.goalsList}>
@@ -110,17 +97,10 @@ export const HealthGoals = () => {
             <GoalItem goal={goal} onUpdate={fetchGoals} isEditing={isEditing} />
           </Card>
         ))}
-        <Button
-          variant="ghost"
-          className={styles.addGoalButton}
-          onClick={() => handleAddGoal(category)}
-        >
-          <Plus className={styles.addIcon} />
-          Add New Goal
-        </Button>
+        <AddGoalDialog category={category} onAddGoal={handleAddGoal} />
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div className={styles.container}>
@@ -130,25 +110,16 @@ export const HealthGoals = () => {
             <h2 className={styles.title}>Health Goals</h2>
             <Popover>
               <PopoverTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={styles.helpButton}
-                >
+                <Button className={styles.helpButton}>
                   <HelpCircle className={styles.helpIcon} />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className={styles.popoverContent}>
-                Track your progress towards your goals and earn XP for
-                completing activities
+                Track your progress towards your goals and earn XP for completing activities
               </PopoverContent>
             </Popover>
           </div>
-          <Button
-            className={styles.editButton}
-            variant="outline"
-            onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
-          >
+          <Button className={styles.editButton} onClick={() => (isEditing ? handleSave() : setIsEditing(true))}>
             {isEditing ? "Save Changes" : "Edit Goals"}
           </Button>
         </div>
@@ -192,5 +163,7 @@ export const HealthGoals = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
+
+export default HealthGoals

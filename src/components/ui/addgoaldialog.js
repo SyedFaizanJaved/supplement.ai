@@ -1,26 +1,21 @@
-import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "./dialog";
-import { Label } from "./label";
-import { Button } from "./button";
-import { Plus } from "lucide-react";
-import styles from "./addgoaldialog.module.css";
+import React, { useState } from "react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "./dialog"
+import { Label } from "./label"
+import { Button } from "./button"
+import { Plus } from "lucide-react"
+import { useToast } from "./use-toast"
+import styles from "./addgoaldialog.module.css"
 
-export const AddGoalDialog = ({ category, onAddGoal }) => {
-  const [open, setOpen] = useState(false);
+const AddGoalDialog = ({ category, onAddGoal }) => {
+  const [open, setOpen] = useState(false)
+  const { toast } = useToast()
   const [newGoal, setNewGoal] = useState({
     goal_name: "",
     description: "",
     target: 100,
     progress: 0,
     category: category,
-  });
+  })
 
   const resetForm = () => {
     setNewGoal({
@@ -29,30 +24,39 @@ export const AddGoalDialog = ({ category, onAddGoal }) => {
       target: 100,
       progress: 0,
       category: category,
-    });
-  };
+    })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const success = await onAddGoal(newGoal);
-    
+    e.preventDefault()
+    const success = await onAddGoal(newGoal)
     if (success) {
-      setOpen(false); // Close dialog on success
-      resetForm(); // Reset form for next use
+      toast({
+        title: "Goal Created",
+        description: "Your new goal has been added successfully.",
+      })
+      setOpen(false)
+      resetForm()
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to create goal. Please try again.",
+        variant: "destructive",
+      })
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" className={styles.addButton}>
+        <Button className={styles.addButton} onClick={() => setOpen(true)}>
           <Plus className={styles.plusIcon} />
           Add New Goal
         </Button>
       </DialogTrigger>
       <DialogContent className={styles.dialogContent}>
         <DialogHeader>
-          <DialogTitle>Add New {category.charAt(0).toUpperCase() + category.slice(1)} Goal</DialogTitle>
+          <DialogTitle>Add New {category} Goal</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
@@ -61,9 +65,7 @@ export const AddGoalDialog = ({ category, onAddGoal }) => {
               id="goal_name"
               className={styles.input}
               value={newGoal.goal_name}
-              onChange={(e) =>
-                setNewGoal({ ...newGoal, goal_name: e.target.value })
-              }
+              onChange={(e) => setNewGoal({ ...newGoal, goal_name: e.target.value })}
               placeholder="Enter goal name"
               required
             />
@@ -74,9 +76,7 @@ export const AddGoalDialog = ({ category, onAddGoal }) => {
               id="description"
               className={styles.textarea}
               value={newGoal.description}
-              onChange={(e) =>
-                setNewGoal({ ...newGoal, description: e.target.value })
-              }
+              onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
               placeholder="Enter goal description"
               required
             />
@@ -88,9 +88,7 @@ export const AddGoalDialog = ({ category, onAddGoal }) => {
               type="number"
               className={styles.input}
               value={newGoal.target}
-              onChange={(e) =>
-                setNewGoal({ ...newGoal, target: Number(e.target.value) })
-              }
+              onChange={(e) => setNewGoal({ ...newGoal, target: Number(e.target.value) })}
               min="0"
               required
             />
@@ -103,5 +101,8 @@ export const AddGoalDialog = ({ category, onAddGoal }) => {
         </form>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
+
+export default AddGoalDialog
+

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { HealthAssistant } from "./dashboard/HealthAssistant";
 import { HealthMetrics } from "./dashboard/HealthMetrics";
 import { SupplementPlan } from "./dashboard/SupplementPlan";
-import { HealthGoals } from "./dashboard/HealthGoals";
+import HealthGoals from "./dashboard/HealthGoals";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { useIsMobile } from "./hooks/use-mobile";
 import { useToast } from "./hooks/use-toast";
