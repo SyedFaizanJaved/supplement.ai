@@ -80,24 +80,27 @@
   color: var(--light);
 }
 
-/* Tabs section */
 .tabs {
   width: 100%;
 }
 
 .tabsList {
-  display: grid;
+  display: flex;
   width: 100%;
   gap: 8px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
   margin-bottom: clamp(12px, 2vw, 16px);
+}
+
+.tabsList > * {
+  flex: 1;
+  min-width: 10px; 
+  text-align: center;
 }
 
 .tabContent {
   margin-top: clamp(12px, 2vw, 16px);
 }
 
-/* Goals section */
 .goalsList {
   display: flex;
   flex-direction: column;
@@ -170,7 +173,7 @@
   .title {
     font-size: 16px;
   }
-  
+    
   .popoverContent {
     font-size: 12px;
   }
