@@ -68,4 +68,3 @@ const SupplementCard = ({ supplementName, supplementData }) => {
 }
 
 export default SupplementCard
-

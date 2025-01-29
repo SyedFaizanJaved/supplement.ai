@@ -39,10 +39,23 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
   
-  .content {
-    composes: subContent;
+.content {
+  composes: subContent;
+  position: relative;
+  transform-origin: top center; 
+  animation: dropdownIn 0.1s ease-out;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
   }
-  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
   .menuItem {
     position: relative;
     display: flex;

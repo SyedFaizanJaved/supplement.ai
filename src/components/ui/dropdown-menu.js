@@ -36,7 +36,11 @@ const DropdownMenuContent = React.forwardRef(({ className, sideOffset = 4, ...pr
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
+      side="bottom" // Force dropdown to open downwards
+      collisionPadding={8} // Add padding to prevent collision with viewport edges
       className={`${styles.content} ${className || ''}`}
+      // Prevent automatic repositioning to top
+      avoidCollisions={false}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
