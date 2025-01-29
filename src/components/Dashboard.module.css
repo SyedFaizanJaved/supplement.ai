@@ -28,13 +28,12 @@
   border: none;
   border-radius: 0.375rem;
   padding: 0.75rem 1rem;
-
 }
 
 .signButton:hover {
   transition: background-color 0.3s;
-  background-color: var(--primary) ;
-  color: #fff ;
+  background-color: var(--primary);
+  color: #fff;
 }
 
 @media (min-width: 768px) {
@@ -125,6 +124,7 @@
 
 @media (min-width: 768px) {
   .tabsTrigger {
+    width: 7rem;
     flex: none;
     color: #324154;
     background-color: var(--light);

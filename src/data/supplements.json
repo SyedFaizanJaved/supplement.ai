@@ -1,72 +1,113 @@
+
 {
-  "Vitamin B12": {
-    "Benefits": "Vitamin B12 is effective in reducing symptoms of fatigue and plays a crucial role in maintaining energy production.",
+  "Vitamin D3": {
+    "Benefits": "Help to alleviate deficiencies and support bone health. It may also assist in reducing pain associated with osteoarthritis.",
     "Medical-Grade Supplements": {
-      "Product Name & Brand": "Vitamin B12 by Nature's Bounty",
-      "Dosage & Instructions": "1 tablet (1000 mcg) daily, preferably after a meal.",
-      "Image URL": "https://pics.drugstore.com/prodimg/485095/900.jpg",
+      "Product Name & Brand": "Vitamin D3 by NOW Foods",
+      "Dosage & Instructions": "1000 IU, 1 softgel daily with a meal.",
+      "Image URL": "https://i5.walmartimages.com/asr/88cb55c8-9ca2-44f1-a538-56651934a83d_1.ed9a9c73df743a358b25cf593bfd7bcf.jpeg",
       "Product URL": [
         {
-          "name": "Amazon",
-          "url": "https://www.amazon.com/Natures-Bounty-Supplement-Supports-Metabolism/dp/B00DYSUQR2"
+          "name": "Nhc",
+          "url": "https://www.nhc.com/vitamin-d-3-2000-iu-by-now-foods"
         },
         {
-          "name": "Walmart",
-          "url": "https://www.walmart.com"
+          "name": "Nowfoods",
+          "url": "https://www.nowfoods.com/products/supplements/vitamin-d-3-1000-iu-softgels"
         },
         {
-          "name": "Target",
-          "url": "https://www.target.com"
+          "name": "Brainreference",
+          "url": "https://brainreference.com/now-foods-vitamin-d3-review/"
         }
       ]
     }
   },
   "Magnesium Glycinate": {
-    "Benefits": "Magnesium can help manage symptoms of fatigue and supports muscle function, which may enhance physical performance.",
+    "Benefits": "Addresses magnesium deficiency, promotes muscle relaxation, and may help with muscle stiffness and fatigue.",
     "Medical-Grade Supplements": {
       "Product Name & Brand": "Magnesium Glycinate by Doctor's Best",
-      "Dosage & Instructions": "1 tablet (200 mg) taken once daily before bedtime with water.",
+      "Dosage & Instructions": "200 mg, take 1 capsule, preferably before bedtime with water.",
       "Image URL": "https://s3.images-iherb.com/drb/drb00565/l/0.jpg",
-      "Product URL": "https://www.target.com/p/doctor-s-best-high-absorption-magnesium-lysinate-glycinate-100-chelated-105-mg-per-serving-120-veggie-caps/-/A-86435519"
-    }
-  },
-  "Omega-3 Fatty Acids": {
-    "Benefits": "Omega-3s have anti-inflammatory effects that could alleviate headache and fatigue symptoms.",
-    "Medical-Grade Supplements": {
-      "Product Name & Brand": "Omega-3 Fish Oil by Nordic Naturals",
-      "Dosage & Instructions": "2 soft gels (EPA 600 mg, DHA 300 mg) with food, daily.",
-      "Image URL": "https://cdn.shopify.com/s/files/1/0511/3059/7560/files/01790RJ1-UltimateR_60_Box_Front.jpg?v=1728148643",
-      "Product URL": "https://www.nordic.com/products/ultimate-omega/"
-    }
-  },
-  "CoQ10": {
-    "Benefits": "Coenzyme Q10 supports cellular energy production and may help reduce fatigue.",
-    "Medical-Grade Supplements": {
-      "Product Name & Brand": "CoQ10 by Qunol",
-      "Dosage & Instructions": "1 soft gel (100 mg) daily, with food.",
-      "Image URL": "https://i5.walmartimages.com/asr/671c9ec5-5624-4d87-a728-55022b99ab45_3.06b2390c5540f152c418e480cffe95cd.jpeg",
-      "Product URL": "https://www.qunol.com/"
-    }
-  },
-  "L-Theanine": {
-    "Benefits": "L-Theanine promotes relaxation without drowsiness, supporting better focus and relief from headaches.",
-    "Medical-Grade Supplements": {
-      "Product Name & Brand": "L-Theanine by NOW Foods",
-      "Dosage & Instructions": "1 capsule (200 mg) as needed, preferably between meals.",
-      "Image URL": "https://www.kroger.com/product/images/large/front/0073373900147",
-"Product URL": [
+      "Product URL": [
+        {
+          "name": "Target",
+          "url": "https://www.target.com/p/doctor-s-best-high-absorption-magnesium-lysinate-glycinate-100-chelated-105-mg-per-serving-120-veggie-caps/-/A-86435519"
+        },
         {
           "name": "Amazon",
-          "url": "https://www.amazon.com"
+          "url": "https://www.amazon.com/Doctors-Best-Absorption-Supplement-Relaxation/dp/B08K46JZJG"
         },
         {
           "name": "Walmart",
-          "url": "https://www.nowfoods.com/products/supplements/l-theanine-double-strength-200-mg-veg-capsules"
+          "url": "https://www.walmart.com/ip/Doctor-s-Best-High-Absorption-Magnesium-Glycinate-Lysinate-100-Chelated-Non-GMO-Vegan-Gluten-Soy-Free-100-mg-240-Count/564282549"
+        }
+      ]
+    }
+  },
+  "Collagen Peptides": {
+    "Benefits": "Promotes joint health and may alleviate joint pain by improving cartilage and connective tissue integrity.",
+    "Medical-Grade Supplements": {
+      "Product Name & Brand": "Collagen Peptides by Vital Proteins",
+      "Dosage & Instructions": "10 g, mix into hot or cold liquids once daily.",
+      "Image URL": "https://i5.walmartimages.com/asr/97425874-ecb8-448f-bd97-8d1151514300.1bdb1c9acc482ef6cadcae4398a5121f.jpeg",
+      "Product URL": [
+        {
+          "name": "Vitalproteins",
+          "url": "https://www.vitalproteins.com/?srsltid=AfmBOoo3SAGRwQUaKuUsI-ukShUAI9mgiE68rPIqYJm5qtLDe7eMU8xd"
+        },
+        {
+          "name": "Samsclub",
+          "url": "https://www.samsclub.com/p/vital-protein-collagen-peptides-24-oz/prod26240534"
+        },
+        {
+          "name": "Costco",
+          "url": "https://www.costco.com/vital-proteins-collagen-peptides%2C-unflavored%2C-1.5-lbs.product.100736527.html"
+        }
+      ]
+    }
+  },
+  "Coenzyme Q10": {
+    "Benefits": "Supports energy production at the cellular level, which can be beneficial for chronic fatigue syndrome.",
+    "Medical-Grade Supplements": {
+      "Product Name & Brand": "CoQ10 by Sports Research",
+      "Dosage & Instructions": "100 mg, take 1 softgel daily with food.",
+      "Image URL": "https://cf.shopee.com.my/file/0415cea6d90decfa237915a6f764e941",
+      "Product URL": [
+        {
+          "name": "Walmart",
+          "url": "https://www.walmart.com/reviews/product/147300567"
+        },
+        {
+          "name": "Amazon",
+          "url": "https://www.amazon.com/Sports-Research-Enhanced-Absorption-Certified/dp/B0CCX5T12K"
         },
         {
           "name": "Target",
-          "url": "https://www.target.com"
+          "url": "https://www.target.com/p/sports-research-coq10-usp-grade-with-bioperine-100-mg-120-veggie-softgels/-/A-82075480"
         }
-      ]    }
+      ]
+    }
+  },
+  "Turmeric Curcumin": {
+    "Benefits": "Known for anti-inflammatory properties that may help relieve joint and muscle pain.",
+    "Medical-Grade Supplements": {
+      "Product Name & Brand": "Turmeric Curcumin by Gaia Herbs",
+      "Dosage & Instructions": "500 mg, take 1 capsule twice daily with food.",
+      "Image URL": "https://m.media-amazon.com/images/I/710lYc2oTgL._AC_SL1500_.jpg",
+      "Product URL": [
+        {
+          "name": "Erewhon",
+          "url": "https://erewhon.com/product/419701000/turmeric-supreme-extra-strength"
+        },
+        {
+          "name": "Gaiaherbs",
+          "url": "https://professionals.gaiaherbs.com/Product/curcuma-nf-kb-turmeric-supreme-pro-caps-60ct"
+        },
+        {
+          "name": "Amazon",
+          "url": "https://www.amazon.com/Gaia-Herbs-Turmeric-Strength-Capsules/dp/B006P8NAHQ"
+        }
+      ]
+    }
   }
 }

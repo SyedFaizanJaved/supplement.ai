@@ -1,144 +1,156 @@
-.healthGoalsCard {
-  background-color: white;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  padding: 24px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-}
-
-.headerContainer {
+.container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.titleContainer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color:#324154;
-}
-
-.helpButton {
-  background-color: #fff;
-  border: 1px solid #fff;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  transition: background-color 0.2s;
-}
-
-.helpupButton {
-  margin-top: 8px;
-  background-color: #fff;
-  border:none;
-}
-
-.helpButton:hover {
-  background-color: rgba(59, 130, 246, 0.1);
-}
-
-.helpIcon {
-  color: #6b7280;
-  width: 16px;
-  height: 16px;
-}
-
-.contentGrid {
-  display: grid;
-  grid-template-columns: 1fr;
+  flex-direction: column;
   gap: 24px;
 }
 
+.mainCard {
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 @media (min-width: 768px) {
-  .contentGrid {
-    grid-template-columns: 2fr 1fr;
+  .titleWrapper {
+    gap: 16px;
   }
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.helpButton {
+  background-color: var(--light);
+  border:none;
+  height: 32px;
+  width: 32px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.helpButton:hover {
+  background-color: rgba(var(--primary-rgb), 0.1);
+}
+
+.helpIcon {
+  height: 16px;
+  width: 16px;
+}
+
+.popoverContent {
+  max-width: 300px;
+  font-size: 14px;
+  background-color: #f0f3f7;
+  color: var(--card-foreground);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+}
+
+.editButton {
+  background-color: var(--light);
+  color: var(--primary);
+}
+
+.editButton:hover {
+  background-color: #f37218;
+  color: var(--light);
+}
+
+.tabs {
+  width: 100%;
 }
 
 .tabsList {
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
   margin-bottom: 16px;
-  background-color: #dfe3eb;
-  padding: 4px;
-  border-radius: 8px;
 }
 
 .tabContent {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  margin-top: 16px;
 }
 
-.goalsContainer {
+.goalsList {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
 .goalCard {
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
-/* .addGoalButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.addGoalButton {
   width: 100%;
-  padding: 22px;
-  border: 2px dashed #324154;
-  border-radius: 8px;
-  background-color: transparent;
-  color: #324154;
-  cursor: pointer;
-  transition: all 0.2s;
+  border: 2px dashed var(--primary);
+  color: var(--primary);
+  background-color: var(--light);
+  padding: 32px;
 }
 
 .addGoalButton:hover {
-  border-color: #9ca3af;
+  color: var(--light);
+  border: 2px dashed var(--muted);
   background-color: #f37218;
-  color: #fff;
-} */
+}
 
-.plusIcon {
+.addIcon {
   margin-right: 8px;
-  width: 16px;
   height: 16px;
+  width: 16px;
 }
 
-.popoverContent {
-  max-width: 300px;
-  padding: 12px;
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  font-size: 0.875rem;
-  color: #374151;
+.bottomGrid {
+  display: flex;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
 }
 
-.editButton {
-  background-color: #fff;
-  color: #324154;
+@media (min-width: 768px) {
+  .bottomGrid {
+    grid-template-columns: 2fr 1fr;
+  }
 }
 
-.editButton:hover {
-  background-color: #f37218;
-  color: #fff;
+.xpStoreWrapper {
+  grid-column: 1 / -1;
 }
 
-.symptomTrackerSection {
-  width: 100%;
+@media (min-width: 768px) {
+  .xpStoreWrapper {
+    grid-column: span 2;
+  }
+}
+
+.xpStoreCard {
+  padding: 16px;
+}
+
+.symptomTrackerWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .symptomTrackerWrapper {
+    grid-column: span 1;
+  }
+}
+
+.symptomTrackerCard {
+  padding: 16px;
 }

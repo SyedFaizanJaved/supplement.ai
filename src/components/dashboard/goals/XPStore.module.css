@@ -1,0 +1,140 @@
+/* XPStore.module.css */
+.mainCard {
+    padding: 1rem;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .titleWrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .title {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  
+  .subtitle {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+  }
+  
+  .xpDisplay {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(var(--primary-rgb), 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+  }
+  
+  .xpIcon {
+    height: 1.25rem;
+    width: 1.25rem;
+    color: var(--primary-color);
+  }
+  
+  .xpValue {
+    font-weight: 600;
+  }
+  
+  .rewardsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .rewardsGrid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .rewardCard {
+    padding: 1rem;
+  }
+  
+  .rewardContent {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .rewardInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .iconWrapper {
+    padding: 0.5rem;
+    background-color: rgba(var(--primary-rgb), 0.1);
+    border-radius: 0.5rem;
+  }
+  
+  .rewardIcon {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+  
+  .rewardName {
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+  }
+  
+  .rewardCost {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+  }
+  
+  .redeemButton {
+    min-width: 5rem;
+    border:1px solid #f0f3f7;
+    color: #9aa1ab;
+  }
+  
+  .earnXpSection {
+    background-color: rgba(var(--muted-rgb), 0.5);
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .earnXpTitle {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  .earnXpList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .earnXpItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+  
+  .xpAmount {
+    font-weight: 500;
+  }
+  
+  :root {
+    --primary-color: #0070f3;
+    --primary-rgb: 0, 112, 243;
+    --muted-rgb: 229, 231, 235;
+    --muted-foreground: #6b7280;
+  }
