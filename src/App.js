@@ -7,6 +7,7 @@ import styles from "./App.module.css"
 const Index = lazy(() => import("./pages/Index"))
 const InputPage = lazy(() => import("./pages/InputPage"))
 const DashboardPage = lazy(() => import("./pages/DashboardPage"))
+const Admin = lazy(() => import("./pages/Admin"))
 const PaymentPage = lazy(() => import("./pages/PaymentPage"))
 const ContentPage = lazy(() => import("./pages/Content"))
 const AboutPage = lazy(() => import("./pages/AboutPage"))
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<LoadingSpinner />}>
         <Login />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/admin",
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <Admin />
       </Suspense>
     ),
   },
