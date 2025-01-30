@@ -17,7 +17,7 @@ export const Dashboard = () => {
   const { toast } = useToast();
 
   // Replace this with actual admin authentication logic
-  const isAdmin = true; // Example: Replace with logic to
+  const isAdmin = true; 
 
   const handleSignUpPrompt = () => {
     toast({
