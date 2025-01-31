@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import {
@@ -9,7 +10,6 @@ import {
   TableHead,
   TableCell,
 } from "../components/ui/table";
-import { Select } from "../components/ui/select";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import {
@@ -19,7 +19,7 @@ import {
   DialogTitle,
 } from "../components/ui/dialog";
 import { Label } from "../components/ui/label";
-import { Search, SortAsc, SortDesc, Edit2, Trash2 } from "lucide-react";
+import { Search, SortAsc,ChevronLeft, SortDesc, Edit2, Trash2 } from "lucide-react";
 import { Pagination } from "../components/ui/pagination";
 import { Alert, AlertDescription } from "../components/ui/alert";
 import { useToast } from "../components/ui/use-toast";
@@ -144,6 +144,7 @@ const AdminDashboard = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUsers(mockUsers);
@@ -223,6 +224,17 @@ const AdminDashboard = () => {
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   return (
+    <>
+    <Button
+    variant="ghost"
+    size="sm"
+    className={styles.backButton}
+    onClick={() => navigate(-1)}
+  >
+    <ChevronLeft className={styles.backIcon} />
+    Back
+  </Button>
+
     <Card className={styles.dashboardCard}>
       <div className={styles.dashboardHeader}>
         <h2 className={styles.dashboardTitle}>User Dashboard</h2>
@@ -393,6 +405,7 @@ const AdminDashboard = () => {
         </DialogContent>
       </Dialog>
     </Card>
+    </>
   );
 };
 

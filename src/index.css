@@ -5,7 +5,6 @@
   --primary : #0f4c75;
   --secondary : #0790b3;
   --tertiary:  #324154;
-
 }
 
 *{
@@ -16,7 +15,7 @@
 
 body {
   margin: 0;
-  font-family: Montserrat, sans-serif !important;
+  font-family: Poppins, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;

@@ -1,190 +1,226 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(16px, 2vw, 24px);
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+}
+
+.animatedBackground {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, #1A1F2C, #1E293B);
+  overflow: hidden;
+}
+
+.backgroundOverlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+}
+
+.backgroundPulse1,
+.backgroundPulse2,
+.backgroundPulse3 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.backgroundPulse1 {
+  background: radial-gradient(circle at 50% 50%, #0EA5E9 0%, transparent 50%);
+  animation: pulse 6s ease-in-out infinite;
+}
+
+.backgroundPulse2 {
+  background: radial-gradient(circle at 80% 20%, #10B981 0%, transparent 50%);
+  animation: pulse 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.backgroundPulse3 {
+  background: radial-gradient(circle at 20% 80%, #0EA5E9 0%, transparent 50%);
+  animation: pulse 6s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.contentWrapper {
+  position: relative;
+  z-index: 10;
 }
 
 .mainCard {
-  padding: clamp(16px, 3vw, 24px);
-  width: 100%;
+  margin: 1.5rem;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  border-radius: 1rem;
 }
 
-.header {
+.cardContent {
+  padding: 1.5rem;
+}
+
+.headerSection {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: clamp(16px, 3vw, 24px);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.titleWrapper {
+.titleContainer {
   display: flex;
   align-items: center;
-  gap: clamp(8px, 1.5vw, 16px);
+  gap: 0.5rem;
 }
 
 .title {
-  font-size: clamp(18px, 2.5vw, 20px);
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0.025em;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Button styles */
 .helpButton {
-  background-color: var(--light);
+  height: 2rem;
+  width: 2rem;
+  color: white;
+  background: transparent;
   border: none;
-  height: clamp(28px, 4vw, 32px);
-  width: clamp(28px, 4vw, 32px);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s, color 0.2s;
+  border-radius: 0.5rem;
 }
 
 .helpButton:hover {
-  background-color: rgba(var(--primary-rgb), 0.1);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .helpIcon {
-  height: clamp(14px, 2vw, 16px);
-  width: clamp(14px, 2vw, 16px);
+  height: 1rem;
+  width: 1rem;
 }
 
-/* Popover styles */
-.popoverContent {
-  max-width: min(300px, 90vw);
-  font-size: clamp(12px, 1.5vw, 14px);
-  background-color: #f0f3f7;
-  color: var(--card-foreground);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border);
-  padding: clamp(12px, 2vw, 16px);
-}
-
-/* Edit button styles */
 .editButton {
-  background-color: var(--light);
-  color: var(--primary);
-  padding: 8px clamp(12px, 2vw, 16px);
-  border-radius: 4px;
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.5rem;
 }
 
-.editButton:hover {
-  background-color: #f37218;
-  color: var(--light);
-}
-
-.tabs {
+.tabsContainer {
   width: 100%;
 }
 
 .tabsList {
-  display: flex;
-  width: 100%;
-  gap: 8px;
-  margin-bottom: clamp(12px, 2vw, 16px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  margin-bottom: 1.5rem;
+  background: transparent;
+  backdrop-filter: blur(6px);
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  gap: 0.25rem;
 }
 
-.tabsList > * {
-  flex: 1;
-  min-width: 10px; 
+.tabsTrigger {
+  color: white;
+  transition: all 0.3s;
+  padding: 0.5rem;
   text-align: center;
 }
 
-.tabContent {
-  margin-top: clamp(12px, 2vw, 16px);
-}
-
-.goalsList {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(12px, 2vw, 16px);
-}
-
-.goalCard {
-  padding: clamp(12px, 2vw, 16px);
-  width: 100%;
+.tabsTrigger[data-state="active"] {
+  background-color: #0EA5E9;
+  color: white;
+  border-radius: 0.25rem;
 }
 
 .addGoalButton {
+  background: rgba(14, 165, 233, 0.1);
+  border: 2px dashed rgba(14, 165, 233, 0.3);
   width: 100%;
-  border: 2px dashed var(--primary);
-  color: var(--primary);
-  background-color: var(--light);
-  padding: clamp(24px, 4vw, 32px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
+  padding: 2rem;
+  transition: all 0.3s;
+  border-radius: 0.5rem;
 }
 
-.addGoalButton:hover {
-  color: var(--light);
-  border: 2px dashed var(--muted);
-  background-color: #f37218;
-}
-
-.addIcon {
-  margin-right: 8px;
-  height: clamp(14px, 2vw, 16px);
-  width: clamp(14px, 2vw, 16px);
-}
-
-/* Bottom grid section */
-.bottomGrid {
+.bottomSection {
   display: grid;
-  gap: clamp(16px, 3vw, 24px);
   grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .mainCard {
+    margin: 0.75rem;
+    border-radius: 0.75rem;
+  }
+
+  .cardContent {
+    padding: 1rem;
+  }
+
+  .headerSection {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    width: 100%;
+    text-align: center;
+  }
+
+  .tabsList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 480px) {
+ .bottomSection {
+  display: flex;
+  flex-direction:column;
+  gap: 1.5rem;
+  margin: 1.5rem;
+}
+
+  .container {
+    overflow-x: hidden;
+  }
+
+  .mainCard {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .cardContent {
+    padding: 0.75rem;
+  }
+
+  .tabsList {
+    gap: 25px;
+    display:flex;
+  }
 }
 
 @media (min-width: 768px) {
-  .bottomGrid {
+  .bottomSection {
     grid-template-columns: 2fr 1fr;
   }
 }
 
-.xpStoreWrapper {
-  width: 100%;
-}
-
-.xpStoreCard {
-  padding: clamp(12px, 2vw, 16px);
-}
-
-.symptomTrackerWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(16px, 2vw, 24px);
-  width: 100%;
-}
-
-.symptomTrackerCard {
-  padding: clamp(12px, 2vw, 16px);
-}
-
-/* Responsive font sizes for better readability */
-@media (max-width: 480px) {
-  .title {
-    font-size: 16px;
-  }
-    
-  .popoverContent {
-    font-size: 12px;
-  }
-}
-
-/* Touch device optimizations */
-@media (hover: none) {
-  .helpButton,
-  .editButton,
-  .addGoalButton {
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+/* Touch Device Improvements */
+@media (hover: none) and (pointer: coarse) {
+  .helpButton:active,
+  .editButton:active,
+  .addGoalButton:active {
+    transform: scale(0.98);
   }
 }

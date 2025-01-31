@@ -72,7 +72,6 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
 }
 
 .header {
@@ -153,12 +152,14 @@
 }
 
 .tabsTrigger {
+  background: #e2e2e2;
   flex: 1;
   padding: 0.75rem;
 }
 
 @media (min-width: 768px) {
   .tabsTrigger {
+    font-weight:600;
     width: 7rem;
     flex: none;
     color: #324154;

@@ -1,0 +1,178 @@
+.container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -10;
+    overflow: hidden;
+  }
+  
+  .backgroundGradient {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to bottom, #164e63, #020617);
+  }
+  
+  .perspectiveContainer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  
+  .horizontalGrid {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(
+      0deg,
+      transparent 47%,
+      rgba(14, 165, 233, 0.08) 48%,
+      rgba(14, 165, 233, 0.15) 50%,
+      rgba(14, 165, 233, 0.08) 52%,
+      transparent 53%
+    );
+    background-size: 100% 4rem;
+    transform: rotateX(60deg) translateZ(-100px);
+    animation: gridScrollY 8s linear infinite;
+  }
+  
+  .verticalGrid {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(
+      90deg,
+      transparent 47%,
+      rgba(14, 165, 233, 0.08) 48%,
+      rgba(14, 165, 233, 0.15) 50%,
+      rgba(14, 165, 233, 0.08) 52%,
+      transparent 53%
+    );
+    background-size: 4rem 100%;
+    transform: rotateX(60deg) translateZ(-100px);
+    animation: gridScrollX 20s linear infinite;
+  }
+  
+  .gridIntersections {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: radial-gradient(
+      circle at center,
+      rgba(14, 165, 233, 0.25) 0.5px,
+      transparent 1.5px
+    );
+    background-size: 4rem 4rem;
+    transform: rotateX(60deg) translateZ(-100px);
+    animation: gridPulse 4s ease-in-out infinite;
+  }
+  
+  .topGlow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(6, 182, 212, 0.2),
+      transparent,
+      transparent
+    );
+  }
+  
+  .bottomGlow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+      to top,
+      rgba(6, 182, 212, 0.2),
+      transparent,
+      transparent
+    );
+  }
+  
+  .upperPerspective {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: radial-gradient(
+      circle at 50% 30%,
+      rgba(14, 165, 233, 0.25),
+      transparent 70%
+    );
+  }
+  
+  .lowerPerspective {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: radial-gradient(
+      circle at 50% 70%,
+      rgba(14, 165, 233, 0.25),
+      transparent 70%
+    );
+  }
+  
+  .scanLines {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(
+      0deg,
+      transparent 98%,
+      rgba(14, 165, 233, 0.08) 99%,
+      rgba(14, 165, 233, 0.1) 100%
+    );
+    background-size: 100% 0.2rem;
+  }
+  
+  @keyframes gridScrollY {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 4rem;
+    }
+  }
+  
+  @keyframes gridScrollX {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 4rem 0;
+    }
+  }
+  
+  @keyframes gridPulse {
+    0%, 100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }

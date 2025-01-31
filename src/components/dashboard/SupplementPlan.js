@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Card } from "../ui/card"
 import { Button } from "../ui/button"
 import { Share, Download, Mail } from "lucide-react"
@@ -160,36 +160,48 @@ export const SupplementPlan = () => {
   }
 
   return (
-    <Card className={styles.card}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>Personalized Supplement Plan</h2>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className={styles.shareButton}>
-              <Share className={styles.shareIcon} />
-              Share Plan
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={handleShare}>
-              <Share className="mr-2 h-4 w-4" />
-              <span>Share</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleDownload}>
-              <Download className="mr-2 h-4 w-4" />
-              <span>Download PDF</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleEmail}>
-              <Mail className="mr-2 h-4 w-4" />
-              <span>Email</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <div className={styles.container}>
+      <div className={styles.backgroundAnimation}>
+        <div className={styles.backgroundOverlay}>
+          <div className={`${styles.backgroundGradient} ${styles.animationOne}`}></div>
+          <div className={`${styles.backgroundGradient} ${styles.animationTwo}`}></div>
+          <div className={`${styles.backgroundGradient} ${styles.animationThree}`}></div>
+        </div>
       </div>
-      <SupplementsGrid supplements={recommendations} />
-    </Card>
+
+      <Card className={styles.card}>
+        <div className={styles.content}>
+          <div className={styles.header}>
+            <h2 className={styles.title}>Personalized Supplement Plan</h2>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className={styles.shareButton}>
+                  <div className={styles.shareButtonBackground}></div>
+                  <Share className={styles.shareIcon} />
+                  <span className={styles.shareText}>Share Plan</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={handleShare}>
+                  <Share className="mr-2 h-4 w-4" />
+                  <span>Share</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleDownload}>
+                  <Download className="mr-2 h-4 w-4" />
+                  <span>Download PDF</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleEmail}>
+                  <Mail className="mr-2 h-4 w-4" />
+                  <span>Email</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <SupplementsGrid supplements={recommendations} />
+        </div>
+      </Card>
+    </div>
   )
 }
 
 export default SupplementPlan
-

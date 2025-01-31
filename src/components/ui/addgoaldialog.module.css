@@ -1,21 +1,15 @@
-.addButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.addGoalButton {
+  background: rgba(14, 165, 233, 0.1);
+  border-color: #0EA5E9;
+  border: 2px dashed rgba(14, 165, 233, 0.3);
+
   width: 100%;
-  padding: 28px;
-  border: 2px dashed #324154;
-  border-radius: 8px;
-  background-color: transparent;
-  color: #324154;
-  cursor: pointer;
-  transition: all 0.2s;
+  padding: 2rem;
+  transition: all 0.3s;
 }
 
-.addButton:hover {
-  border-color: #9ca3af;
-  background-color: #f37218;
-  color: #fff;
+.addGoalButton:hover {
+  background: #0EA5E9;
 }
 
 .plusIcon {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
@@ -21,11 +21,11 @@ import { LifestyleStep } from "./wizard-steps/LifestyleStep";
 import { TestResultsStep } from "./wizard-steps/TestResultsStep";
 import { BudgetStep } from "./wizard-steps/BudgetStep";
 import { FinalStep } from "./wizard-steps/FinalStep";
-import styles from './StepWizard.module.css';
+import styles from "./StepWizard.module.css";
 
 const steps = [
   "Personal Information",
-  "Health Metrics", 
+  "Health Metrics",
   "Activity Level",
   "Health Goals",
   "Allergies",
@@ -75,7 +75,7 @@ export const StepWizard = () => {
 
   const handleSubmit = async (data) => {
     if (isSubmitting) return;
-    
+
     try {
       setIsSubmitting(true);
       await submitHealthFormData(data);
@@ -85,13 +85,15 @@ export const StepWizard = () => {
         description: "Please complete the payment to create your account.",
       });
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const encodedEmail = encodeURIComponent(data.email);
       navigate(`/payment?email=${encodedEmail}`, { replace: true });
     } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "An error occurred while submitting the form. Please try again.",
+        description:
+          error.message ||
+          "An error occurred while submitting the form. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -131,12 +133,12 @@ export const StepWizard = () => {
   const validateCurrentStep = async () => {
     const fields = getFieldsForStep(currentStep);
     const isValid = await form.trigger(fields);
-    
+
     if (isValid) {
       setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
       return true;
     }
-    
+
     return false;
   };
 
@@ -149,6 +151,8 @@ export const StepWizard = () => {
           description: "Please check all fields are filled correctly.",
           variant: "destructive",
         });
+      } else {
+        await form.handleSubmit(handleSubmit)();
       }
     } else {
       await validateCurrentStep();
@@ -157,7 +161,7 @@ export const StepWizard = () => {
 
   const renderStep = () => {
     const formData = form.getValues();
-    
+
     switch (currentStep) {
       case 0:
         return <PersonalInfoStep form={form} />;
@@ -183,11 +187,10 @@ export const StepWizard = () => {
         return <BudgetStep form={form} />;
       case 11:
         return (
-          <FinalStep 
-            form={form} 
-            formData={formData} 
-            isSubmitting={isSubmitting} 
-            onSubmit={() => form.handleSubmit(handleSubmit)()}
+          <FinalStep
+            form={form}
+            formData={formData}
+            isSubmitting={isSubmitting}
           />
         );
       default:
@@ -196,40 +199,39 @@ export const StepWizard = () => {
   };
 
   return (
-    <Card className={styles.card}>
-      <div className={styles.headerContainer}>
-        <h2 className={styles.stepTitle}>
-          {steps[currentStep]}
-        </h2>
-        <div className={styles.progressBar}>
-          {steps.map((_, index) => (
-            <div
-              key={index}
-              className={`${styles.progressStep} ${
-                index <= currentStep ? styles.activeStep : styles.inactiveStep
-              }`}
-            />
-          ))}
+    <div className={styles.container}>
+      <Card className={styles.card}>
+        <div className={styles.headerContainer}>
+          <h2 className={styles.title}>{steps[currentStep]}</h2>
+          <div className={styles.progressBar}>
+            {steps.map((_, index) => (
+              <div
+                key={index}
+                className={`${styles.progressStep} ${
+                  index <= currentStep ? styles.progressStepActive : ""
+                }`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
 
-      <Form {...form}>
-        <form onSubmit={(e) => e.preventDefault()} className={styles.formContainer}>
-          {renderStep()}
+        <Form {...form}>
+          <form onSubmit={(e) => e.preventDefault()} className={styles.form}>
+            <div className={styles.stepContent}>{renderStep()}</div>
 
-          <div className={styles.navigationContainer}>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 0))}
-              disabled={currentStep === 0}
-              className={styles.previousButton}
-            >
-              <ArrowLeft className={styles.buttonIcon} />
-              Previous
-            </Button>
+            <div className={styles.buttonContainer}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 0))}
+                disabled={currentStep === 0}
+                className={styles.previousButton}
+              >
+                <ArrowLeft className={styles.buttonIcon} />
+                Previous
+              </Button>
 
-            {currentStep < steps.length - 1 && (
+              {currentStep < steps.length - 1 && (
               <Button
                 type="button"
                 onClick={handleNextOrSubmit}
@@ -239,9 +241,10 @@ export const StepWizard = () => {
                 <ArrowRight className={styles.buttonIcon} />
               </Button>
             )}
-          </div>
-        </form>
-      </Form>
-    </Card>
+            </div>
+          </form>
+        </Form>
+      </Card>
+    </div>
   );
 };

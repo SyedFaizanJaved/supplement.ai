@@ -1,16 +1,49 @@
+import React, { useState, useEffect } from "react";
 import { Button } from "../../ui/button";
 import { Card } from "../../ui/card";
+import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
 import { useToast } from "../../hooks/use-toast";
-import { Award, Gift, ShoppingCart, Star } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Award, Gift, ShoppingCart, Star, IceCream } from "lucide-react";
 import { supabase } from "../../integrations/supabase/client";
 import styles from './XPStore.module.css';
 
 const REWARDS = [
-  { name: "Free Supplement Bottle", cost: 5000, icon: <ShoppingCart className={styles.rewardIcon} /> },
-  { name: "Custom Water Bottle", cost: 10000, icon: <Gift className={styles.rewardIcon} /> },
-  { name: "Custom Merch of the Month", cost: 15000, icon: <Star className={styles.rewardIcon} /> },
-  { name: "Fitness Class (F45/Barry's/Spincycle)", cost: 20000, icon: <Award className={styles.rewardIcon} /> },
+  { 
+    name: "Free Supplement Bottle", 
+    cost: 5000, 
+    icon: <ShoppingCart className={styles.icon} />,
+    image: "/lovable-uploads/7.png"
+  },
+  { 
+    name: "Custom Water Bottle", 
+    cost: 10000, 
+    icon: <Gift className={styles.icon} />,
+    image: "/lovable-uploads/10.png"
+  },
+  { 
+    name: "Custom Merch of the Month", 
+    cost: 15000, 
+    icon: <Star className={styles.icon} />,
+    image: "/lovable-uploads/8.png"
+  },
+  { 
+    name: "Fitness Class (F45/Barry's/Spincycle)", 
+    cost: 20000, 
+    icon: <Award className={styles.icon} />,
+    emoji: "🚲"
+  },
+  { 
+    name: "$100 Alo Gift Card", 
+    cost: 25000, 
+    icon: <Gift className={styles.icon} />,
+    image: "/lovable-uploads/11.png"
+  },
+  { 
+    name: "Ninja Creami Ice Cream Maker", 
+    cost: 30000, 
+    icon: <IceCream className={styles.icon} />,
+    image: "/lovable-uploads/9.png"
+  },
 ];
 
 export const XPStore = () => {
@@ -91,18 +124,18 @@ export const XPStore = () => {
   };
 
   return (
-    <Card className={styles.mainCard}>
+    <Card className={styles.card}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <div className={styles.titleWrapper}>
+          <div>
             <h3 className={styles.title}>XP Store</h3>
             <p className={styles.subtitle}>
               Redeem your XP for exclusive rewards
             </p>
           </div>
-          <div className={styles.xpDisplay}>
-            <Star className={styles.xpIcon} />
-            <span className={styles.xpValue}>{userXP} XP</span>
+          <div className={styles.xpBadge}>
+            <Star className={styles.starIcon} />
+            <span className={styles.xpText}>{userXP} XP</span>
           </div>
         </div>
 
@@ -110,47 +143,68 @@ export const XPStore = () => {
           {REWARDS.map((reward, index) => (
             <Card key={index} className={styles.rewardCard}>
               <div className={styles.rewardContent}>
-                <div className={styles.rewardInfo}>
-                  <div className={styles.iconWrapper}>
+                {reward.image ? (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className={styles.imageContainer}>
+                        <img 
+                          src={reward.image} 
+                          alt={reward.name}
+                          className={styles.rewardImage}
+                        />
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className={styles.dialogContent}>
+                      <img 
+                        src={reward.image} 
+                        alt={reward.name}
+                        className={styles.dialogImage}
+                      />
+                    </DialogContent>
+                  </Dialog>
+                ) : reward.emoji ? (
+                  <div className={styles.emojiContainer}>
+                    {reward.emoji}
+                  </div>
+                ) : (
+                  <div className={styles.iconContainer}>
                     {reward.icon}
                   </div>
-                  <div>
-                    <h4 className={styles.rewardName}>{reward.name}</h4>
-                    <p className={styles.rewardCost}>
-                      {reward.cost} XP
-                    </p>
-                  </div>
+                )}
+                <div className={styles.rewardDetails}>
+                  <h4 className={styles.rewardName}>
+                    {reward.name}
+                  </h4>
+                  <p className={styles.rewardCost}>
+                    {reward.cost} XP
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={isLoading || userXP < reward.cost}
+                    onClick={() => handleRedeemReward(reward)}
+                    className={styles.redeemButton}
+                  >
+                    Redeem
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={isLoading || userXP < reward.cost}
-                  onClick={() => handleRedeemReward(reward)}
-                  className={styles.redeemButton}
-                >
-                  Redeem
-                </Button>
               </div>
             </Card>
           ))}
         </div>
 
-        <div className={styles.earnXpSection}>
-          <h4 className={styles.earnXpTitle}>How to Earn XP</h4>
-          <ul className={styles.earnXpList}>
-            <li className={styles.earnXpItem}>
+        <div className={styles.xpEarningSection}>
+          <h4 className={styles.xpEarningTitle}>How to Earn XP</h4>
+          <ul className={styles.xpEarningList}>
+            <li className={styles.xpEarningItem}>
               <span>Daily Supplement Log</span>
               <span className={styles.xpAmount}>10 XP</span>
             </li>
-            <li className={styles.earnXpItem}>
+            <li className={styles.xpEarningItem}>
               <span>Daily Quiz</span>
               <span className={styles.xpAmount}>50 XP</span>
             </li>
-            <li className={styles.earnXpItem}>
-              <span>Share Plan</span>
-              <span className={styles.xpAmount}>100 XP</span>
-            </li>
-            <li className={styles.earnXpItem}>
+            <li className={styles.xpEarningItem}>
               <span>Refer a Friend</span>
               <span className={styles.xpAmount}>500 XP</span>
             </li>

@@ -1,106 +1,226 @@
 .container {
-    gap: 1.5rem;
-  }
-  
-  .gridContainer {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  @media (min-width: 768px) {
-    .gridContainer {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  .uploadSection {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .labelBase {
-    font-size: 1rem;
-  }
-  
-  .uploadBox {
-    border: 2px dashed #e0e0e0;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .uploadIcon {
-    margin: 0 auto;
-    height: 3rem;
-    width: 3rem;
-    color: var(--primary);
-  }
-  
-  .uploadLabel {
-    font-size: 0.875rem;
-    color: #666;
-  }
-  
-  .hiddenInput {
-    display: none;
-  }
-  
-  .uploadButton {
-    width: 100%;
-  }
-  
-  .buttonIcon {
-    margin-right: 0.5rem;
-    height: 1rem;
-    width: 1rem;
-  }
-  
-  .spinningLoader {
-    margin-right: 0.5rem;
-    height: 1rem;
-    width: 1rem;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  
-  .checkboxContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-top: 1rem;
-  }
-  
-  .checkboxWrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .checkboxLabel {
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-  
-  .purchaseButton {
-    padding: 10px 10px;
-    border:1px solid #e1e8f0;
-    border-radius:5px;
-    background-color: #fff;
-    color:var(--primary);
-    width: 100%;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
-  .purchaseButton:hover {
-    transition:0.3s;
-    background-color:orange;
-    color: #fff;
+.uploadGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .uploadGrid {
+    grid-template-columns: 1fr 1fr;
   }
+}
+
+.uploadSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.uploadBox {
+  border: 2px dashed #e2e8f0;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.uploadIcon {
+  margin: 0 auto;
+  height: 48px;
+  width: 48px;
+  color: #324154;
+}
+
+.uploadLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #324154;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadButton {
+  background: #fff;
+  color:#324154;
+  width: 100%;
+  font-weight: 600;
+}
+
+.uploadButton:hover {
+  background:#fa7516;
+  color: #fff;
+}
+
+.buttonIcon {
+  margin-right: 8px;
+  height: 16px;
+  width: 16px;
+}
+
+.buttonIcon.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.titleWithTooltip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tooltipTrigger {
+  display: inline-flex;
+  height: 20px;
+  width: 20px;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+
+.helpIcon {
+  height: 16px;
+  width: 16px;
+  color: #64748b;
+  transition: color 0.2s;
+}
+
+.helpIcon:hover {
+  color: #0f172a;
+}
+
+.tooltipContent {
+  max-width: 280px;
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.tooltipText {
+  font-size: 14px;
+  color: #334155;
+  font-weight: 500;
+}
+
+.biomarkerSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+}
+
+.textarea {
+  padding:10px;
+  border-radius:5px;
+  border: 1px solid #e1e8f0;
+  min-height: 100px;
+  resize: none;
+}
+
+.providersSection {
+  padding: 32px 0 16px;
+}
+
+.providersTitle {
+  font-size: 14px;
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.providersGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  align-items: center;
+  justify-items: center;
+  padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+  .providersGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.providerLogo {
+  height: 48px;
+  object-fit: contain;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.providerLogo:hover {
+  opacity: 1;
+}
+
+.providersSubtitle {
+  font-size: 14px;
+  color: #64748b;
+  text-align: center;
+  margin-top: 16px;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.checkboxSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.checkboxWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkboxLabel {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.purchaseButton {
+  background:#fff;
+  color:#324154;
+  width: 100%;
+  font-weight: 600;
+}
+
+.purchaseButton:hover {
+  background:#fa7516;
+  color:#fff;
+}

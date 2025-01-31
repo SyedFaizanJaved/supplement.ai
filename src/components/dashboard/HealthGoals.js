@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "../ui/button"
 import { HelpCircle } from "lucide-react"
 import { Card } from "../ui/card"
@@ -57,9 +57,18 @@ const HealthGoals = () => {
     try {
       const addedGoal = await addHealthGoal(newGoal)
       setGoals((prevGoals) => [...prevGoals, addedGoal])
+      toast({
+        title: "Goal added",
+        description: "New goal has been created successfully.",
+      })
       return true
     } catch (error) {
       console.error("Error adding goal:", error)
+      toast({
+        title: "Error",
+        description: "Failed to add goal. Please try again.",
+        variant: "destructive",
+      })
       return false
     }
   }
@@ -85,7 +94,7 @@ const HealthGoals = () => {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [supabase]) // Added supabase to the dependency array
+  }, [fetchGoals]) // Added fetchGoals to the dependency array
 
   const renderGoalsList = (category) => {
     const filteredGoals = goals.filter((goal) => goal.category === category)
@@ -104,62 +113,90 @@ const HealthGoals = () => {
 
   return (
     <div className={styles.container}>
-      <Card className={styles.mainCard}>
-        <div className={styles.header}>
-          <div className={styles.titleWrapper}>
-            <h2 className={styles.title}>Health Goals</h2>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button className={styles.helpButton}>
-                  <HelpCircle className={styles.helpIcon} />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className={styles.popoverContent}>
-                Track your progress towards your goals and earn XP for completing activities
-              </PopoverContent>
-            </Popover>
+      <div className={styles.animatedBackground}>
+        <div className={styles.backgroundOverlay}>
+          <div className={styles.backgroundPulse1} />
+          <div className={styles.backgroundPulse2} />
+          <div className={styles.backgroundPulse3} />
+        </div>
+      </div>
+
+      <div className={styles.contentWrapper}>
+        <Card className={styles.mainCard}>
+          <div className={styles.cardContent}>
+            <div className={styles.headerSection}>
+              <div className={styles.titleContainer}>
+                <h2 className={styles.title}>Health Goals</h2>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="ghost" size="icon" className={styles.helpButton}>
+                      <HelpCircle className={styles.helpIcon} />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className={styles.popoverContent}>
+                    Track your progress towards your goals and earn XP for completing activities
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <Button
+                variant="outline"
+                onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+                className={styles.editButton}
+              >
+                {isEditing ? "Save Changes" : "Edit Goals"}
+              </Button>
+            </div>
+
+            <Tabs defaultValue="fitness" className={styles.tabsContainer}>
+              <TabsList className={styles.tabsList}>
+                <TabsTrigger value="fitness" className={styles.tabsTrigger}>
+                  Fitness
+                </TabsTrigger>
+                <TabsTrigger value="nutrition" className={styles.tabsTrigger}>
+                  Nutrition
+                </TabsTrigger>
+                <TabsTrigger value="wellness" className={styles.tabsTrigger}>
+                  Wellness
+                </TabsTrigger>
+                <TabsTrigger value="biomarkers" className={styles.tabsTrigger}>
+                  Biomarkers
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="fitness" className={styles.tabContent}>
+                {renderGoalsList("fitness")}
+              </TabsContent>
+
+              <TabsContent value="nutrition" className={styles.tabContent}>
+                {renderGoalsList("nutrition")}
+              </TabsContent>
+
+              <TabsContent value="wellness" className={styles.tabContent}>
+                {renderGoalsList("wellness")}
+              </TabsContent>
+
+              <TabsContent value="biomarkers" className={styles.tabContent}>
+                {renderGoalsList("biomarkers")}
+              </TabsContent>
+            </Tabs>
           </div>
-          <Button className={styles.editButton} onClick={() => (isEditing ? handleSave() : setIsEditing(true))}>
-            {isEditing ? "Save Changes" : "Edit Goals"}
-          </Button>
-        </div>
+        </Card>
 
-        <Tabs defaultValue="fitness" className={styles.tabs}>
-          <TabsList className={styles.tabsList}>
-            <TabsTrigger value="fitness">Fitness</TabsTrigger>
-            <TabsTrigger value="nutrition">Nutrition</TabsTrigger>
-            <TabsTrigger value="wellness">Wellness</TabsTrigger>
-            <TabsTrigger value="biomarkers">Biomarkers</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="fitness" className={styles.tabContent}>
-            {renderGoalsList("fitness")}
-          </TabsContent>
-
-          <TabsContent value="nutrition" className={styles.tabContent}>
-            {renderGoalsList("nutrition")}
-          </TabsContent>
-
-          <TabsContent value="wellness" className={styles.tabContent}>
-            {renderGoalsList("wellness")}
-          </TabsContent>
-
-          <TabsContent value="biomarkers" className={styles.tabContent}>
-            {renderGoalsList("biomarkers")}
-          </TabsContent>
-        </Tabs>
-      </Card>
-
-      <div className={styles.bottomGrid}>
-        <div className={styles.xpStoreWrapper}>
-          <Card className={styles.xpStoreCard}>
-            <XPStore />
-          </Card>
-        </div>
-        <div className={styles.symptomTrackerWrapper}>
-          <Card className={styles.symptomTrackerCard}>
-            <SymptomTracker />
-          </Card>
+        <div className={styles.bottomSection}>
+          <div className={styles.xpStoreContainer}>
+            <Card className={styles.bottomCard}>
+              <div className={styles.cardPadding}>
+                <XPStore />
+              </div>
+            </Card>
+          </div>
+          <div className={styles.symptomTrackerContainer}>
+            <Card className={styles.bottomCard}>
+              <div className={styles.cardPadding}>
+                <SymptomTracker />
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
@@ -167,3 +204,4 @@ const HealthGoals = () => {
 }
 
 export default HealthGoals
+

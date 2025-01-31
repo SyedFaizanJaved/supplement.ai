@@ -57,13 +57,13 @@
 .previousButton {
   min-width: 100px;
   margin-bottom: 10px;
-  background-color: orange;
+  background-color: #f37218;
   color: white;
   transition: background-color 0.3s ease;
 }
 
 .previousButton:hover {
-  background-color: darkorange;
+  background-color: dark#f37218;
 }
 
 .nextButton {

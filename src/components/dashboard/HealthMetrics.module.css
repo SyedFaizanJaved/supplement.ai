@@ -53,7 +53,7 @@
 }
 
 .referButton:hover {
-  background-color: orange;
+  background-color: #f37218;
   color: white;
 }
 
@@ -123,7 +123,7 @@
   }
 
   .gridContainer {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

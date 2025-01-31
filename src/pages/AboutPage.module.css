@@ -17,7 +17,7 @@
 }
 
 .backButton:hover {
-  background-color: orange;
+  background-color: #f37218;
   color: white;
 }
 
@@ -105,8 +105,8 @@
 
 .faqbutton:hover {
   transition: 0.3s;
-  background-color: orange;
-  border: 1px solid orange;
+  background-color: #f37218;
+  border: 1px solid #f37218;
 }
 
 .same {

@@ -49,7 +49,7 @@ const AddGoalDialog = ({ category, onAddGoal }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className={styles.addButton} onClick={() => setOpen(true)}>
+        <Button className={styles.addGoalButton} onClick={() => setOpen(true)}>
           <Plus className={styles.plusIcon} />
           Add New Goal
         </Button>

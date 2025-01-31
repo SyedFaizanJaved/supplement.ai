@@ -1,33 +1,189 @@
+.container {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  width: 100%;
+}
+
+.backgroundAnimation {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, #1A1F2C, #1E293B);
+  overflow: hidden;
+}
+
+.backgroundOverlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+}
+
+.backgroundGradient {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.animationOne,
+.animationTwo,
+.animationThree {
+  position: absolute;
+  inset: 0;
+}
+
+.animationOne {
+  background: radial-gradient(circle at 50% 50%, #0EA5E9 0%, transparent 50%);
+  animation: pulse 6s ease-in-out infinite;
+}
+
+.animationTwo {
+  background: radial-gradient(circle at 80% 20%, #10B981 0%, transparent 50%);
+  animation: pulse 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animationThree {
+  background: radial-gradient(circle at 20% 80%, #0EA5E9 0%, transparent 50%);
+  animation: pulse 6s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
+
 .card {
-  padding: 2.5rem 1.5rem;
+  position: relative;
+  z-index: 10;
+  margin: 1.5rem;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #324154;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: bold;
+  background: linear-gradient(to right, #10B981, #0EA5E9);
+  background-clip: text;
+  color: transparent;
+  animation: text-shimmer 4s ease-in-out infinite;
 }
 
 .shareButton {
-  display: flex;
-  align-items: center;
-  border:1px solid #e1e8f0;
-  gap: 0.5rem;
+  position: relative;
+  background: transparent;
+  border: 1px solid rgba(14, 165, 233, 0.5);
+  overflow: hidden;
+  transition: all 0.5s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
 }
 
 .shareButton:hover {
-  background-color: #fa7516;
-  color: var(--light);
+  border-color: #0EA5E9;
+}
+
+.shareButtonBackground {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #0EA5E9, #10B981);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.shareButton:hover .shareButtonBackground {
+  opacity: 0.2;
 }
 
 .shareIcon {
-  height: 1rem;
   width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  color: #0EA5E9;
+  transition: color 0.5s ease;
+}
+
+.shareButton:hover .shareIcon {
+  color: #10B981;
+}
+
+.shareText {
+  color: #0EA5E9;
+  transition: color 0.5s ease;
+}
+
+.shareButton:hover .shareText {
+  color: #10B981;
+}
+
+@keyframes text-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .card {
+    margin: 0.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .content {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    width: 100%;
+    text-align: center;
+  }
+
+  .shareButton {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .card {
+    margin: 0;
+    border-radius: 0;
+    height: 100vh;
+  }
+
+  .content {
+    padding: 0.75rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .shareButton:hover {
+    transform: scale(0.98);
+  }
 }

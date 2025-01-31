@@ -1,21 +1,14 @@
-.container {
+.pageContainer {
   min-height: 100vh;
-  background-color: var(--light);
+  background-color: #fff;
 }
 
-.content {
-  width: 100%;
-  max-width: 1200px;
+.contentContainer {
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 2rem 7.5rem 0;
-}
 
 .backButton {
   padding: 0.5rem 1rem;
@@ -24,7 +17,7 @@
   margin-bottom: 1.5rem;
   color : black;
   border-radius: 5px;
-  border: 1px solid #e1e8f0;
+  border: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +25,19 @@
 }
 
 .backButton:hover {
-  background-color: orange;
+  background-color: #fa7516;
   transition: 0.2s;
   color: var(--light);
+}
+
+.backIcon {
+  margin-right: 0.5rem;
+  height: 1rem;
+  width: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1a1a;
+  }
 }

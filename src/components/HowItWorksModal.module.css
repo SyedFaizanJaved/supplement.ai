@@ -1,121 +1,131 @@
 .dialogContent {
-  max-width: 43%;
-  border: 2px solid rgba(#0891b233, 0.2);
-  margin: 0 auto; 
+  max-width: 56rem;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.mobilePadding {
+  padding: 1rem;
+}
+
+.desktopPadding {
   padding: 1.5rem;
-  z-index: 100;
-  width: 100%; 
-  box-sizing: border-box; 
 }
 
 .dialogTitle {
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 1.5rem;
-  word-wrap: break-word; /* Prevent text overflow */
+  margin-bottom: 1rem;
 }
 
-.stepsGrid {
+@media (min-width: 640px) {
+  .dialogTitle {
+    font-size: 1.875rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.stepsContainer {
   display: grid;
-  gap: 2rem;
+  gap: 1rem;
   padding: 1rem 0;
-  width: 100%;
 }
 
-.step {
+@media (min-width: 640px) {
+  .stepsContainer {
+    gap: 2rem;
+    padding: 1.5rem 0;
+  }
+}
+
+.stepItem {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
-  animation: fadeIn 0.5s ease-out forwards;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .stepItem {
+    gap: 1.5rem;
+  }
+}
+
+.iconContainer {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background-color: #cffbff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconWrapper {
+  color: #0790b3;
+}
+
+@media (prefers-color-scheme: dark) {
+  .iconContainer {
+    background-color: #cffbff;
+  }
+
+  .iconWrapper {
+    color: #0790b3;
+  }
+}
+
+@media (min-width: 640px) {
+  .iconContainer {
+    width: 4rem;
+    height: 4rem;
+  }
 }
 
 .stepIcon {
-  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
-.stepIcon svg {
-  width: 2rem;
-  height: 2rem;
-  color: var(--secondary);
+@media (min-width: 640px) {
+  .stepIcon {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.textContainer {
+  flex: 1;
+  min-width: 0;
 }
 
 .stepTitle {
-  font-weight: 600;
   font-size: 1.125rem;
-  color: var(--primary);
-  margin-bottom: 0.7rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .stepTitle {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
 }
 
 .stepDescription {
-  color: var(--tertiary);
-  word-wrap: break-word; /* Ensure text wraps properly */
+  font-size: 0.875rem;
+  color:#4c5663;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@media (prefers-color-scheme: dark) {
+  .stepDescription {
+    color: #4c5663;
   }
 }
 
-/* Responsive breakpoints */
-@media screen and (max-width: 1200px) {
-  .dialogContent {
-    max-width: 60%;
-  }
-}
-
-@media screen and (max-width: 992px) {
-  .dialogContent {
-    max-width: 75%;
-  }
-  
-  .dialogTitle {
-    font-size: 1.35rem;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .dialogContent {
-    max-width: 85%;
-    padding: 1.25rem;
-  }
-  
-  .stepsGrid {
-    gap: 1.5rem;
-  }
-  
-  .stepTitle {
+@media (min-width: 640px) {
+  .stepDescription {
     font-size: 1rem;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .dialogContent {
-    max-width: 95%;
-    padding: 1rem;
-  }
-  
-  .stepsGrid {
-    gap: 1.25rem;
-  }
-  
-  .step {
-    gap: 0.75rem;
-  }
-  
-  .stepIcon svg {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-  
-  .dialogTitle {
-    font-size: 1.25rem;
-    margin-bottom: 1.25rem;
   }
 }

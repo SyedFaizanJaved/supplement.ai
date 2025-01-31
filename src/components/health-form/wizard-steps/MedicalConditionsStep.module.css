@@ -49,12 +49,18 @@
   }
   
   .badge {
+    background:#324154;
+    color:#fff;
     display: flex;
+    border: none;
     align-items: center;
     gap: 0.25rem;
   }
   
   .removeButton {
+    background: transparent;
+    color:#fff;
+    border: none;
     margin-left: 0.25rem;
     transition: color 0.2s;
   }

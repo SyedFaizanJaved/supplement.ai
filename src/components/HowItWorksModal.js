@@ -4,60 +4,78 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "../components/ui/dialog";
-import { LineChartIcon as ChartLine, Upload, Pill, MessageSquare, LayoutDashboard } from 'lucide-react';
+} from "./ui/dialog";
+import { ChartLine, Upload, Pill, MessageSquare, LayoutDashboard, Gift, MessageCircle } from "lucide-react";
+import { useIsMobile } from "./hooks/use-mobile";
 import styles from './HowItWorksModal.module.css';
 
 export const HowItWorksModal = ({ open, onClose }) => {
+  const isMobile = useIsMobile();
+  
   const steps = [
     {
-      icon: <ChartLine />,
+      icon: <ChartLine className={styles.stepIcon} />,
       title: "Input Health Metrics",
       description: "Enter your basic health information and metrics",
     },
     {
-      icon: <Upload />,
+      icon: <Upload className={styles.stepIcon} />,
       title: "Upload Test Results",
       description: "Upload your blood work and/or genetic test results",
     },
     {
-      icon: <Pill />,
+      icon: <Pill className={styles.stepIcon} />,
       title: "Get Personalized Plan",
       description: "Receive tailored supplement recommendations based on your data",
     },
     {
-      icon: <MessageSquare />,
+      icon: <MessageSquare className={styles.stepIcon} />,
       title: "Chat Support",
-      description: "Access our health assistant for guidance and questions",
+      description: "Access our holistic health assistant for guidance and questions",
     },
     {
-      icon: <LayoutDashboard />,
+      icon: <LayoutDashboard className={styles.stepIcon} />,
       title: "Track Progress",
-      description: "Monitor your health journey through your personalized dashboard",
+      description: "Monitor your health journey daily and receive recaps and insights",
+    },
+    {
+      icon: <MessageCircle className={styles.stepIcon} />,
+      title: "Receive Texts",
+      description: "Everyday we will remind you to take your supplements and your holistic health advice providing inspiration to feel better and live healthier",
+    },
+    {
+      icon: <Gift className={styles.stepIcon} />,
+      title: "Redeem Prizes",
+      description: "Earn XP points for logging if you took your supplements, complete your daily quiz, and refer friends in exchange for prizes like custom merch and fitness classes!",
     },
   ];
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className={styles.dialogContent}>
+      <DialogContent className={`${styles.dialogContent} ${isMobile ? styles.mobilePadding : styles.desktopPadding}`}>
         <DialogHeader>
           <DialogTitle className={styles.dialogTitle}>
             How It Works
           </DialogTitle>
         </DialogHeader>
-        <div className={styles.stepsGrid}>
+        <div className={styles.stepsContainer}>
           {steps.map((step, index) => (
             <div
               key={index}
-              className={styles.step}
-              style={{ animationDelay: `${index * 100}ms` }}
+              className={styles.stepItem}
             >
-              <div className={styles.stepIcon}>{step.icon}</div>
-              <div>
+              <div className={styles.iconContainer}>
+                <div className={styles.iconWrapper}>
+                  {step.icon}
+                </div>
+              </div>
+              <div className={styles.textContainer}>
                 <h3 className={styles.stepTitle}>
                   {step.title}
                 </h3>
-                <p className={styles.stepDescription}>{step.description}</p>
+                <p className={styles.stepDescription}>
+                  {step.description}
+                </p>
               </div>
             </div>
           ))}
@@ -66,4 +84,3 @@ export const HowItWorksModal = ({ open, onClose }) => {
     </Dialog>
   );
 };
-

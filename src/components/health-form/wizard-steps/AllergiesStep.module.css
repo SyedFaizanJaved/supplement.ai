@@ -64,7 +64,7 @@
 
 .addButton {
   padding: 8px 16px;
-  background-color: #007bff;
+  background-color: #0790b3;
   color: white;
   border-radius: 6px;
   border: none;
@@ -72,7 +72,8 @@
 }
 
 .addButton:hover {
-  background-color: #0056b3;
+  transition: all 0.2s ease;
+  background-color: #09b6ca;
 }
 
 .allergiesBadgeContainer {
@@ -85,10 +86,10 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background-color: #f0f0f0;
-  color: black;
+  background-color: #164f63;
+  color: #fff;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 50px;
 }
 
 .removeBadgeButton {
@@ -104,6 +105,7 @@
 }
 
 .removeIcon {
+  color:#fff;
   width: 12px;
   height: 12px;
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Card } from "../../ui/card";
 import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
@@ -11,12 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../ui/select";
+import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
+import { Label } from "../../ui/label";
 import styles from './SymptomTracker.module.css';
 
 export const SymptomTracker = () => {
   const [wellnessType, setWellnessType] = useState("");
   const [rating, setRating] = useState("");
   const [notes, setNotes] = useState("");
+  const [tookSupplements, setTookSupplements] = useState("");
   const { toast } = useToast();
 
   const wellnessTypes = [
@@ -39,7 +42,7 @@ export const SymptomTracker = () => {
         .insert({
           symptom: wellnessType,
           severity: parseInt(rating),
-          notes
+          notes: `Supplements taken: ${tookSupplements}. Notes: ${notes}`,
         });
 
       if (error) throw error;
@@ -53,6 +56,7 @@ export const SymptomTracker = () => {
       setWellnessType("");
       setRating("");
       setNotes("");
+      setTookSupplements("");
     } catch (error) {
       console.error('Error tracking wellness:', error);
       toast({
@@ -65,7 +69,7 @@ export const SymptomTracker = () => {
 
   return (
     <Card className={styles.card}>
-      <h3 className={styles.heading}>Daily Wellness Journal</h3>
+      <h3 className={styles.title}>Daily Wellness Journal</h3>
       <p className={styles.description}>
         Track your daily wellness journey and celebrate your progress
       </p>
@@ -106,6 +110,23 @@ export const SymptomTracker = () => {
               })}
             </SelectContent>
           </Select>
+        </div>
+        <div className={styles.supplementSection}>
+          <Label>Did you take your supplements today?</Label>
+          <RadioGroup
+            value={tookSupplements}
+            onValueChange={setTookSupplements}
+            className={styles.radioGroup}
+          >
+            <div className={styles.radioItem}>
+              <RadioGroupItem value="yes" id="yes" />
+              <Label htmlFor="yes">Yes</Label>
+            </div>
+            <div className={styles.radioItem}>
+              <RadioGroupItem value="no" id="no" />
+              <Label htmlFor="no">No</Label>
+            </div>
+          </RadioGroup>
         </div>
         <div>
           <Textarea
