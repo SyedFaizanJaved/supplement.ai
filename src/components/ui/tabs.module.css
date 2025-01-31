@@ -14,13 +14,13 @@
 }
 
 .tabsList::-webkit-scrollbar {
+  min-width: 9rem;
   display: none;
 }
 
 .tabsList > div {
   display: inline-flex;
   background-color: var(--background);
-  min-width: min-content;
   margin: 0 auto;
 }
 

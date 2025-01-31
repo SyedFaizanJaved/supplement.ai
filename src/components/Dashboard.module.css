@@ -153,6 +153,7 @@
 
 .tabsTrigger {
   background: #e2e2e2;
+  min-width: 5rem;
   flex: 1;
   padding: 0.75rem;
 }
@@ -160,7 +161,7 @@
 @media (min-width: 768px) {
   .tabsTrigger {
     font-weight:600;
-    width: 7rem;
+    width: 5rem;
     flex: none;
     color: #324154;
     background-color: var(--light);
