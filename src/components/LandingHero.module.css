@@ -45,12 +45,7 @@
   color: #4b5563;
 }
 
-.login {
-  border: none;
-  background-color:transparent;
-  color: #4b5563; 
-  padding: 0 3rem;
-}
+ 
 
 .login:hover {
   color: #fff;
@@ -294,9 +289,25 @@
   color: #5eead4;
 }
 
+@media (max-width: 1920px) {
+  .login {
+    border: none;
+    background-color:transparent;
+    color: #4b5563; 
+    padding: 0 3rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .gridContainer {
     grid-template-columns: 1fr;
+  }
+
+  .login {
+    border: none;
+    background-color:transparent;
+    color: #4b5563; 
+    padding: 0 3rem;
   }
 
   .imageSection {
@@ -325,6 +336,13 @@
 @media (max-width: 480px) {
   .logo {
     font-size: 1.4rem;
+  }
+
+  .login {
+    border: none;
+    background-color:transparent;
+    color: #4b5563; 
+    padding: 0 2.3rem;
   }
 }
 

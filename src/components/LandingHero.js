@@ -16,6 +16,14 @@ export const LandingHero = () => {
           <div className={styles.navContent}>
             <h1 className={styles.logo}>SupplementScribe.ai</h1>
             <div className={styles.navButtons}>
+            <Button
+                size="icon"
+                onClick={() => navigate("/login")}
+                className={styles.login}
+              >
+                <LogIn className={styles.icon} />
+                Login
+              </Button>
               <Button
                 variant="ghost"
                 size="icon"
@@ -23,14 +31,6 @@ export const LandingHero = () => {
                 className={styles.iconButton}
               >
                 <Book className={styles.icon} />
-              </Button>
-              <Button
-                size="icon"
-                onClick={() => navigate("/login")}
-                className={styles.login}
-              >
-                <LogIn className={styles.icon} />
-                Login
               </Button>
             </div>
           </div>
@@ -49,29 +49,29 @@ export const LandingHero = () => {
                   Feel better, naturally. Discover your perfect supplement plan in minutes—backed by your blood tests, genetics, and health goals.
                 </p>
                 <div className={styles.buttonGroup}>
-                  <Button
+                  <button
                     size="lg"
                     onClick={() => navigate("/input")}
                     className={styles.primaryButton}
                   >
                     Get Started →
-                  </Button>
-                  <Button
+                  </button>
+                  <button
                     size="lg"
                     onClick={() => navigate("/dashboard")}
                     variant="outline"
                     className={styles.secondaryButton}
                   >
                     Open Dashboard
-                  </Button>
-                  <Button
+                  </button>
+                  <button
                     size="lg"
                     onClick={() => setShowHowItWorks(true)}
                     variant="outline"
                     className={styles.secondaryButton}
                   >
                     How It Works
-                  </Button>
+                  </button>
                 </div>
               </div>
 
