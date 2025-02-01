@@ -43,9 +43,7 @@
   border: none;
   background-color:transparent;
   color: #4b5563;
-}
-
- 
+} 
 
 .login {
   display:flex;
@@ -356,6 +354,14 @@
 @media (max-width: 320px) {
   .logo {
     font-size: 1.1rem;
+  }
+
+  .login{
+    padding: .5rem .5rem;
+  }
+
+  .iconButton{
+    padding: .5rem .5rem;
   }
 }
 
