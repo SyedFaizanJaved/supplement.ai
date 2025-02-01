@@ -1,8 +1,7 @@
-import { Button } from "./ui/button";
 import { useNavigate, Link } from "react-router-dom";
 import { HowItWorksModal } from "./HowItWorksModal";
 import { useState } from "react";
-import { Book, LogIn, Menu, ShieldCheck } from "lucide-react";
+import { Book, LogIn, ShieldCheck } from "lucide-react";
 import styles from './LandingHero.module.css';
 
 export const LandingHero = () => {
@@ -16,22 +15,22 @@ export const LandingHero = () => {
           <div className={styles.navContent}>
             <h1 className={styles.logo}>SupplementScribe.ai</h1>
             <div className={styles.navButtons}>
-            <Button
+            <button
                 size="icon"
                 onClick={() => navigate("/login")}
                 className={styles.login}
               >
                 <LogIn className={styles.icon} />
                 Login
-              </Button>
-              <Button
+              </button>
+              <button
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate("/content")}
                 className={styles.iconButton}
               >
                 <Book className={styles.icon} />
-              </Button>
+              </button>
             </div>
           </div>
         </div>

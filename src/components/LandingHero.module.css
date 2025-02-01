@@ -47,12 +47,37 @@
 
  
 
-.login:hover {
+.login {
+  display:flex;
+  padding: .5rem 1rem;
+  align-items: center;
+  justify-content: center;
+  gap:5px;
+  background:transparent;
+  border-radius: 5px;
+  border:none;
+  color: #4b5563;
+}
+
+.login:hover{
+  transition: all 0.3s;
   color: #fff;
   background-color: #0db9bf;
 }
 
+.iconButton{
+  display:flex;
+  padding: .5rem 1rem;
+  align-items: center;
+  justify-content: center;
+  gap:5px;
+  background:transparent;
+  border-radius: 5px;
+  border:none;
+}
+
 .iconButton:hover {
+  transition: all 0.3s;
   color: #000;
   background-color: #f37218;
 }
@@ -290,12 +315,7 @@
 }
 
 @media (max-width: 1920px) {
-  .login {
-    border: none;
-    background-color:transparent;
-    color: #4b5563; 
-    padding: 0 3rem;
-  }
+
 }
 
 @media (max-width: 1024px) {
@@ -303,12 +323,6 @@
     grid-template-columns: 1fr;
   }
 
-  .login {
-    border: none;
-    background-color:transparent;
-    color: #4b5563; 
-    padding: 0 3rem;
-  }
 
   .imageSection {
     margin: 0 auto;
@@ -337,12 +351,11 @@
   .logo {
     font-size: 1.4rem;
   }
+}
 
-  .login {
-    border: none;
-    background-color:transparent;
-    color: #4b5563; 
-    padding: 0 2.3rem;
+@media (max-width: 320px) {
+  .logo {
+    font-size: 1.1rem;
   }
 }
 
