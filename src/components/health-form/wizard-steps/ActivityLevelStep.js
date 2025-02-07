@@ -21,7 +21,7 @@ export const ActivityLevelStep = ({ form }) => {
       description: "Moderate exercise 3-5 times per week",
     },
     {
-      value: "athlete",
+      value: "very_active",
       label: "Very Active",
       description: "Intense exercise 6-7 times per week",
     },

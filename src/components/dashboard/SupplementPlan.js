@@ -1,162 +1,155 @@
-import { useEffect, useState } from "react"
-import { Card } from "../ui/card"
-import { Button } from "../ui/button"
-import { Share, Download, Mail } from "lucide-react"
-import { supabase } from "../integrations/supabase/client"
-import SupplementsGrid from "./supplements/SupplementsGrid"
-import { useToast } from "../ui/use-toast"
-import styles from "./SupplementPlan.module.css"
-import supplementsData from "../../data/supplements.json"
-import jsPDF from "jspdf"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Card } from "../ui/card";
+import { Button } from "../ui/button";
+import { Share, Download, Mail } from "lucide-react";
+import { useToast } from "../ui/use-toast";
+import styles from "./SupplementPlan.module.css";
+import jsPDF from "jspdf";
+import SupplementsGrid from "./supplements/SupplementsGrid";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import API_URL from "../../config";
+import { useAuth } from "../../context/AuthContext";  // Import useAuth
 
 export const SupplementPlan = () => {
-  const [recommendations, setRecommendations] = useState({})
-  const [loading, setLoading] = useState(true)
-  const { toast } = useToast()
+  const [recommendations, setRecommendations] = useState({});
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+  const { user } = useAuth();  // Get the user (and token) from AuthContext
 
   useEffect(() => {
     const fetchSupplements = async () => {
       try {
-        const { data: userData } = await supabase.auth.getUser()
-        const user = userData?.user
-
-        if (!user) {
-          setRecommendations(supplementsData)
-          setLoading(false)
-          return
-        }
-
-        const { data, error } = await supabase
-          .from("supplement_recommendations")
-          .select("*")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false })
-
-        if (error) {
-          console.error("Error fetching supplements:", error)
-          setRecommendations(supplementsData) // Fallback
-        } else {
-          const formattedData = formatSupplementData(data)
-          setRecommendations(formattedData)
-        }
+        const response = await axios.get(`${API_URL}/api/v1/supplement-plan/`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${user?.token}`,  // Add your token here
+          },
+        });
+        const formattedData = formatSupplementData(response.data);
+        setRecommendations(formattedData);
       } catch (error) {
-        console.error("Error:", error)
-        setRecommendations(supplementsData)
+        console.error("Error fetching supplements:", error);
+        toast({
+          title: "Error loading supplements",
+          description: "Failed to fetch supplement recommendations",
+          variant: "destructive",
+        });
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchSupplements()
-
-    const channel = supabase
-      .channel("schema-db-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "supplement_recommendations",
-        },
-        fetchSupplements,
-      )
-      .subscribe()
-
-    return () => {
-      supabase.removeChannel(channel)
-    }
-  }, [])
+    fetchSupplements();
+  }, [toast, user]);
 
   const formatSupplementData = (data) => {
     const formatted = {}
-    data.forEach((item) => {
-      formatted[item.supplement_name] = {
-        Benefits: item.reason,
+    data.supplements.forEach((item) => {
+      formatted[item.name] = {
+        Benefits: item.benefits,
         "Medical-Grade Supplements": {
-          "Product Name & Brand": `${item.supplement_name} by ${item.company_name}`,
-          "Dosage & Instructions": item.dosage,
-          "Image URL": item.image_url,
-          "Product URL": item.product_url,
+          "Product Name & Brand": `${item.product_name_brand}`,
+          "Dosage & Instructions": item.dosage_instructions,
+          "Image URL": item.product_img_url,
+          "Product URL": item.product_urls.map((url) => ({
+            name: url.name,
+            url: url.url,
+          })),
         },
-      }
-    })
-    return formatted
-  }
+      };
+    });
+    return formatted;
+  };
 
   const generatePDF = () => {
-    const pdf = new jsPDF()
-    pdf.setFontSize(15)
-    pdf.text("Personalized Supplement Plan", 15, 20)
-    pdf.setFontSize(12)
+    const pdf = new jsPDF();
+    pdf.setFontSize(15);
+    pdf.text("Personalized Supplement Plan", 15, 20);
+    pdf.setFontSize(12);
 
-    let yOffset = 40
+    let yOffset = 40;
     Object.entries(recommendations).forEach(([name, data], index) => {
       if (yOffset > 250) {
-        pdf.addPage()
-        yOffset = 15
+        pdf.addPage();
+        yOffset = 15;
       }
-      pdf.setFontSize(12)
-      pdf.text(name, 15, yOffset)
-      yOffset += 10
-      pdf.setFontSize(9)
-      pdf.text(`Benefits: ${data.Benefits}`, 15, yOffset)
-      yOffset += 10
-      pdf.text(`Dosage: ${data["Medical-Grade Supplements"]["Dosage & Instructions"]}`, 15, yOffset)
-      yOffset += 20
-    })
+      pdf.setFontSize(12);
+      pdf.text(name, 15, yOffset);
+      yOffset += 10;
+      pdf.setFontSize(9);
+      pdf.text(`Benefits: ${data.Benefits}`, 15, yOffset);
+      yOffset += 10;
+      pdf.text(
+        `Dosage: ${data["Medical-Grade Supplements"]["Dosage & Instructions"]}`,
+        15,
+        yOffset
+      );
+      yOffset += 20;
+    });
 
-    return pdf
-  }
+    return pdf;
+  };
 
   const handleShare = async () => {
     try {
-      const pdf = generatePDF()
-      const pdfBlob = pdf.output("blob")
-      const file = new File([pdfBlob], "supplement_plan.pdf", { type: "application/pdf" })
+      const pdf = generatePDF();
+      const pdfBlob = pdf.output("blob");
+      const file = new File([pdfBlob], "supplement_plan.pdf", {
+        type: "application/pdf",
+      });
 
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
           title: "My Supplement Plan",
           text: "Check out my personalized supplement plan!",
-        })
+        });
       } else {
-        throw new Error("Web Share API not supported")
+        throw new Error("Web Share API not supported");
       }
     } catch (error) {
-      console.error("Error sharing:", error)
+      console.error("Error sharing:", error);
       toast({
         title: "Sharing not supported",
-        description: "Your browser doesn't support direct file sharing. Please use the download or email options.",
+        description:
+          "Your browser doesn't support direct file sharing. Please use the download or email options.",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   const handleDownload = () => {
-    const pdf = generatePDF()
-    pdf.save("supplement_plan.pdf")
+    const pdf = generatePDF();
+    pdf.save("supplement_plan.pdf");
     toast({
       title: "PDF Downloaded",
       description: "Your supplement plan has been downloaded as a PDF.",
-    })
-  }
+    });
+  };
 
   const handleEmail = () => {
-    const pdf = generatePDF()
-    const pdfDataUri = pdf.output("datauristring")
-    const emailBody = encodeURIComponent("Please find attached my personalized supplement plan.")
-    const mailtoLink = `mailto:?subject=My%20Supplement%20Plan&body=${emailBody}&attachment=${pdfDataUri}`
-    window.location.href = mailtoLink
+    const pdf = generatePDF();
+    const pdfDataUri = pdf.output("datauristring");
+    const emailBody = encodeURIComponent(
+      "Please find attached my personalized supplement plan."
+    );
+    const mailtoLink = `mailto:?subject=My%20Supplement%20Plan&body=${emailBody}&attachment=${pdfDataUri}`;
+    window.location.href = mailtoLink;
     toast({
       title: "Email Client Opened",
-      description: "An email draft with your supplement plan has been created.",
-    })
-  }
+      description:
+        "An email draft with your supplement plan has been created.",
+    });
+  };
 
   if (loading) {
-    return <div className={styles.loading}>Loading supplements...</div>
+    return <div className={styles.loading}>Loading supplements...</div>;
   }
 
   return (
@@ -201,7 +194,7 @@ export const SupplementPlan = () => {
         </div>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default SupplementPlan
+export default SupplementPlan;

@@ -8,6 +8,15 @@
     margin: 0 auto;
     padding: 2rem;
   }
+
+  .tooltipContent {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    max-width: 250px;
+  }
   
   .backButton {
     display: flex;

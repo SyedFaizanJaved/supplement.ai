@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "../components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { StepWizard } from "../components/health-form/StepWizard";
+import StepWizard from "../components/health-form/StepWizard";
 import styles from './InputPage.module.css';
 
 const InputPage = () => {

@@ -12,15 +12,14 @@ export const FinalStep = ({ formData, isSubmitting, onSubmit }) => {
         setAcceptedTerms(event.target.checked);
     };
 
-    const handleFamilyPlanNavigation = () => {
-        navigate('/family-plan');
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (acceptedTerms) {
-            onSubmit();
+        if (acceptedTerms && !isSubmitting) {
+            try {
+                await onSubmit();
+            } catch (error) {
+            }
         }
     };
 
@@ -40,17 +39,7 @@ export const FinalStep = ({ formData, isSubmitting, onSubmit }) => {
             </div>
 
             <div className={styles.buttonContainer}>        
-            <Button 
-                    type="button"
-                    onClick={handleFamilyPlanNavigation}
-                    disabled={!acceptedTerms}
-                    variant="secondary"
-                    className={styles.familyButton}
-                >
-                    <Users className={styles.buttonIcon} />
-                    Want to help your family too?
-                </Button>
-                
+         
                 <Button 
                     type="button"
                     onClick={handleSubmit}
@@ -69,7 +58,6 @@ export const FinalStep = ({ formData, isSubmitting, onSubmit }) => {
                         </>
                     )}
                 </Button>
-
             </div>
         </div>
     );

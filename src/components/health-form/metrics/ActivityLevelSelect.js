@@ -33,7 +33,7 @@ export const ActivityLevelSelect = ({ value, onValueChange }) => {
               <div className={styles.optionDescription}>Moderate exercise 4-5 times per week</div>
             </div>
           </SelectItem>
-          <SelectItem value="athlete">
+          <SelectItem value="very_active">
             <div className={styles.optionContainer}>
               <div className={styles.optionTitle}>Very Active</div>
               <div className={styles.optionDescription}>Intense exercise 6+ times per week</div>

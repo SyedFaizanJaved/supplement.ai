@@ -1,46 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { Textarea } from "../../ui/textarea";
 import { Progress } from "../../ui/progress";
 import { Pencil, Trash2 } from "lucide-react";
 import { useToast } from "../../hooks/use-toast";
-import { supabase } from "../../integrations/supabase/client";
-import styles from './GoalItem.module.css';
+import styles from "./GoalItem.module.css";
 
-export const GoalItem = ({ goal, onUpdate, isEditing }) => {
+export const GoalItem = ({
+  goal,
+  onUpdate,
+  isEditing,
+  updateGoal,
+  deleteGoal,
+}) => {
+  // Initialize with the goal object; assumes it has a field "goal_name"
   const [editedGoal, setEditedGoal] = useState(goal);
   const { toast } = useToast();
 
+  // Update local state when the goal prop changes
+  useEffect(() => {
+    setEditedGoal(goal);
+  }, [goal]);
+
   const calculateProgress = (progress, target) => {
-    if (isNaN(progress) || isNaN(target) || target === 0) {
-      return 0;
+    if (target === 1) {
+      // Handle binary yes/no goals
+      return progress * 100;
     }
     return (progress / target) * 100;
   };
 
+  // Called when the user saves their changes
   const handleSave = async () => {
     try {
-      const { error } = await supabase
-        .from('health_goals')
-        .update({
-          goal_name: editedGoal.goal_name,
-          description: editedGoal.description,
-          progress: editedGoal.progress,
-          target: editedGoal.target
-        })
-        .eq('id', goal.id);
-
-      if (error) throw error;
-
+      // Use editedGoal.goal_name (consistent with display)
+      await updateGoal(goal.id, {
+        goal_name: editedGoal.goal_name,
+        description: editedGoal.description,
+        progress: editedGoal.progress,
+        target: editedGoal.target,
+      });
       toast({
         title: "Goal updated",
         description: "Your health goal has been updated successfully.",
       });
-
       onUpdate();
     } catch (error) {
-      console.error('Error updating goal:', error);
+      console.error("Error updating goal:", error);
       toast({
         title: "Error",
         description: "Failed to update goal. Please try again.",
@@ -49,23 +56,17 @@ export const GoalItem = ({ goal, onUpdate, isEditing }) => {
     }
   };
 
+  // Called when the user deletes the goal
   const handleDelete = async () => {
     try {
-      const { error } = await supabase
-        .from('health_goals')
-        .delete()
-        .eq('id', goal.id);
-
-      if (error) throw error;
-
+      await deleteGoal(goal.id);
       toast({
         title: "Goal deleted",
         description: "Your health goal has been deleted successfully.",
       });
-
       onUpdate();
     } catch (error) {
-      console.error('Error deleting goal:', error);
+      console.error("Error deleting goal:", error);
       toast({
         title: "Error",
         description: "Failed to delete goal. Please try again.",
@@ -79,7 +80,7 @@ export const GoalItem = ({ goal, onUpdate, isEditing }) => {
       {isEditing ? (
         <div className={styles.editContainer}>
           <Input
-            value={editedGoal.goal_name}
+            value={editedGoal.goal_name || ""}
             onChange={(e) =>
               setEditedGoal((prev) => ({ ...prev, goal_name: e.target.value }))
             }
@@ -89,7 +90,10 @@ export const GoalItem = ({ goal, onUpdate, isEditing }) => {
           <Textarea
             value={editedGoal.description || ""}
             onChange={(e) =>
-              setEditedGoal((prev) => ({ ...prev, description: e.target.value }))
+              setEditedGoal((prev) => ({
+                ...prev,
+                description: e.target.value,
+              }))
             }
             placeholder="Add a description for your goal"
             className={styles.descriptionTextarea}
@@ -101,7 +105,7 @@ export const GoalItem = ({ goal, onUpdate, isEditing }) => {
               onChange={(e) =>
                 setEditedGoal((prev) => ({
                   ...prev,
-                  progress: Number(e.target.value)
+                  progress: Number(e.target.value),
                 }))
               }
               className={styles.numberInput}
@@ -114,7 +118,7 @@ export const GoalItem = ({ goal, onUpdate, isEditing }) => {
               onChange={(e) =>
                 setEditedGoal((prev) => ({
                   ...prev,
-                  target: Number(e.target.value)
+                  target: Number(e.target.value),
                 }))
               }
               className={styles.numberInput}
@@ -125,7 +129,11 @@ export const GoalItem = ({ goal, onUpdate, isEditing }) => {
             <Button onClick={handleSave} className={styles.saveButton}>
               Save Changes
             </Button>
-            <Button onClick={handleDelete} variant="destructive" className={styles.deleteButton}>
+            <Button
+              onClick={handleDelete}
+              variant="destructive"
+              className={styles.deleteButton}
+            >
               <Trash2 className={styles.trashIcon} />
               Delete
             </Button>
@@ -135,29 +143,40 @@ export const GoalItem = ({ goal, onUpdate, isEditing }) => {
         <div className={styles.viewContainer}>
           <div className={styles.headerContainer}>
             <div>
+              {/* Display the goal name from the goal prop */}
               <span className={styles.goalName}>{goal.goal_name}</span>
               {goal.description && (
-                <p className={styles.description}>
-                  {goal.description}
-                </p>
+                <p className={styles.description}>{goal.description}</p>
               )}
             </div>
             {isEditing && (
-              <Button variant="ghost" onClick={() => setEditedGoal(goal)} className={styles.editButton}>
+              <Button
+                variant="ghost"
+                onClick={() => setEditedGoal(goal)}
+                className={styles.editButton}
+              >
                 <Pencil className={styles.editIcon} />
               </Button>
             )}
           </div>
           <div className={styles.progressContainer}>
-            <span className={styles.progressText}>
-              Progress: {goal.progress} / {goal.target}
-            </span>
-            <span className={styles.progressText}>
-              {Math.round(calculateProgress(goal.progress, goal.target))}%
-            </span>
+            {goal.target === 1 ? (
+              <span className={styles.progressText}>
+                Status: {goal.progress ? "Completed" : "Not Started"}
+              </span>
+            ) : (
+              <>
+                <span className={styles.progressText}>
+                  Progress: {goal.progress} / {goal.target}
+                </span>
+                <span className={styles.progressText}>
+                  {Math.round(calculateProgress(goal.progress, goal.target))}%
+                </span>
+              </>
+            )}
           </div>
-          <Progress 
-            value={calculateProgress(goal.progress, goal.target)} 
+          <Progress
+            value={calculateProgress(goal.progress, goal.target)}
             className={styles.progressBar}
           />
         </div>

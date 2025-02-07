@@ -25,9 +25,10 @@ export const HealthStatusSection = ({
               className={styles.select}
             >
               <option value="">Select exercise level</option>
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+              <option value="Sedentary">Sedentary</option>
+              <option value="Moderately Active">Moderately Active</option>
+              <option value="Active">Active</option>
+              <option value="Very Active">Very Active</option>
             </select>
           ) : (
             <p className={styles.value}>
@@ -64,7 +65,7 @@ export const HealthStatusSection = ({
               className={styles.textarea}
               value={personalInfo.conditions}
               onChange={(e) =>
-                setPersonalInfo({ ...personalInfo, conditions: e.target.value })
+                setPersonalInfo({...personalInfo, conditions: e.target.value })
               }
               placeholder="List any existing medical conditions..."
             />

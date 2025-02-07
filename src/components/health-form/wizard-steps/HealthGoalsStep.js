@@ -8,7 +8,7 @@ import styles from "./HealthGoalsStep.module.css";
 
 export const HealthGoalsStep = ({ form }) => {
   const [newGoal, setNewGoal] = useState("");
-  // Use form.watch to get reactive updates
+  // Using form.watch to get reactive updates for custom health goals
   const otherHealthGoals = form.watch("otherHealthGoals") || [];
 
   const healthGoalOptions = [
@@ -115,15 +115,15 @@ export const HealthGoalsStep = ({ form }) => {
             value={newGoal}
             onChange={(e) => setNewGoal(e.target.value)}
             onKeyPress={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 e.preventDefault();
                 handleAddCustomGoal();
               }
             }}
           />
-          <button 
-            className={styles.addbutton} 
-            type="button" 
+          <button
+            className={styles.addbutton}
+            type="button"
             onClick={handleAddCustomGoal}
           >
             Add

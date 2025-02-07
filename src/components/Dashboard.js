@@ -19,22 +19,22 @@ export const Dashboard = () => {
   // Replace this with actual admin authentication logic
   const isAdmin = true; 
 
-  const handleSignUpPrompt = () => {
-    toast({
-      title: "Create an account to save your progress",
-      description:
-        "Sign up to unlock all features and track your health journey.",
-      action: (
-        <button
-          onClick={() => navigate("/input")}
-          className={styles.signButton}
-        >
-          Sign Up
-        </button>
-      ),
-      duration: 5000,
-    });
-  };
+  // const handleSignUpPrompt = () => {
+  //   toast({
+  //     title: "Create an account to save your progress",
+  //     description:
+  //       "Sign up to unlock all features and track your health journey.",
+  //     action: (
+  //       <button
+  //         onClick={() => navigate("/input")}
+  //         className={styles.signButton}
+  //       >
+  //         Sign Up
+  //       </button>
+  //     ),
+  //     duration: 5000,
+  //   });
+  // };
 
   return (
     <div className={styles.container}>
@@ -70,28 +70,28 @@ export const Dashboard = () => {
                 <TabsTrigger
                   value="assistant"
                   className={styles.tabsTrigger}
-                  onClick={handleSignUpPrompt}
+                  // onClick={handleSignUpPrompt}
                 >
                   Assistant
                 </TabsTrigger>
                 <TabsTrigger
                   value="metrics"
                   className={styles.tabsTrigger}
-                  onClick={handleSignUpPrompt}
+                  // onClick={handleSignUpPrompt}
                 >
                   Metrics
                 </TabsTrigger>
                 <TabsTrigger
                   value="supplements"
                   className={styles.tabsTrigger}
-                  onClick={handleSignUpPrompt}
+                  // onClick={handleSignUpPrompt}
                 >
                   Plan
                 </TabsTrigger>
                 <TabsTrigger
                   value="goals"
                   className={styles.tabsTrigger}
-                  onClick={handleSignUpPrompt}
+                  // onClick={handleSignUpPrompt}
                 >
                   Goals
                 </TabsTrigger>

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { registerUser } from "../../services/registrationService";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,6 @@ import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { useToast } from "../hooks/use-toast";
 import { healthFormSchema } from "../schemas/healthFormSchema";
-import { submitHealthFormData } from "../utils/healthFormSubmission";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PersonalInfoStep } from "./wizard-steps/PersonalInfoStep";
 import { HealthMetricsStep } from "./wizard-steps/HealthMetricsStep";
@@ -21,6 +21,8 @@ import { LifestyleStep } from "./wizard-steps/LifestyleStep";
 import { TestResultsStep } from "./wizard-steps/TestResultsStep";
 import { BudgetStep } from "./wizard-steps/BudgetStep";
 import { FinalStep } from "./wizard-steps/FinalStep";
+import FamilyPlanPage from "../../pages/FamilyPlanPage";
+import { useAuth } from "../../context/AuthContext"; // Import useAuth from AuthContext
 import styles from "./StepWizard.module.css";
 
 const steps = [
@@ -35,14 +37,17 @@ const steps = [
   "Lifestyle",
   "Test Results",
   "Monthly Budget",
+  "Family Plan",
   "Review & Submit",
 ];
 
-export const StepWizard = () => {
+const StepWizard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [familyMembers, setFamilyMembers] = useState([]);
+  const { login: authLogin } = useAuth(); // Destructure login from AuthContext
 
   const form = useForm({
     resolver: zodResolver(healthFormSchema),
@@ -56,6 +61,7 @@ export const StepWizard = () => {
       age: "",
       gender: "male",
       height: "",
+      family: [],
       weight: "",
       activityLevel: "sedentary",
       medicalConditions: [],
@@ -73,21 +79,65 @@ export const StepWizard = () => {
     },
   });
 
+  useEffect(() => {
+    form.setValue("family", familyMembers);
+  }, [familyMembers, form]);
+
+  const handleAddFamilyMember = (member) => {
+    setFamilyMembers([...familyMembers, member]);
+  };
+
+  const handleUpdateFamilyMember = (updatedMember) => {
+    setFamilyMembers((prev) =>
+      prev.map((member) =>
+        member.id === updatedMember.id ? updatedMember : member
+      )
+    );
+  };
+
+  const handleRemoveFamilyMember = (id) => {
+    setFamilyMembers(familyMembers.filter((member) => member.id !== id));
+  };
+
   const handleSubmit = async (data) => {
     if (isSubmitting) return;
-
     try {
       setIsSubmitting(true);
-      await submitHealthFormData(data);
-
+      const validFamilyMembers = familyMembers.filter(
+        (member) =>
+          member.first_name.trim() !== "" &&
+          member.last_name.trim() !== "" &&
+          member.email.trim() !== "" &&
+          member.status === "Unregistered" &&
+          member.joined_at === null
+      );
+  
+      const formattedData = {
+        ...data,
+        family: validFamilyMembers.map(({ first_name, last_name, email }) => ({
+          first_name,
+          last_name,
+          email,
+          status: "Unregistered",
+          joined_at: null,
+        })),
+      };
+  
+      // Assume registerUser returns user data (e.g., tokens, email, etc.)
+      const userData = await registerUser(formattedData);
+      
+      // Log the user in using AuthContext
+      authLogin(userData);
+  
       toast({
         title: "Success!",
         description: "Please complete the payment to create your account.",
       });
-
+  
       await new Promise((resolve) => setTimeout(resolve, 500));
       const encodedEmail = encodeURIComponent(data.email);
-      navigate(`/payment?email=${encodedEmail}`, { replace: true });
+      const planType = validFamilyMembers.length > 0 ? "family" : "individual";
+      navigate(`/payment?email=${encodedEmail}&plan=${planType}`, { replace: true });
     } catch (error) {
       toast({
         title: "Error",
@@ -100,65 +150,7 @@ export const StepWizard = () => {
       setIsSubmitting(false);
     }
   };
-
-  const getFieldsForStep = (step) => {
-    switch (step) {
-      case 0:
-        return ["firstName", "lastName", "email", "phoneNumber", "password"];
-      case 1:
-        return ["age", "gender", "height", "weight"];
-      case 2:
-        return ["activityLevel"];
-      case 3:
-        return ["healthGoals", "otherHealthGoals"];
-      case 4:
-        return ["allergies"];
-      case 5:
-        return ["medicalConditions"];
-      case 6:
-        return ["currentMedications"];
-      case 7:
-        return ["dietType"];
-      case 8:
-        return ["sleepHours", "smokingStatus", "alcoholConsumption"];
-      case 9:
-        return ["hasBloodwork", "hasGeneticTesting"];
-      case 10:
-        return ["monthlyBudget"];
-      default:
-        return [];
-    }
-  };
-
-  const validateCurrentStep = async () => {
-    const fields = getFieldsForStep(currentStep);
-    const isValid = await form.trigger(fields);
-
-    if (isValid) {
-      setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
-      return true;
-    }
-
-    return false;
-  };
-
-  const handleNextOrSubmit = async () => {
-    if (currentStep === steps.length - 1) {
-      const isValid = await form.trigger();
-      if (!isValid) {
-        toast({
-          title: "Validation Error",
-          description: "Please check all fields are filled correctly.",
-          variant: "destructive",
-        });
-      } else {
-        await form.handleSubmit(handleSubmit)();
-      }
-    } else {
-      await validateCurrentStep();
-    }
-  };
-
+ 
   const renderStep = () => {
     const formData = form.getValues();
 
@@ -187,10 +179,20 @@ export const StepWizard = () => {
         return <BudgetStep form={form} />;
       case 11:
         return (
+          <FamilyPlanPage
+            familyMembers={familyMembers}
+            onAddFamilyMember={handleAddFamilyMember}
+            onUpdateFamilyMember={handleUpdateFamilyMember}
+            onRemoveFamilyMember={handleRemoveFamilyMember}
+          />
+        );
+      case 12:
+        return (
           <FinalStep
             form={form}
             formData={formData}
             isSubmitting={isSubmitting}
+            onSubmit={form.handleSubmit(handleSubmit)}
           />
         );
       default:
@@ -232,15 +234,19 @@ export const StepWizard = () => {
               </Button>
 
               {currentStep < steps.length - 1 && (
-              <Button
-                type="button"
-                onClick={handleNextOrSubmit}
-                className={styles.nextButton}
-              >
-                Next
-                <ArrowRight className={styles.buttonIcon} />
-              </Button>
-            )}
+                <Button
+                  type="button"
+                  onClick={() =>
+                    setCurrentStep((prev) =>
+                      Math.min(prev + 1, steps.length - 1)
+                    )
+                  }
+                  className={styles.nextButton}
+                >
+                  Next
+                  <ArrowRight className={styles.buttonIcon} />
+                </Button>
+              )}
             </div>
           </form>
         </Form>
@@ -248,3 +254,5 @@ export const StepWizard = () => {
     </div>
   );
 };
+
+export default StepWizard;

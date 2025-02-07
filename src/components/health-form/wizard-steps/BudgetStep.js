@@ -28,7 +28,7 @@ export const BudgetStep = ({ form }) => {
     <div className={styles.container}>
       <div className={styles.contentWrapper}>
         <div>
-          <h3 className={styles.heading}>Monthly Supplement Budget</h3>
+          <h3 className={styles.heading}>Monthly Supplement Budget(Mandatory)</h3>
           <p className={styles.description}>
             Select your preferred monthly budget for supplements. This helps us provide recommendations within your budget.
           </p>

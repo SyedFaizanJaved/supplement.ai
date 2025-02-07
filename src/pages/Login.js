@@ -1,6 +1,28 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; 
+import API_URL from '../config';
 import styles from './Login.module.css';
+
+export const verifyToken = async (token) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/v1/auth/token/verify/`, { token });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Token verification failed.');
+  }
+};
+
+export const refreshToken = async (refresh) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/v1/auth/token/refresh/`, { refresh });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Token refresh failed.');
+  }
+};
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +32,9 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
+  const navigate = useNavigate();
+  const { login: authLogin } = useAuth(); // Get the login function from AuthContext
 
   const validateForm = () => {
     const newErrors = {};
@@ -54,11 +79,45 @@ const Login = () => {
 
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000)); 
-      console.log('Login submitted:', formData);
+      const response = await axios.post(`${API_URL}/api/v1/auth/login/`, {
+        email: formData.email,
+        password: formData.password
+      });
+
+      const { access, refresh } = response.data;
+      
+      // Optionally, store tokens in localStorage if needed
+      localStorage.setItem('accessToken', access);
+      localStorage.setItem('refreshToken', refresh);
+
+      // Use AuthContext's login function to store the user info globally.
+      // You can pass more details if available.
+      authLogin({
+        token: access,
+        refreshToken: refresh,
+        email: formData.email
+      });
+
+      // Optionally verify and refresh the token.
+      try {
+        await verifyToken(access);
+      } catch (verifyError) {
+        // Handle verification error if needed
+      }
+
+      try {
+        const refreshResult = await refreshToken(refresh);
+        if (refreshResult.access) {
+          localStorage.setItem('accessToken', refreshResult.access);
+        }
+      } catch (refreshError) {
+        // Handle refresh error if needed
+      }
+
+      navigate('/dashboard');
+      
     } catch (error) {
-      console.error('Login error:', error);
-      setErrors({ submit: 'Failed to login. Please try again.' });
+      setErrors({ submit: error.response?.data?.message || 'Failed to login. Please try again.' });
     } finally {
       setIsLoading(false);
     }

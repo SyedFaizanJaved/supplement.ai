@@ -9,7 +9,7 @@ export const DietStep = ({ form }) => {
     { value: "animal_based", label: "Animal Based" },
     { value: "keto", label: "Keto" },
     { value: "processed_food", label: "Fast/Processed Food Often" },
-    { value: "fair_average", label: "A fair average diet" },
+    { value: "balanced", label: "A fair average diet" },
     {
       value: "healthy_balanced",
       label: "Healthy, minimally processed with protein and fruits and vegetables often",
