@@ -78,8 +78,8 @@ export const registerUser = async (formData) => {
     return condition.condition;
   });
 
-  // const heightFeet = Math.floor(formData.height / 12);
-  // const heightInches = formData.height % 12;
+  const heightFeet = Math.floor(formData.height / 12);
+  const heightInches = formData.height % 12;
 
   const payload = {
     email: formData.email,
@@ -96,8 +96,8 @@ export const registerUser = async (formData) => {
     })),    
     age: parseInt(formData.age),
     gender: formData.gender === "male" ? "M" : "F",
-    height_in_feet: formData.heightFeet,
-    height_in_inches: formData.heightInches,
+    height_in_feet: parseFloat(heightFeet),
+    height_in_inches: heightInches,
     weight: parseFloat(formData.weight),
     activity_level: mapActivityLevel(formData.activityLevel),
     allergies: formData.allergies,
@@ -107,8 +107,9 @@ export const registerUser = async (formData) => {
     smoking_status: mapSmokingStatus(formData.smokingStatus),
     alcohol_consumption: mapAlcoholConsumption(formData.alcoholConsumption),
     monthly_budget: mapBudget(formData.monthlyBudget),
-    blood_work_test: formData.hasBloodwork ? {} : null,
-    genetic_test: formData.hasGeneticTesting ? {} : null,
+    blood_work_test:(formData.bloodWorkFiles || []).length > 0 ? formData.bloodWorkFiles: null,
+    genetic_test: (formData.geneticTestFiles || []).length > 0? formData.geneticTestFiles: null,
+
   };
 
   if (formData.family && formData.family.length > 0) {
