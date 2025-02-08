@@ -28,7 +28,7 @@ export const SupplementPlan = () => {
         const response = await axios.get(`${API_URL}/api/v1/supplement-plan/`, {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${user?.token}`,  // Add your token here
+            "Authorization": `Bearer ${user?.token}`, 
           },
         });
         const formattedData = formatSupplementData(response.data);

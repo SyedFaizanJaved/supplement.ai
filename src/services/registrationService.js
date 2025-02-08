@@ -55,6 +55,30 @@ const healthGoalDetails = {
 };
 
 export const registerUser = async (formData) => {
+  // Pre-validate that all required fields are provided.
+  // (Adjust the list below if you have additional required fields.)
+  const requiredFields = [
+    "email",
+    "password",
+    "firstName",
+    "lastName",
+    "phoneNumber",
+    "age",
+    "gender",
+    "height",
+    "weight",
+  ];
+
+  for (const field of requiredFields) {
+    if (
+      !formData[field] ||
+      (typeof formData[field] === "string" && formData[field].trim() === "")
+    ) {
+      throw new Error(`${field} is required`);
+    }
+  }
+
+  // Prepare user goals from both predefined and custom goals.
   const predefinedGoals = (formData.healthGoals || []).map((goalKey) => {
     return healthGoalDetails[goalKey] || {
       name: goalKey,
@@ -71,13 +95,17 @@ export const registerUser = async (formData) => {
 
   const userGoals = [...predefinedGoals, ...customGoals];
 
-  const transformedMedicalConditions = (formData.medicalConditions || []).map(condition => {
-    if (condition.specification) {
-      return `${condition.condition} - ${condition.specification}`;
+  // Transform medical conditions array.
+  const transformedMedicalConditions = (formData.medicalConditions || []).map(
+    (condition) => {
+      if (condition.specification) {
+        return `${condition.condition} - ${condition.specification}`;
+      }
+      return condition.condition;
     }
-    return condition.condition;
-  });
+  );
 
+  // Convert height (in inches) to feet and inches.
   const heightFeet = Math.floor(formData.height / 12);
   const heightInches = formData.height % 12;
 
@@ -87,13 +115,13 @@ export const registerUser = async (formData) => {
     first_name: formData.firstName,
     last_name: formData.lastName,
     phone_number: formData.phoneNumber,
-    user_goals: userGoals.map(goal => ({
+    user_goals: userGoals.map((goal) => ({
       name: goal.name,
       description: goal.description,
       category: goal.category,
-      target: 1, 
-      progress: 0 
-    })),    
+      target: 1, // default target value
+      progress: 0, // default progress value
+    })),
     age: parseInt(formData.age),
     gender: formData.gender === "male" ? "M" : "F",
     height_in_feet: parseFloat(heightFeet),
@@ -107,11 +135,17 @@ export const registerUser = async (formData) => {
     smoking_status: mapSmokingStatus(formData.smokingStatus),
     alcohol_consumption: mapAlcoholConsumption(formData.alcoholConsumption),
     monthly_budget: mapBudget(formData.monthlyBudget),
-    blood_work_test:(formData.bloodWorkFiles || []).length > 0 ? formData.bloodWorkFiles: null,
-    genetic_test: (formData.geneticTestFiles || []).length > 0? formData.geneticTestFiles: null,
-
+    blood_work_test:
+      (formData.bloodWorkFiles || []).length > 0
+        ? formData.bloodWorkFiles
+        : null,
+    genetic_test:
+      (formData.geneticTestFiles || []).length > 0
+        ? formData.geneticTestFiles
+        : null,
   };
 
+  // Add family or referral code if provided.
   if (formData.family && formData.family.length > 0) {
     payload.family = formData.family.map((member) => ({
       first_name: member.first_name,
@@ -123,11 +157,17 @@ export const registerUser = async (formData) => {
   }
 
   try {
-    const response = await axios.post(`${API_URL}/api/v1/auth/register/`, payload);
+    const response = await axios.post(
+      `${API_URL}/api/v1/auth/register/`,
+      payload
+    );
     return response.data;
   } catch (error) {
-    if (error.response) {
-      throw new Error(error.response.data.message || "Registration failed");
+    if (error.response && error.response.data) {
+      throw new Error(
+        error.response.data.message ||
+        "Registration failed, possibly due to duplicate email or phone number."
+      );
     }
     throw new Error("Network error occurred");
   }
@@ -146,7 +186,7 @@ const mapActivityLevel = (level) => {
 const mapDietType = (diet) => {
   const mapping = {
     healthy_balanced: "Healthy",
-    vegan_vegetarian: "Vegan Vegetarian",
+    vegan_vegetarian: "Vegan/Vegetarian",
     animal_based: "Animal Based",
     keto: "Keto",
     balanced: "A fair average diet",

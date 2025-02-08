@@ -123,10 +123,7 @@ const StepWizard = () => {
         })),
       };
   
-      // Assume registerUser returns user data (e.g., tokens, email, etc.)
       const userData = await registerUser(formattedData);
-      
-      // Log the user in using AuthContext
       authLogin(userData);
   
       toast({

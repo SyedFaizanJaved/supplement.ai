@@ -1,9 +1,8 @@
 import React, { Suspense, lazy } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { Toaster } from "./components/ui/toaster";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
-import { AuthProvider } from "./context/AuthContext"; 
-import styles from "./App.module.css";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 const Index = lazy(() => import("./pages/Index"));
 const InputPage = lazy(() => import("./pages/InputPage"));
@@ -20,30 +19,77 @@ const TermsandConditions = lazy(() => import("./pages/TermsandConditions"));
 const StudentsPage = lazy(() => import("./pages/Student"));
 const FamilyPlanPage = lazy(() => import("./pages/FamilyPlanPage"));
 
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+};
+
 const router = createBrowserRouter([
-  { path: "/", element: <Suspense fallback={<LoadingSpinner />}><Index /></Suspense> },
-  { path: "/input", element: <Suspense fallback={<LoadingSpinner />}><InputPage /></Suspense> },
-  { path: "/login", element: <Suspense fallback={<LoadingSpinner />}><Login /></Suspense> },
-  { path: "/admin", element: <Suspense fallback={<LoadingSpinner />}><Admin /></Suspense> },
-  { path: "/dashboard", element: <Suspense fallback={<LoadingSpinner />}><DashboardPage /></Suspense> },
-  { path: "/payment", element: <Suspense fallback={<LoadingSpinner />}><PaymentPage /></Suspense> },
-  { path: "/content", element: <Suspense fallback={<LoadingSpinner />}><ContentPage /></Suspense> },
-  { path: "/about", element: <Suspense fallback={<LoadingSpinner />}><AboutPage /></Suspense> },
-  { path: "/terms", element: <Suspense fallback={<LoadingSpinner />}><TermsandConditions /></Suspense> },
-  { path: "/privacy", element: <Suspense fallback={<LoadingSpinner />}><PrivacyPage /></Suspense> },
-  { path: "/work-with-us", element: <Suspense fallback={<LoadingSpinner />}><WorkWithUsPage /></Suspense> },
-  { path: "/rewards", element: <Suspense fallback={<LoadingSpinner />}><RewardsPage /></Suspense> },
-  { path: "/family-plan", element: <Suspense fallback={<LoadingSpinner />}><FamilyPlanPage /></Suspense> },
-  { path: "/students", element: <Suspense fallback={<LoadingSpinner />}><StudentsPage /></Suspense> },
+  {
+    path: "/",
+    element: <Suspense fallback={<LoadingSpinner />}><Index /></Suspense>
+  },
+  {
+    path: "/login",
+    element: <Suspense fallback={<LoadingSpinner />}><Login /></Suspense>
+  },
+  {
+    path: "/dashboard",
+    element: <ProtectedRoute><Suspense fallback={<LoadingSpinner />}><DashboardPage /></Suspense></ProtectedRoute>
+  },
+  {
+    path: "/admin",
+    element: <ProtectedRoute><Suspense fallback={<LoadingSpinner />}><Admin /></Suspense></ProtectedRoute>
+  },
+  {
+    path: "/payment",
+    element: <Suspense fallback={<LoadingSpinner />}><PaymentPage /></Suspense>
+  },
+  {
+    path: "/input",
+    element: <Suspense fallback={<LoadingSpinner />}><InputPage /></Suspense>
+  },
+  {
+    path: "/content",
+    element: <Suspense fallback={<LoadingSpinner />}><ContentPage /></Suspense>
+  },
+  {
+    path: "/about",
+    element: <Suspense fallback={<LoadingSpinner />}><AboutPage /></Suspense>
+  },
+  {
+    path: "/terms",
+    element: <Suspense fallback={<LoadingSpinner />}><TermsandConditions /></Suspense>
+  },
+  {
+    path: "/privacy",
+    element: <Suspense fallback={<LoadingSpinner />}><PrivacyPage /></Suspense>
+  },
+  {
+    path: "/work-with-us",
+    element: <Suspense fallback={<LoadingSpinner />}><WorkWithUsPage /></Suspense>
+  },
+  {
+    path: "/rewards",
+    element: <Suspense fallback={<LoadingSpinner />}><RewardsPage /></Suspense>
+  },
+  {
+    path: "/family-plan",
+    element: <Suspense fallback={<LoadingSpinner />}><FamilyPlanPage /></Suspense>
+  },
+  {
+    path: "/students",
+    element: <Suspense fallback={<LoadingSpinner />}><StudentsPage /></Suspense>
+  }
 ]);
 
 function App() {
   return (
-    <AuthProvider> {/* Wrap everything inside AuthProvider */}
-      <div className={styles.app}>
-        <Toaster />
-        <RouterProvider router={router} />
-      </div>
+    <AuthProvider>
+      <RouterProvider router={router} />
+      <Toaster />
     </AuthProvider>
   );
 }

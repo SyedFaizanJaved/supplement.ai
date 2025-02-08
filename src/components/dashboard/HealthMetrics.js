@@ -10,11 +10,21 @@ import { VitaminMetricsSection } from "./metrics/VitaminMetricsSection";
 import { LabTestsSection } from "./metrics/LabTestsSection";
 import { Share2 } from "lucide-react";
 import styles from "./HealthMetrics.module.css";
-import { useAuth } from "../../context/AuthContext"; // Import the auth hook
+import { useAuth } from "../../context/AuthContext";
+
+const getAuthHeaders = (token) => ({
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${token}`,
+});
+
+const processMultilineList = (text) =>
+  text.split("\n").filter(Boolean).map((item) => item.replace(/^- /, ""));
+
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const HealthMetrics = () => {
   const { toast } = useToast();
-  const { user } = useAuth(); // Get the user and token from AuthContext
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [personalInfo, setPersonalInfo] = useState({
@@ -29,107 +39,103 @@ export const HealthMetrics = () => {
     conditions: "",
   });
 
-  const transformProfileData = useCallback(
-    (data) => ({
+  const transformProfileData = useCallback((data) => {
+    return {
       first_name: data.first_name || "",
       last_name: data.last_name || "",
       age: data.age?.toString() || "",
       gender: data.gender === "F" ? "female" : "male",
+      // Format height as "X' Y''"
       height:
         data.height_in_feet && data.height_in_inches
-          ? `${data.height_in_feet}'${data.height_in_inches}" (${Math.round(
-              (data.height_in_feet * 12 + data.height_in_inches) * 2.54
-            )} cm)`
+          ? `${data.height_in_feet}' ${data.height_in_inches}''`
           : "",
-      weight: data.weight
-        ? `${Math.round(data.weight * 2.20462)} lbs (${data.weight} kg)`
+      // Format weight as "### lbs"
+      weight: data.weight ? `${data.weight} lbs` : "",
+      exerciseLevel: data.activity_level
+        ? data.activity_level.toLowerCase()
         : "",
-      exerciseLevel: data.activity_level?.toLowerCase() || "",
-      medications:
-        data.current_medications?.map((med) => `- ${med}`).join("\n") || "",
-      conditions:
-        [...(data.medical_conditions || [])]
-          .map((cond) => `- ${cond}`)
-          .join("\n") || "",
-    }),
-    []
-  );
+      medications: data.current_medications
+        ? data.current_medications.map((med) => `- ${med}`).join("\n")
+        : "",
+      conditions: data.medical_conditions
+        ? data.medical_conditions.map((cond) => `- ${cond}`).join("\n")
+        : "",
+    };
+  }, []);
 
+  // Fetch the user's profile data.
   const fetchProfile = useCallback(async () => {
+    if (!user?.token) return;
     try {
       setIsLoading(true);
-      const response = await axios.get(`${BASE_URL}/api/v1/users/profile/`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.token}`,
-        },
+      const { data } = await axios.get(`${BASE_URL}/api/v1/users/profile/`, {
+        headers: getAuthHeaders(user.token),
       });
-      setPersonalInfo(transformProfileData(response.data));
+      setPersonalInfo(transformProfileData(data));
     } catch (error) {
       toast({
         title: "Error",
         description:
-          error.response?.data?.message || "Failed to load profile data",
+          error?.response?.data?.message || "Failed to load profile data",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
-  }, [toast, transformProfileData, user]);
+  }, [user, toast, transformProfileData]);
 
   useEffect(() => {
     fetchProfile();
   }, [fetchProfile]);
 
-
   const handleSave = async () => {
-    console.log("check" , personalInfo.medications );
-    console.log("check" , personalInfo.conditions );
+    if (!user?.token) return;
     try {
+      const heightRegex = /^(\d+)' ?(\d+)''$/;
+      const heightMatch = personalInfo.height.match(heightRegex);
+      let height_in_feet = 0;
+      let height_in_inches = 0;
+      if (heightMatch) {
+        height_in_feet = parseInt(heightMatch[1], 10);
+        height_in_inches = parseInt(heightMatch[2], 10);
+      }
+      const weightMatch = personalInfo.weight.match(/(\d+(\.\d+)?)/);
+      const weightNumber = weightMatch ? parseFloat(weightMatch[0]) : 0;
+
       const payload = {
-        age: personalInfo.age ,
+        age: personalInfo.age,
         gender: personalInfo.gender === "female" ? "F" : "M",
         activity_level: personalInfo.exerciseLevel
-          ? personalInfo.exerciseLevel.charAt(0).toUpperCase() +
-            personalInfo.exerciseLevel.slice(1)
+          ? capitalize(personalInfo.exerciseLevel)
           : "",
-        current_medications: personalInfo.medications
-          .split("\n")
-          .filter(Boolean)
-          .map((med) => med.replace(/^- /, "")),
-        medical_conditions: personalInfo.conditions
-          .split("\n")
-          .filter(Boolean)
-          .map((cond) => cond.replace(/^- /, "")),
+        current_medications: processMultilineList(personalInfo.medications),
+        medical_conditions: processMultilineList(personalInfo.conditions),
+        height_in_feet,
+        height_in_inches,
+        weight: weightNumber,
       };
 
-      console.log("Payload to update:", payload);
-
-      const response = await axios.patch(
+      const { data } = await axios.patch(
         `${BASE_URL}/api/v1/users/profile/`,
         payload,
         {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user?.token}`,
-          },
+          headers: getAuthHeaders(user.token),
         }
       );
 
-      console.log("Patch response:", response.data);
-
-      await fetchProfile();
+      setPersonalInfo(transformProfileData(data));
       setIsEditing(false);
       toast({
         title: "Changes saved",
         description: "Your profile has been updated",
       });
-      setPersonalInfo(transformProfileData(response.data));
     } catch (error) {
       console.error("Error saving profile:", error);
       toast({
         title: "Error",
-        description: error.response?.data?.message || "Failed to save changes",
+        description:
+          error?.response?.data?.message || "Failed to save changes",
         variant: "destructive",
       });
     }
@@ -160,7 +166,8 @@ export const HealthMetrics = () => {
               onClick={() =>
                 toast({
                   title: "Coming Soon",
-                  description: "The referral system will be available soon!",
+                  description:
+                    "The referral system will be available soon!",
                 })
               }
               className={styles.referButton}

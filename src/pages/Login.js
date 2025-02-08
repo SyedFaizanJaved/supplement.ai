@@ -34,7 +34,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   const navigate = useNavigate();
-  const { login: authLogin } = useAuth(); // Get the login function from AuthContext
+  const { login: authLogin } = useAuth(); 
 
   const validateForm = () => {
     const newErrors = {};
@@ -86,23 +86,18 @@ const Login = () => {
 
       const { access, refresh } = response.data;
       
-      // Optionally, store tokens in localStorage if needed
       localStorage.setItem('accessToken', access);
       localStorage.setItem('refreshToken', refresh);
 
-      // Use AuthContext's login function to store the user info globally.
-      // You can pass more details if available.
       authLogin({
         token: access,
         refreshToken: refresh,
         email: formData.email
       });
 
-      // Optionally verify and refresh the token.
       try {
         await verifyToken(access);
       } catch (verifyError) {
-        // Handle verification error if needed
       }
 
       try {
@@ -111,7 +106,6 @@ const Login = () => {
           localStorage.setItem('accessToken', refreshResult.access);
         }
       } catch (refreshError) {
-        // Handle refresh error if needed
       }
 
       navigate('/dashboard');
@@ -127,7 +121,7 @@ const Login = () => {
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <div className={styles.headerSection}>
-          <h1 className={styles.title}>Welcome Back</h1>
+          <h1 className={styles.title}>Welcome</h1>
           <p className={styles.subtitle}>Please enter your details to sign in</p>
         </div>
 

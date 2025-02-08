@@ -63,6 +63,24 @@
   background-color: #0db9bf;
 }
 
+.logout {
+  display:flex;
+  padding: .5rem 1rem;
+  align-items: center;
+  justify-content: center;
+  gap:5px;
+  background:transparent;
+  border-radius: 5px;
+  border:none;
+  color: #4b5563;
+}
+
+.logout:hover{
+  transition: all 0.3s;
+  color: #fff;
+  background-color: #FF474C ;
+}
+
 .iconButton{
   display:flex;
   padding: .5rem 1rem;
@@ -156,6 +174,7 @@
   background: linear-gradient(to right, #06b6d4, #14b8a6, #06b6d4);
   background-size: 200% 200%;
   color: white;
+  min-width:180px;
   font-size: 1.125rem;
   border: none;
   height: 3.5rem;

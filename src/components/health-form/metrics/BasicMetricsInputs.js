@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../ui/form";
-import styles from './BasicMetricsInputs.module.css';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../../ui/form";
+import { useWatch } from "react-hook-form";
+import styles from "./BasicMetricsInputs.module.css";
 
 export const BasicMetricsInputs = ({ form }) => {
   const [feet, setFeet] = useState("");
   const [inches, setInches] = useState("");
 
-  // Convert cm to feet/inches when height value changes
+
+  const heightValue = useWatch({
+    control: form.control,
+    name: "height",
+    defaultValue: "", 
+  });
+
   useEffect(() => {
-    const heightValue = form.getValues("height");
     if (heightValue) {
       const totalInches = Math.round(Number(heightValue) / 2.54);
       const calculatedFeet = Math.floor(totalInches / 12);
@@ -25,11 +25,10 @@ export const BasicMetricsInputs = ({ form }) => {
       setFeet(calculatedFeet.toString());
       setInches(calculatedInches.toString());
     }
-  }, [form.getValues("height")]);
+  }, [heightValue]);
 
-  // Convert feet/inches to cm when either value changes
   const updateHeight = (newFeet, newInches) => {
-    const totalInches = (parseInt(newFeet) || 0) * 12 + (parseInt(newInches) || 0);
+    const totalInches = (parseInt(newFeet, 10) || 0) * 12 + (parseInt(newInches, 10) || 0);
     const cm = Math.round(totalInches * 2.54);
     form.setValue("height", cm.toString());
   };
@@ -120,4 +119,4 @@ export const BasicMetricsInputs = ({ form }) => {
       </div>
     </div>
   );
-};
+  };
