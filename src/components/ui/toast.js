@@ -22,7 +22,7 @@ const Toast = forwardRef(({ className, variant = 'default', onOpenChange, ...pro
     setIsClosing(true);
     setTimeout(() => {
       onOpenChange?.(false);
-    }, 200); // Match this with your animation duration
+    }, 200); 
   };
 
   return (

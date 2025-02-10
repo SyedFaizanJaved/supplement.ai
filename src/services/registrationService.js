@@ -5,7 +5,7 @@ const healthGoalDetails = {
   weight_management: {
     name: "Weight Management",
     description: "Support healthy weight goals",
-    category: "wellness",
+    category: "fitness",
   },
   energy_focus: {
     name: "Energy & Focus",
@@ -63,9 +63,10 @@ export const registerUser = async (formData) => {
     "phoneNumber",
     "age",
     "gender",
-    "height", 
+    "height",
     "weight",
   ];
+
   for (const field of requiredFields) {
     if (
       !formData[field] ||
@@ -82,23 +83,26 @@ export const registerUser = async (formData) => {
       category: "wellness",
     };
   });
+
   const customGoals = (formData.otherHealthGoals || []).map((goal) => ({
     name: goal,
     description: "",
     category: "",
   }));
+
   const userGoals = [...predefinedGoals, ...customGoals];
 
   const transformedMedicalConditions = (formData.medicalConditions || []).map(
-    (condition) =>
-      condition.specification
-        ? `${condition.condition} - ${condition.specification}`
-        : condition.condition
+    (condition) => {
+      if (condition.specification) {
+        return `${condition.condition} - ${condition.specification}`;
+      }
+      return condition.condition;
+    }
   );
 
-  const totalInches = Math.round(Number(formData.height) / 2.54);
-  const heightFeet = Math.floor(totalInches / 12);
-  const heightInches = totalInches % 12;
+  const heightFeet = Math.floor(formData.height / 12);
+  const heightInches = formData.height % 12;
 
   const payload = {
     email: formData.email,
@@ -111,9 +115,9 @@ export const registerUser = async (formData) => {
       description: goal.description,
       category: goal.category,
       target: 1, 
-      progress: 0,
+      progress: 0, 
     })),
-    age: parseInt(formData.age, 10),
+    age: parseInt(formData.age),
     gender: formData.gender === "male" ? "M" : "F",
     height_in_feet: parseFloat(heightFeet),
     height_in_inches: heightInches,
@@ -136,6 +140,7 @@ export const registerUser = async (formData) => {
         : null,
   };
 
+  // Add family or referral code if provided.
   if (formData.family && formData.family.length > 0) {
     payload.family = formData.family.map((member) => ({
       first_name: member.first_name,
@@ -156,7 +161,7 @@ export const registerUser = async (formData) => {
     if (error.response && error.response.data) {
       throw new Error(
         error.response.data.message ||
-          "Registration failed, possibly due to duplicate email or phone number."
+        "Registration failed, possibly due to duplicate email or phone number."
       );
     }
     throw new Error("Network error occurred");
