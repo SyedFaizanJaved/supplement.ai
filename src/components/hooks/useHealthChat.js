@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useToast } from "./use-toast";
 import { useAIChat } from "./useAIChat";
-import { fetchChatHistory, persistMessage } from "../../api/chatApi";
+import { persistMessage } from "../../api/chatApi";
 import { supabase } from "../integrations/supabase/client";
 
 export const useHealthChat = () => {
@@ -53,9 +53,6 @@ export const useHealthChat = () => {
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        throw new Error('Please sign in to use the chat feature');
-      }
       
       persistMessage(userMessage).catch(console.error);
       

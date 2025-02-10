@@ -14,13 +14,11 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import API_URL from "../../config";
-import { useAuth } from "../../context/AuthContext"; 
-import { LoadingSpinner } from "../ui/loading-spinner";
+import { useAuth } from "../../context/AuthContext";  // Import useAuth
 
 export const SupplementPlan = () => {
   const [recommendations, setRecommendations] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false); // New error state
   const { toast } = useToast();
   const { user } = useAuth(); 
 
@@ -35,10 +33,12 @@ export const SupplementPlan = () => {
         });
         const formattedData = formatSupplementData(response.data);
         setRecommendations(formattedData);
-        setError(false); // Reset error on success
       } catch (error) {
-        console.error("Error fetching supplements:", error);
-        setError(true);
+        toast({
+          title: "Generating Plans",
+          description: "Please wait for a while until plans are generated",
+          variant: "Info",
+        });
       } finally {
         setLoading(false);
       }
@@ -48,7 +48,7 @@ export const SupplementPlan = () => {
   }, [toast, user]);
 
   const formatSupplementData = (data) => {
-    const formatted = {};
+    const formatted = {}
     data.supplements.forEach((item) => {
       formatted[item.name] = {
         Benefits: item.benefits,
@@ -73,7 +73,7 @@ export const SupplementPlan = () => {
     pdf.setFontSize(12);
 
     let yOffset = 40;
-    Object.entries(recommendations).forEach(([name, data]) => {
+    Object.entries(recommendations).forEach(([name, data], index) => {
       if (yOffset > 250) {
         pdf.addPage();
         yOffset = 15;
@@ -147,8 +147,8 @@ export const SupplementPlan = () => {
     });
   };
 
-  if (loading || error) {
-    return <div className={styles.loading}><LoadingSpinner/></div>;
+  if (loading) {
+    return <div className={styles.loading}>Loading supplements...</div>;
   }
 
   return (

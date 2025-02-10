@@ -22,6 +22,14 @@ export const LandingHero = () => {
     navigate("/"); 
   };
 
+  const handleuser = (user) => {
+    if(user && user.token){
+      navigate("/dashboard");
+    }else{
+      navigate("/input");
+    }
+  }
+
   return (
     <>
       <div className={styles.navBar}>
@@ -75,11 +83,12 @@ export const LandingHero = () => {
                 <div className={styles.buttonGroup}>
                   <button
                     size="lg"
-                    onClick={() => navigate("/input")}
+                    onClick={handleuser}
                     className={styles.primaryButton}
                   >
                     Get Started →
                   </button>
+              
                   <button
                     size="lg"
                     onClick={() => navigate("/dashboard")}
@@ -88,6 +97,7 @@ export const LandingHero = () => {
                   >
                     Open Dashboard
                   </button>
+                 
                   <button
                     size="lg"
                     onClick={() => setShowHowItWorks(true)}
@@ -159,3 +169,4 @@ export const LandingHero = () => {
     </>
   );
 };
+

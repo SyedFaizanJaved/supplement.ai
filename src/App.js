@@ -8,7 +8,7 @@ const Index = lazy(() => import("./pages/Index"));
 const InputPage = lazy(() => import("./pages/InputPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const Admin = lazy(() => import("./pages/Admin"));
-const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+// const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 const ContentPage = lazy(() => import("./pages/Content"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
@@ -22,7 +22,10 @@ const FamilyPlanPage = lazy(() => import("./pages/FamilyPlanPage"));
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
 
-  if (!user || !user.token) return <Navigate to="/login" replace />;
+  if (!user) {
+    // return <Navigate to="/login" replace />;
+  }
+
   return children;
 };
 
@@ -43,10 +46,10 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <ProtectedRoute><Suspense fallback={<LoadingSpinner />}><Admin /></Suspense></ProtectedRoute>
   },
-  {
-    path: "/payment",
-    element: <Suspense fallback={<LoadingSpinner />}><PaymentPage /></Suspense>
-  },
+  // {
+  //   path: "/payment",
+  //   element: <Suspense fallback={<LoadingSpinner />}><PaymentPage /></Suspense>
+  // },
   {
     path: "/input",
     element: <Suspense fallback={<LoadingSpinner />}><InputPage /></Suspense>

@@ -80,9 +80,9 @@ export const GoalItem = ({
       {isEditing ? (
         <div className={styles.editContainer}>
           <Input
-            value={editedGoal.goal_name || ""}
+            value={editedGoal.name || ""}
             onChange={(e) =>
-              setEditedGoal((prev) => ({ ...prev, goal_name: e.target.value }))
+              setEditedGoal((prev) => ({ ...prev, name: e.target.value }))
             }
             className={styles.goalNameInput}
             placeholder="Goal name"
@@ -144,7 +144,7 @@ export const GoalItem = ({
           <div className={styles.headerContainer}>
             <div>
               {/* Display the goal name from the goal prop */}
-              <span className={styles.goalName}>{goal.goal_name}</span>
+              <span className={styles.goalName}>{goal.name}</span>
               {goal.description && (
                 <p className={styles.description}>{goal.description}</p>
               )}

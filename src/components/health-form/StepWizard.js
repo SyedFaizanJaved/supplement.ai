@@ -122,7 +122,7 @@ const StepWizard = () => {
       toast({
         title: "Incomplete Form",
         description:
-          "Please choose at least one option or fill in all required fields before proceeding.",
+          "Please review the required fields.",
         variant: "destructive",
       });
       return;
@@ -165,7 +165,7 @@ const StepWizard = () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
       const encodedEmail = encodeURIComponent(data.email);
       const planType = validFamilyMembers.length > 0 ? "family" : "individual";
-      navigate(`/payment?email=${encodedEmail}&plan=${planType}`, { replace: true });
+      navigate('/login');
     } catch (error) {
       toast({
         title: "Error",
