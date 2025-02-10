@@ -22,7 +22,7 @@ import { TestResultsStep } from "./wizard-steps/TestResultsStep";
 import { BudgetStep } from "./wizard-steps/BudgetStep";
 import { FinalStep } from "./wizard-steps/FinalStep";
 import FamilyPlanPage from "../../pages/FamilyPlanPage";
-import { useAuth } from "../../context/AuthContext"; // Import useAuth from AuthContext
+import { useAuth } from "../../context/AuthContext"; 
 import styles from "./StepWizard.module.css";
 
 const steps = [
@@ -41,13 +41,29 @@ const steps = [
   "Review & Submit",
 ];
 
+const stepFieldMapping = [
+  ["firstName", "lastName", "email", "phoneNumber", "password"],
+  ["age", "gender", "height", "weight"],
+  ["activityLevel"],
+  ["healthGoals"],
+  ["allergies"],
+  ["medicalConditions"],
+  ["currentMedications"],
+  ["dietType"],
+  ["sleepHours", "smokingStatus", "alcoholConsumption"],
+  ["bloodWorkFiles", "geneticTestFiles"],
+  ["monthlyBudget"],
+  [],
+  [],
+];
+
 const StepWizard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const [familyMembers, setFamilyMembers] = useState([]);
-  const { login: authLogin } = useAuth(); // Destructure login from AuthContext
+  const { login: authLogin } = useAuth();
 
   const form = useForm({
     resolver: zodResolver(healthFormSchema),
@@ -99,6 +115,21 @@ const StepWizard = () => {
     setFamilyMembers(familyMembers.filter((member) => member.id !== id));
   };
 
+  const handleNext = async () => {
+    const fieldsToValidate = stepFieldMapping[currentStep] || [];
+    const isValid = await form.trigger(fieldsToValidate);
+    if (!isValid) {
+      toast({
+        title: "Incomplete Form",
+        description:
+          "Please choose at least one option or fill in all required fields before proceeding.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+  };
+
   const handleSubmit = async (data) => {
     if (isSubmitting) return;
     try {
@@ -111,7 +142,7 @@ const StepWizard = () => {
           member.status === "Unregistered" &&
           member.joined_at === null
       );
-  
+
       const formattedData = {
         ...data,
         family: validFamilyMembers.map(({ first_name, last_name, email }) => ({
@@ -122,15 +153,15 @@ const StepWizard = () => {
           joined_at: null,
         })),
       };
-  
+
       const userData = await registerUser(formattedData);
       authLogin(userData);
-  
+
       toast({
         title: "Success!",
         description: "Please complete the payment to create your account.",
       });
-  
+
       await new Promise((resolve) => setTimeout(resolve, 500));
       const encodedEmail = encodeURIComponent(data.email);
       const planType = validFamilyMembers.length > 0 ? "family" : "individual";
@@ -147,10 +178,9 @@ const StepWizard = () => {
       setIsSubmitting(false);
     }
   };
- 
+
   const renderStep = () => {
     const formData = form.getValues();
-
     switch (currentStep) {
       case 0:
         return <PersonalInfoStep form={form} />;
@@ -206,9 +236,8 @@ const StepWizard = () => {
             {steps.map((_, index) => (
               <div
                 key={index}
-                className={`${styles.progressStep} ${
-                  index <= currentStep ? styles.progressStepActive : ""
-                }`}
+                className={`${styles.progressStep} ${index <= currentStep ? styles.progressStepActive : ""
+                  }`}
               />
             ))}
           </div>
@@ -222,7 +251,9 @@ const StepWizard = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 0))}
+                onClick={() =>
+                  setCurrentStep((prev) => Math.max(prev - 1, 0))
+                }
                 disabled={currentStep === 0}
                 className={styles.previousButton}
               >
@@ -233,11 +264,7 @@ const StepWizard = () => {
               {currentStep < steps.length - 1 && (
                 <Button
                   type="button"
-                  onClick={() =>
-                    setCurrentStep((prev) =>
-                      Math.min(prev + 1, steps.length - 1)
-                    )
-                  }
+                  onClick={handleNext}
                   className={styles.nextButton}
                 >
                   Next

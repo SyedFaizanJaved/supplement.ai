@@ -55,7 +55,6 @@ const healthGoalDetails = {
 };
 
 export const registerUser = async (formData) => {
-  // Validate required fields.
   const requiredFields = [
     "email",
     "password",

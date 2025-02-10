@@ -8,7 +8,6 @@ import styles from "./HealthGoalsStep.module.css";
 
 export const HealthGoalsStep = ({ form }) => {
   const [newGoal, setNewGoal] = useState("");
-  // Using form.watch to get reactive updates for custom health goals
   const otherHealthGoals = form.watch("otherHealthGoals") || [];
 
   const healthGoalOptions = [
