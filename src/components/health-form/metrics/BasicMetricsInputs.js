@@ -1,31 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../../ui/form";
-import { useWatch } from "react-hook-form";
 import styles from "./BasicMetricsInputs.module.css";
 
 export const BasicMetricsInputs = ({ form }) => {
   const [feet, setFeet] = useState("");
   const [inches, setInches] = useState("");
 
-
-  const heightValue = useWatch({
-    control: form.control,
-    name: "height",
-    defaultValue: "", 
-  });
-
-  useEffect(() => {
-    if (heightValue) {
-      const totalInches = Math.round(Number(heightValue) / 2.54);
-      const calculatedFeet = Math.floor(totalInches / 12);
-      const calculatedInches = totalInches % 12;
-      setFeet(calculatedFeet.toString());
-      setInches(calculatedInches.toString());
-    }
-  }, [heightValue]);
 
   const updateHeight = (newFeet, newInches) => {
     const totalInches = (parseInt(newFeet, 10) || 0) * 12 + (parseInt(newInches, 10) || 0);
@@ -86,8 +69,9 @@ export const BasicMetricsInputs = ({ form }) => {
                 placeholder="Feet"
                 value={feet}
                 onChange={(e) => {
-                  setFeet(e.target.value);
-                  updateHeight(e.target.value, inches);
+                  const newFeet = e.target.value;
+                  setFeet(newFeet);
+                  updateHeight(newFeet, inches);
                 }}
               />
             </div>
@@ -96,8 +80,9 @@ export const BasicMetricsInputs = ({ form }) => {
                 placeholder="Inches"
                 value={inches}
                 onChange={(e) => {
-                  setInches(e.target.value);
-                  updateHeight(feet, e.target.value);
+                  const newInches = e.target.value;
+                  setInches(newInches);
+                  updateHeight(feet, newInches);
                 }}
               />
             </div>
@@ -119,4 +104,4 @@ export const BasicMetricsInputs = ({ form }) => {
       </div>
     </div>
   );
-  };
+};

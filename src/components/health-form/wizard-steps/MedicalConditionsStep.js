@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
@@ -35,22 +35,50 @@ export const MedicalConditionsStep = ({ form }) => {
 
   const conditions = form.watch("medicalConditions") || [];
 
-  const handleAddCondition = (condition, spec) => {
-    const newCondition = {
-      condition,
-      specification: spec,
-    };
-    
+  const isConditionSelected = useCallback(
+    (condition, spec = null) => {
+      return spec
+        ? conditions.some(
+            (c) => c.condition === condition && c.specification === spec
+          )
+        : conditions.some((c) => c.condition === condition);
+    },
+    [conditions]
+  );
+
+  const toggleCondition = (condition, spec = "") => {
     const currentConditions = form.getValues("medicalConditions") || [];
+    const existingIndex = currentConditions.findIndex(
+      (c) => c.condition === condition
+    );
+    if (existingIndex !== -1) {
+      if (!spec || currentConditions[existingIndex].specification === spec) {
+
+        currentConditions.splice(existingIndex, 1);
+        form.setValue("medicalConditions", [...currentConditions]);
+        setOtherCondition("");
+        setDialogOpen(false);
+        return;
+      } else {
+
+        currentConditions[existingIndex].specification = spec;
+        form.setValue("medicalConditions", [...currentConditions]);
+        setOtherCondition("");
+        setDialogOpen(false);
+        return;
+      }
+    }
+    const newCondition = { condition, specification: spec };
     form.setValue("medicalConditions", [...currentConditions, newCondition]);
     setOtherCondition("");
     setDialogOpen(false);
   };
 
-  const handleRemoveCondition = (index) => {
-    const currentConditions = [...conditions];
-    currentConditions.splice(index, 1);
-    form.setValue("medicalConditions", currentConditions);
+
+  const removeCondition = (index) => {
+    const updatedConditions = [...conditions];
+    updatedConditions.splice(index, 1);
+    form.setValue("medicalConditions", updatedConditions);
   };
 
   const handleNoConditions = (checked) => {
@@ -63,8 +91,10 @@ export const MedicalConditionsStep = ({ form }) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h2 className={styles.heading}>Do you have any medical conditions?</h2>
-        
+        <h2 className={styles.heading}>
+          Do you have any medical conditions?
+        </h2>
+
         <BubbleOption
           label="I don't have any medical conditions"
           isSelected={noConditions}
@@ -79,11 +109,21 @@ export const MedicalConditionsStep = ({ form }) => {
                   return (
                     <Dialog key={condition.id}>
                       <DialogTrigger asChild>
-                        <div>
+                        <div
+                          onClick={(e) => {
+      
+                            if (isConditionSelected("Diabetes")) {
+                              e.preventDefault();
+                              const index = conditions.findIndex(
+                                (c) => c.condition === "Diabetes"
+                              );
+                              removeCondition(index);
+                            }
+                          }}
+                        >
                           <BubbleOption
                             label={condition.label}
-                            isSelected={conditions.some(c => c.condition === "Diabetes")}
-                            onClick={() => {}}
+                            isSelected={isConditionSelected("Diabetes")}
                           />
                         </div>
                       </DialogTrigger>
@@ -97,27 +137,46 @@ export const MedicalConditionsStep = ({ form }) => {
                         <div className={styles.conditionsGrid}>
                           <BubbleOption
                             label="Type 1"
-                            isSelected={conditions.some(c => c.condition === "Diabetes" && c.specification === "Type 1")}
-                            onClick={() => handleAddCondition("Diabetes", "Type 1")}
+                            isSelected={isConditionSelected("Diabetes", "Type 1")}
+                            onClick={() =>
+                              toggleCondition("Diabetes", "Type 1")
+                            }
                           />
                           <BubbleOption
                             label="Type 2"
-                            isSelected={conditions.some(c => c.condition === "Diabetes" && c.specification === "Type 2")}
-                            onClick={() => handleAddCondition("Diabetes", "Type 2")}
+                            isSelected={isConditionSelected("Diabetes", "Type 2")}
+                            onClick={() =>
+                              toggleCondition("Diabetes", "Type 2")
+                            }
                           />
                         </div>
                       </DialogContent>
                     </Dialog>
                   );
-                } else if (condition.requiresSpecification) {
+                }
+
+                else if (condition.requiresSpecification) {
                   return (
-                    <Dialog key={condition.id}>
+                    <Dialog
+                      key={condition.id}
+                      open={dialogOpen}
+                      onOpenChange={setDialogOpen}
+                    >
                       <DialogTrigger asChild>
-                        <div>
+                        <div
+                          onClick={(e) => {
+                            if (isConditionSelected("Other")) {
+                              e.preventDefault();
+                              const index = conditions.findIndex(
+                                (c) => c.condition === "Other"
+                              );
+                              removeCondition(index);
+                            }
+                          }}
+                        >
                           <BubbleOption
                             label={condition.label}
-                            isSelected={conditions.some(c => c.condition === "Other")}
-                            onClick={() => {}}
+                            isSelected={isConditionSelected("Other")}
                           />
                         </div>
                       </DialogTrigger>
@@ -131,28 +190,32 @@ export const MedicalConditionsStep = ({ form }) => {
                         <div className={styles.otherConditionContainer}>
                           <Input
                             value={otherCondition}
-                            onChange={(e) => setOtherCondition(e.target.value)}
+                            onChange={(e) =>
+                              setOtherCondition(e.target.value)
+                            }
                             placeholder="Enter condition"
                           />
-                          <button
+                          <Button
                             className={styles.fullWidthButton}
-                            onClick={() => handleAddCondition("Other", otherCondition)}
+                            onClick={() =>
+                              toggleCondition("Other", otherCondition)
+                            }
                             disabled={!otherCondition.trim()}
                           >
                             Add
-                          </button>
+                          </Button>
                         </div>
                       </DialogContent>
                     </Dialog>
                   );
                 }
-                
+         
                 return (
                   <BubbleOption
                     key={condition.id}
                     label={condition.label}
-                    isSelected={conditions.some(c => c.condition === condition.label)}
-                    onClick={() => handleAddCondition(condition.label)}
+                    isSelected={isConditionSelected(condition.label)}
+                    onClick={() => toggleCondition(condition.label)}
                   />
                 );
               })}
@@ -161,16 +224,16 @@ export const MedicalConditionsStep = ({ form }) => {
             <div className={styles.selectedConditionsContainer}>
               <Label>Selected Conditions:</Label>
               <div className={styles.badgeContainer}>
-                {conditions.map((condition, index) => (
+                {conditions.map((cond, index) => (
                   <Badge
                     key={index}
                     variant="secondary"
                     className={styles.badge}
                   >
-                    {condition.condition}
-                    {condition.specification && ` - ${condition.specification}`}
+                    {cond.condition}
+                    {cond.specification && ` - ${cond.specification}`}
                     <button
-                      onClick={() => handleRemoveCondition(index)}
+                      onClick={() => removeCondition(index)}
                       className={styles.removeButton}
                     >
                       <X className={styles.removeIcon} />

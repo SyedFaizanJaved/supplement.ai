@@ -12,14 +12,17 @@ import { Share2 } from "lucide-react";
 import styles from "./HealthMetrics.module.css";
 import { useAuth } from "../../context/AuthContext";
 
+// Returns headers with authentication token.
 const getAuthHeaders = (token) => ({
   "Content-Type": "application/json",
   Authorization: `Bearer ${token}`,
 });
 
+// Converts a multiline text block (with each line optionally starting with "- ") into a list.
 const processMultilineList = (text) =>
   text.split("\n").filter(Boolean).map((item) => item.replace(/^- /, ""));
 
+// Capitalizes the first letter of a string.
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const HealthMetrics = () => {
@@ -39,13 +42,14 @@ export const HealthMetrics = () => {
     conditions: "",
   });
 
+  // Transform fetched profile data into display-friendly values.
   const transformProfileData = useCallback((data) => {
     return {
       first_name: data.first_name || "",
       last_name: data.last_name || "",
       age: data.age?.toString() || "",
       gender: data.gender === "F" ? "female" : "male",
-      // Format height as "X' Y''"
+      // Format height as "X' Y''" if both values exist.
       height:
         data.height_in_feet && data.height_in_inches
           ? `${data.height_in_feet}' ${data.height_in_inches}''`
@@ -89,9 +93,11 @@ export const HealthMetrics = () => {
     fetchProfile();
   }, [fetchProfile]);
 
+  // Save updated profile data.
   const handleSave = async () => {
     if (!user?.token) return;
     try {
+      // Parse height: expected format "X' Y''"
       const heightRegex = /^(\d+)' ?(\d+)''$/;
       const heightMatch = personalInfo.height.match(heightRegex);
       let height_in_feet = 0;
@@ -100,6 +106,7 @@ export const HealthMetrics = () => {
         height_in_feet = parseInt(heightMatch[1], 10);
         height_in_inches = parseInt(heightMatch[2], 10);
       }
+      // Extract a number from the weight field.
       const weightMatch = personalInfo.weight.match(/(\d+(\.\d+)?)/);
       const weightNumber = weightMatch ? parseFloat(weightMatch[0]) : 0;
 

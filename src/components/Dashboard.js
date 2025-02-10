@@ -16,25 +16,8 @@ export const Dashboard = () => {
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
-  // Replace this with actual admin authentication logic
   const isAdmin = true; 
 
-  // const handleSignUpPrompt = () => {
-  //   toast({
-  //     title: "Create an account to save your progress",
-  //     description:
-  //       "Sign up to unlock all features and track your health journey.",
-  //     action: (
-  //       <button
-  //         onClick={() => navigate("/input")}
-  //         className={styles.signButton}
-  //       >
-  //         Sign Up
-  //       </button>
-  //     ),
-  //     duration: 5000,
-  //   });
-  // };
 
   return (
     <div className={styles.container}>
