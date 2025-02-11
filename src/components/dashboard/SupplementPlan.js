@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
@@ -20,35 +20,13 @@ export const SupplementPlan = () => {
   const [recommendations, setRecommendations] = useState({});
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const { user } = useAuth(); 
+  const { user } = useAuth();
+  // useRef to hold the interval ID so we can clear it later
+  const intervalId = useRef(null);
 
-  useEffect(() => {
-    const fetchSupplements = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/api/v1/supplement-plan/`, {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${user?.token}`, 
-          },
-        });
-        const formattedData = formatSupplementData(response.data);
-        setRecommendations(formattedData);
-      } catch (error) {
-        toast({
-          title: "Generating Plans",
-          description: "Please wait for a while until plans are generated",
-          variant: "Info",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSupplements();
-  }, [toast, user]);
-
+  // Function to format the supplement data
   const formatSupplementData = (data) => {
-    const formatted = {}
+    const formatted = {};
     data.supplements.forEach((item) => {
       formatted[item.name] = {
         Benefits: item.benefits,
@@ -66,6 +44,58 @@ export const SupplementPlan = () => {
     return formatted;
   };
 
+  useEffect(() => {
+    // Function to fetch supplements
+    const fetchSupplements = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/v1/supplement-plan/`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${user?.token}`,
+          },
+        });
+  
+        if (response.status === 200) {
+
+          const formattedData = formatSupplementData(response.data);
+          setRecommendations(formattedData);
+  
+          if (intervalId.current) {
+            clearInterval(intervalId.current);
+            intervalId.current = null;
+          }
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          toast({
+            title: "Generating Plans",
+            description: "Please wait for a while until plans are generated",
+            variant: "Info",
+          });
+        } else {
+          // Handle other errors if needed
+          toast({
+            title: "Error",
+            description: "An error occurred while fetching supplement plans",
+            variant: "destructive",
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchSupplements();
+  
+    intervalId.current = setInterval(fetchSupplements, 10000);
+  
+    return () => {
+      if (intervalId.current) {
+        clearInterval(intervalId.current);
+      }
+    };
+  }, [toast, user]);
+
   const generatePDF = () => {
     const pdf = new jsPDF();
     pdf.setFontSize(15);
@@ -73,7 +103,7 @@ export const SupplementPlan = () => {
     pdf.setFontSize(12);
 
     let yOffset = 40;
-    Object.entries(recommendations).forEach(([name, data], index) => {
+    Object.entries(recommendations).forEach(([name, data]) => {
       if (yOffset > 250) {
         pdf.addPage();
         yOffset = 15;

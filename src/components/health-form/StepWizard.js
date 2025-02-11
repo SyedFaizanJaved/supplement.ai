@@ -134,6 +134,8 @@ const StepWizard = () => {
     if (isSubmitting) return;
     try {
       setIsSubmitting(true);
+      
+      // Filter out valid family members
       const validFamilyMembers = familyMembers.filter(
         (member) =>
           member.first_name.trim() !== "" &&
@@ -142,7 +144,8 @@ const StepWizard = () => {
           member.status === "Unregistered" &&
           member.joined_at === null
       );
-
+  
+      // Format the family data for submission
       const formattedData = {
         ...data,
         family: validFamilyMembers.map(({ first_name, last_name, email }) => ({
@@ -153,19 +156,18 @@ const StepWizard = () => {
           joined_at: null,
         })),
       };
-
+  
       const userData = await registerUser(formattedData);
+      // console.log("Registered user data:", userData);
+  
       authLogin(userData);
-
+  
       toast({
-        title: "Success!",
-        description: "Please complete the payment to create your account.",
+        title: "Registration Successful!",
+        description: "Your account has been created and you're now logged in.",
       });
-
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      const encodedEmail = encodeURIComponent(data.email);
-      const planType = validFamilyMembers.length > 0 ? "family" : "individual";
-      navigate('/login');
+  
+      navigate("/login");
     } catch (error) {
       toast({
         title: "Error",

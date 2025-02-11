@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { HowItWorksModal } from "./HowItWorksModal";
-import { Book, LogIn,LogOut, ShieldCheck } from "lucide-react";
+import { Book, LogIn, LogOut, ShieldCheck } from "lucide-react";
 import { useAuth } from "../context/AuthContext"; 
 import styles from './LandingHero.module.css';
 import { useToast } from "./ui/use-toast";
+
 export const LandingHero = () => {
   const navigate = useNavigate();
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const { toast } = useToast();
-
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
@@ -21,14 +21,6 @@ export const LandingHero = () => {
     });    
     navigate("/"); 
   };
-
-  const handleuser = (user) => {
-    if(user && user.token){
-      navigate("/dashboard");
-    }else{
-      navigate("/input");
-    }
-  }
 
   return (
     <>
@@ -83,21 +75,27 @@ export const LandingHero = () => {
                 <div className={styles.buttonGroup}>
                   <button
                     size="lg"
-                    onClick={handleuser}
+                    onClick={() => navigate("/input")}
                     className={styles.primaryButton}
                   >
                     Get Started →
                   </button>
-              
+                  
                   <button
                     size="lg"
-                    onClick={() => navigate("/dashboard")}
+                    onClick={() => {               
+                      if (user && user.token) {
+                        navigate("/dashboard");
+                      } else {
+                        navigate("/login");
+                      }
+                    }}
                     variant="outline"
                     className={styles.secondaryButton}
                   >
                     Open Dashboard
                   </button>
-                 
+                  
                   <button
                     size="lg"
                     onClick={() => setShowHowItWorks(true)}
@@ -170,3 +168,4 @@ export const LandingHero = () => {
   );
 };
 
+export default LandingHero;

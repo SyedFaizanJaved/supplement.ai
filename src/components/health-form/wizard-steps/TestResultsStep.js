@@ -13,7 +13,7 @@ import {
 } from "../../ui/tooltip";
 import styles from "./TestResultsStep.module.css";
 
-export const TestResultsStep = ({ form }) => {
+export const TestResultsStep = ({ form, onTestChange }) => {
   const { toast } = useToast();
   const [uploading, setUploading] = useState({
     bloodwork: false,
@@ -25,9 +25,12 @@ export const TestResultsStep = ({ form }) => {
 
   const handleFileUpload = async (e, type) => {
     const file = e.target.files?.[0];
+    console.log("File selected:", file);
     if (!file) return;
 
+    // Validate file type
     if (file.type !== "application/pdf") {
+      console.log("Invalid file type:", file.type);
       toast({
         title: "Invalid file type",
         description: "Please upload a PDF file",
@@ -36,79 +39,86 @@ export const TestResultsStep = ({ form }) => {
       return;
     }
 
+    const field = type === "bloodwork" ? "bloodWorkFiles" : "geneticTestFiles";
+    const currentFiles = form.getValues(field) || [];
+    console.log(`Current files for ${field}:`, currentFiles);
+
+    // If a file already exists, prevent further uploads.
+    if (currentFiles.length > 0) {
+      console.log(`A file has already been uploaded for ${field}.`);
+      toast({
+        title: "File already uploaded",
+        description: `You have already uploaded your ${type === "bloodwork" ? "blood work" : "genetic testing"} result.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setUploading((prev) => ({ ...prev, [type]: true }));
+    console.log(`Uploading started for ${type}`);
 
     try {
-      // Convert file to base64
-      const base64File = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      });
+      form.setValue(field, [file]);
+      console.log(`Stored file in form state under ${field}:`, form.getValues(field));
 
-      // Update form with file data
-      const field = type === "bloodwork" ? "bloodWorkFiles" : "geneticTestFiles";
-      const fileData = {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        content: base64File
-      };
-      
-      // Store single file instead of array
-      form.setValue(field, fileData);
-      
-      // Set flag indicating file was uploaded
-      form.setValue(type === "bloodwork" ? "hasBloodwork" : "hasGeneticTesting", true);
+      form.setValue(
+        type === "bloodwork" ? "hasBloodwork" : "hasGeneticTesting",
+        true
+      );
+      console.log(`Set ${type === "bloodwork" ? "hasBloodwork" : "hasGeneticTesting"} to true`);
 
       toast({
-        title: "File uploaded successfully",
-        description: `Your ${type === "bloodwork" ? "blood work" : "genetic testing"} results have been uploaded.`,
+        title: "File queued for upload",
+        description: `Your ${type === "bloodwork" ? "blood work" : "genetic testing"} result will be uploaded with your registration.`,
       });
+
+      if (onTestChange) {
+        onTestChange(type, file);
+      }
     } catch (error) {
       console.error("Upload error:", error);
       toast({
-        title: "Upload failed",
-        description: error.message || "There was an error uploading your file.",
+        title: "File selection failed",
+        description: error.message || "There was an error selecting your file.",
         variant: "destructive",
       });
-      
-      // Clear form values on error
-      const field = type === "bloodwork" ? "bloodWorkFiles" : "geneticTestFiles";
-      form.setValue(field, null);
-      form.setValue(type === "bloodwork" ? "hasBloodwork" : "hasGeneticTesting", false);
     } finally {
       setUploading((prev) => ({ ...prev, [type]: false }));
+      console.log(`Uploading finished for ${type}`);
     }
   };
 
   return (
     <div className={styles.container}>
-      {/* Rest of the JSX remains the same */}
       <div className={styles.uploadGrid}>
+        {/* Blood Test Upload Section */}
         <div className={styles.uploadSection}>
-          <Label className={styles.sectionTitle}>Blood Test Results</Label>
+          <Label className={styles.sectionTitle}>Blood Test Results </Label>
           <div className={styles.uploadBox}>
             <Upload className={styles.uploadIcon} />
-            <div>
-              <Label htmlFor="bloodwork" className={styles.uploadLabel}>
-                Upload your blood test results
-              </Label>
-              <input
-                type="file"
-                id="bloodwork"
-                accept=".pdf"
-                className={styles.hiddenInput}
-                onChange={(e) => handleFileUpload(e, "bloodwork")}
-                disabled={uploading.bloodwork || noTestsYet || proceedWithoutTests}
-              />
-            </div>
+
+            <Label htmlFor="bloodwork" className={styles.uploadLabel}>
+              Upload your blood test results
+            </Label>
+            <input
+              type="file"
+              id="bloodwork"
+              accept=".pdf"
+              className={styles.hiddenInput}
+              onChange={(e) => handleFileUpload(e, "bloodwork")}
+              {...form.register("bloodWorkFiles")}
+              
+            />
             <Button
               variant="outline"
               className={styles.uploadButton}
               onClick={() => document.getElementById("bloodwork")?.click()}
-              disabled={uploading.bloodwork || noTestsYet || proceedWithoutTests}
+              disabled={
+                uploading.bloodwork ||
+                noTestsYet ||
+                proceedWithoutTests ||
+                (form.getValues("bloodWorkFiles")?.length > 0)
+              }
             >
               {uploading.bloodwork ? (
                 <>
@@ -125,6 +135,7 @@ export const TestResultsStep = ({ form }) => {
           </div>
         </div>
 
+        {/* Genetic Test Upload Section */}
         <div className={styles.uploadSection}>
           <div className={styles.titleWithTooltip}>
             <Label className={styles.sectionTitle}>Genetic Test Results</Label>
@@ -147,24 +158,29 @@ export const TestResultsStep = ({ form }) => {
           </div>
           <div className={styles.uploadBox}>
             <Upload className={styles.uploadIcon} />
-            <div>
-              <Label htmlFor="genetic" className={styles.uploadLabel}>
-                Upload your genetic test results
-              </Label>
-              <input
-                type="file"
-                id="genetic"
-                accept=".pdf"
-                className={styles.hiddenInput}
-                onChange={(e) => handleFileUpload(e, "genetic")}
-                disabled={uploading.genetic || noTestsYet || proceedWithoutTests}
-              />
-            </div>
+
+            <Label htmlFor="genetic" className={styles.uploadLabel}>
+              Upload your genetic test results
+            </Label>
+            <input
+              type="file"
+              id="genetic"
+              accept=".pdf"
+              className={styles.hiddenInput}
+              onChange={(e) => handleFileUpload(e, "genetic")}
+              {...form.register("geneticTestFiles")}
+            />
             <Button
               variant="outline"
               className={styles.uploadButton}
               onClick={() => document.getElementById("genetic")?.click()}
-              disabled={uploading.genetic || noTestsYet || proceedWithoutTests}
+              disabled={
+                uploading.genetic ||
+                noTestsYet ||
+                proceedWithoutTests ||
+                (form.getValues("geneticTestFiles")?.length > 0)
+              }
+
             >
               {uploading.genetic ? (
                 <>
@@ -182,6 +198,7 @@ export const TestResultsStep = ({ form }) => {
         </div>
       </div>
 
+      {/* Biomarker Concerns Section */}
       <div className={styles.biomarkerSection}>
         <Label className={styles.sectionTitle}>
           Describe any Biomarkers or Genetic Data you are concerned with specifically (Optional)
@@ -194,6 +211,7 @@ export const TestResultsStep = ({ form }) => {
         />
       </div>
 
+      {/* Compatible Providers Section */}
       <div className={styles.providersSection}>
         <p className={styles.providersTitle}>Compatible with</p>
         <div className={styles.providersGrid}>
@@ -206,6 +224,7 @@ export const TestResultsStep = ({ form }) => {
         <p className={styles.providersSubtitle}>+ many more!</p>
       </div>
 
+      {/* Checkbox Section */}
       <div className={styles.checkboxSection}>
         <div className={styles.checkboxGroup}>
           <div className={styles.checkboxWrapper}>
@@ -215,8 +234,6 @@ export const TestResultsStep = ({ form }) => {
               onCheckedChange={(checked) => {
                 setNoTestsYet(checked);
                 if (checked) {
-                  form.setValue("bloodWorkFiles", null);
-                  form.setValue("geneticTestFiles", null);
                   form.setValue("hasBloodwork", false);
                   form.setValue("hasGeneticTesting", false);
                 }
@@ -235,8 +252,6 @@ export const TestResultsStep = ({ form }) => {
                 setProceedWithoutTests(checked);
                 if (checked) {
                   setNoTestsYet(false);
-                  form.setValue("bloodWorkFiles", null);
-                  form.setValue("geneticTestFiles", null);
                   form.setValue("hasBloodwork", false);
                   form.setValue("hasGeneticTesting", false);
                 }

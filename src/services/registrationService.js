@@ -64,7 +64,7 @@ export const registerUser = async (formData) => {
     "phoneNumber",
     "age",
     "gender",
-    "height", 
+    "height",
     "weight",
   ];
   for (const field of requiredFields) {
@@ -76,11 +76,20 @@ export const registerUser = async (formData) => {
     }
   }
 
+  // Build the user goals array.
   const predefinedGoals = (formData.healthGoals || []).map((goalKey) => {
-    return healthGoalDetails[goalKey] || {
+    if (healthGoalDetails[goalKey]) {
+      return {
+        name: healthGoalDetails[goalKey].name,
+        description: healthGoalDetails[goalKey].description,
+        category: healthGoalDetails[goalKey].category,
+      };
+    }
+    // Fallback if the key is not found.
+    return {
       name: goalKey,
       description: "",
-      category: "wellness",
+      category: "",
     };
   });
   const customGoals = (formData.otherHealthGoals || []).map((goal) => ({
@@ -90,75 +99,73 @@ export const registerUser = async (formData) => {
   }));
   const userGoals = [...predefinedGoals, ...customGoals];
 
-  const transformedMedicalConditions = (formData.medicalConditions || []).map(
-    (condition) =>
-      condition.specification
-        ? `${condition.condition} - ${condition.specification}`
-        : condition.condition
+  if (userGoals.length === 0) {
+    throw new Error("At least one user goal is required.");
+  }
+
+  // Transform medical conditions if needed.
+  const medicalConditions = (formData.medicalConditions || []).map((condition) =>
+    condition.specification
+      ? `${condition.condition} - ${condition.specification}`
+      : condition.condition
   );
 
+  // Convert height from centimeters to feet and inches.
   const totalInches = Math.round(Number(formData.height) / 2.54);
   const heightFeet = Math.floor(totalInches / 12);
   const heightInches = totalInches % 12;
 
-  const payload = {
-    email: formData.email,
-    password: formData.password,
-    first_name: formData.firstName,
-    last_name: formData.lastName,
-    phone_number: formData.phoneNumber,
-    user_goals: userGoals.map((goal) => ({
-      name: goal.name,
-      description: goal.description,
-      category: goal.category,
-      target: 1, 
-      progress: 0,
-    })),
-    age: parseInt(formData.age, 10),
-    gender: formData.gender === "male" ? "M" : "F",
-    height_in_feet: parseFloat(heightFeet),
-    height_in_inches: heightInches,
-    weight: parseFloat(formData.weight),
-    activity_level: mapActivityLevel(formData.activityLevel),
-    allergies: formData.allergies,
-    medical_conditions: transformedMedicalConditions,
-    current_medications: formData.currentMedications,
-    diet_restriction: mapDietType(formData.dietType),
-    smoking_status: mapSmokingStatus(formData.smokingStatus),
-    alcohol_consumption: mapAlcoholConsumption(formData.alcoholConsumption),
-    monthly_budget: mapBudget(formData.monthlyBudget),
-    blood_work_test:
-      (formData.bloodWorkFiles || []).length > 0
-        ? formData.bloodWorkFiles
-        : null,
-    genetic_test:
-      (formData.geneticTestFiles || []).length > 0
-        ? formData.geneticTestFiles
-        : null,
-  };
+  // Create a new FormData object.
+  const payload = new FormData();
+  payload.append("email", formData.email);
+  payload.append("password", formData.password);
+  payload.append("first_name", formData.firstName);
+  payload.append("last_name", formData.lastName);
+  payload.append("phone_number", formData.phoneNumber);
+  payload.append("user_goals", JSON.stringify(userGoals));
+  payload.append("age", parseInt(formData.age, 10));
+  payload.append("gender", formData.gender === "male" ? "M" : "F");
+  payload.append("height_in_feet", heightFeet);
+  payload.append("height_in_inches", heightInches);
+  payload.append("weight", parseFloat(formData.weight));
+  payload.append("activity_level", mapActivityLevel(formData.activityLevel));
+  payload.append("allergies", JSON.stringify(formData.allergies));
+  payload.append("medical_conditions", JSON.stringify(medicalConditions));
+  payload.append("current_medications", JSON.stringify(formData.currentMedications));
+  payload.append("diet_restriction", mapDietType(formData.dietType));
+  payload.append("smoking_status", mapSmokingStatus(formData.smokingStatus));
+  payload.append("alcohol_consumption", mapAlcoholConsumption(formData.alcoholConsumption));
+  payload.append("monthly_budget", mapBudget(formData.monthlyBudget));
+  payload.append("sleep_hours", parseFloat(formData.sleepHours));
 
   if (formData.family && formData.family.length > 0) {
-    payload.family = formData.family.map((member) => ({
-      first_name: member.first_name,
-      last_name: member.last_name,
-      email: member.email,
-    }));
+    payload.append("family", JSON.stringify(formData.family));
   } else if (formData.referralCode) {
-    payload.referral_code = formData.referralCode;
+    payload.append("referral_code", formData.referralCode);
+  }
+
+  if (formData.bloodWorkFiles && formData.bloodWorkFiles.length > 0) {
+    const bloodFile = formData.bloodWorkFiles[0];
+    console.log("Appending blood work file:", bloodFile);
+    payload.append("blood_work_test", bloodFile, bloodFile.name);
+  } else {
+    console.log("No blood work file found.");
+  }
+
+  if (formData.geneticTestFiles && formData.geneticTestFiles.length > 0) {
+    const geneticFile = formData.geneticTestFiles[0];
+    console.log("Appending genetic test file:", geneticFile);
+    payload.append("genetic_test", geneticFile, geneticFile.name);
+  } else {
+    console.log("No genetic test file found.");
   }
 
   try {
-    const response = await axios.post(
-      `${API_URL}/api/v1/auth/register/`,
-      payload
-    );
+    const response = await axios.post(`${API_URL}/api/v1/auth/register/`, payload);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
-      throw new Error(
-        error.response.data.message ||
-          "Registration failed, possibly due to duplicate email or phone number."
-      );
+      throw new Error(error.response.data.message);
     }
     throw new Error("Network error occurred");
   }

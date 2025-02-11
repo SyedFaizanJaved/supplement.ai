@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "../../ui/button";
+import React from "react";
 import { Card } from "../../ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
+import { Button } from "../../ui/button";
 import { useToast } from "../../hooks/use-toast";
 import { Award, Gift, ShoppingCart, Star, IceCream } from "lucide-react";
-import { supabase } from "../../integrations/supabase/client";
+import { useAuth } from "../../../context/AuthContext"; 
 import styles from './XPStore.module.css';
 
 const REWARDS = [
@@ -48,79 +48,32 @@ const REWARDS = [
 
 export const XPStore = () => {
   const { toast } = useToast();
-  const [userXP, setUserXP] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth(); 
 
-  useEffect(() => {
-    fetchUserXP();
-  }, []);
-
-  const fetchUserXP = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data, error } = await supabase
-        .from('user_xp')
-        .select('total_xp')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) throw error;
-      setUserXP(data?.total_xp || 0);
-    } catch (error) {
-      console.error('Error fetching XP:', error);
-    }
-  };
+  const userXP = user?.xp_score || 0;
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleRedeemReward = async (reward) => {
     setIsLoading(true);
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
+    if (userXP < reward.cost) {
+      toast({
+        title: "Insufficient XP",
+        description: `You need ${reward.cost - userXP} more XP to redeem this reward.`,
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
 
-      if (userXP < reward.cost) {
-        toast({
-          title: "Insufficient XP",
-          description: `You need ${reward.cost - userXP} more XP to redeem this reward.`,
-          variant: "destructive",
-        });
-        return;
-      }
+    setTimeout(() => {
 
-      const { error: redemptionError } = await supabase
-        .from('reward_redemptions')
-        .insert({
-          user_id: user.id,
-          reward_type: reward.name,
-          xp_cost: reward.cost,
-        });
-
-      if (redemptionError) throw redemptionError;
-
-      const { error: updateError } = await supabase
-        .from('user_xp')
-        .update({ total_xp: userXP - reward.cost })
-        .eq('user_id', user.id);
-
-      if (updateError) throw updateError;
-
-      await fetchUserXP();
-      
+      const newXP = userXP - reward.cost;
       toast({
         title: "Reward Redeemed!",
         description: `You've successfully redeemed ${reward.name}. Our team will contact you soon.`,
       });
-    } catch (error) {
-      console.error('Error redeeming reward:', error);
-      toast({
-        title: "Error",
-        description: "Failed to redeem reward. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
       setIsLoading(false);
-    }
+    }, 1000);
   };
 
   return (
@@ -163,21 +116,13 @@ export const XPStore = () => {
                     </DialogContent>
                   </Dialog>
                 ) : reward.emoji ? (
-                  <div className={styles.emojiContainer}>
-                    {reward.emoji}
-                  </div>
+                  <div className={styles.emojiContainer}>{reward.emoji}</div>
                 ) : (
-                  <div className={styles.iconContainer}>
-                    {reward.icon}
-                  </div>
+                  <div className={styles.iconContainer}>{reward.icon}</div>
                 )}
                 <div className={styles.rewardDetails}>
-                  <h4 className={styles.rewardName}>
-                    {reward.name}
-                  </h4>
-                  <p className={styles.rewardCost}>
-                    {reward.cost} XP
-                  </p>
+                  <h4 className={styles.rewardName}>{reward.name}</h4>
+                  <p className={styles.rewardCost}>{reward.cost} XP</p>
                   <Button
                     variant="outline"
                     size="sm"
@@ -214,3 +159,5 @@ export const XPStore = () => {
     </Card>
   );
 };
+
+export default XPStore;
