@@ -22,7 +22,7 @@ import { TestResultsStep } from "./wizard-steps/TestResultsStep";
 import { BudgetStep } from "./wizard-steps/BudgetStep";
 import { FinalStep } from "./wizard-steps/FinalStep";
 import FamilyPlanPage from "../../pages/FamilyPlanPage";
-import { useAuth } from "../../context/AuthContext"; 
+import { useAuth } from "../../context/AuthContext";
 import styles from "./StepWizard.module.css";
 
 const steps = [
@@ -57,6 +57,33 @@ const stepFieldMapping = [
   [],
 ];
 
+// schema
+const defaultValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+  password: "",
+  age: "",
+  gender: "male",
+  height: "",
+  family: [],
+  weight: "",
+  activityLevel: "sedentary",
+  medicalConditions: [],
+  allergies: [],
+  currentMedications: [],
+  bloodWorkFiles: [],
+  geneticTestFiles: [],
+  healthGoals: [],
+  otherHealthGoals: [],
+  monthlyBudget: "",
+  dietType: "healthy_balanced",
+  sleepHours: "",
+  smokingStatus: "non_smoker",
+  alcoholConsumption: "none",
+};
+
 const StepWizard = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,32 +94,7 @@ const StepWizard = () => {
 
   const form = useForm({
     resolver: zodResolver(healthFormSchema),
-    mode: "onChange",
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      password: "",
-      age: "",
-      gender: "male",
-      height: "",
-      family: [],
-      weight: "",
-      activityLevel: "sedentary",
-      medicalConditions: [],
-      allergies: [],
-      currentMedications: [],
-      bloodWorkFiles: [],
-      geneticTestFiles: [],
-      healthGoals: [],
-      otherHealthGoals: [],
-      monthlyBudget: "",
-      dietType: "healthy_balanced",
-      sleepHours: "",
-      smokingStatus: "non_smoker",
-      alcoholConsumption: "none",
-    },
+    defaultValues,
   });
 
   useEffect(() => {
@@ -121,8 +123,7 @@ const StepWizard = () => {
     if (!isValid) {
       toast({
         title: "Incomplete Form",
-        description:
-          "Please review the required fields.",
+        description: "Please review the required fields.",
         variant: "destructive",
       });
       return;
@@ -130,12 +131,11 @@ const StepWizard = () => {
     setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
   };
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async () => {
+    const data = form.getValues();
     if (isSubmitting) return;
     try {
       setIsSubmitting(true);
-      
-      // Filter out valid family members
       const validFamilyMembers = familyMembers.filter(
         (member) =>
           member.first_name.trim() !== "" &&
@@ -144,8 +144,7 @@ const StepWizard = () => {
           member.status === "Unregistered" &&
           member.joined_at === null
       );
-  
-      // Format the family data for submission
+      console.log("data----", data);
       const formattedData = {
         ...data,
         family: validFamilyMembers.map(({ first_name, last_name, email }) => ({
@@ -156,17 +155,18 @@ const StepWizard = () => {
           joined_at: null,
         })),
       };
-  
+
       const userData = await registerUser(formattedData);
-      // console.log("Registered user data:", userData);
-  
       authLogin(userData);
-  
+
       toast({
-        title: "Registration Successful!",
-        description: "Your account has been created and you're now logged in.",
+        title: "Success!",
+        description: "Please login to your account.",
       });
-  
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const encodedEmail = encodeURIComponent(data.email);
+      const planType = validFamilyMembers.length > 0 ? "family" : "individual";
       navigate("/login");
     } catch (error) {
       toast({
@@ -221,7 +221,7 @@ const StepWizard = () => {
             form={form}
             formData={formData}
             isSubmitting={isSubmitting}
-            onSubmit={form.handleSubmit(handleSubmit)}
+          // onSubmit={form.handleSubmit(handleSubmit)}
           />
         );
       default:
@@ -246,16 +246,17 @@ const StepWizard = () => {
         </div>
 
         <Form {...form}>
-          <form onSubmit={(e) => e.preventDefault()} className={styles.form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className={styles.form}
+          >
             <div className={styles.stepContent}>{renderStep()}</div>
 
             <div className={styles.buttonContainer}>
               <Button
                 type="button"
                 variant="outline"
-                onClick={() =>
-                  setCurrentStep((prev) => Math.max(prev - 1, 0))
-                }
+                onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 0))}
                 disabled={currentStep === 0}
                 className={styles.previousButton}
               >

@@ -104,10 +104,11 @@ export const registerUser = async (formData) => {
   }
 
   // Transform medical conditions if needed.
-  const medicalConditions = (formData.medicalConditions || []).map((condition) =>
-    condition.specification
-      ? `${condition.condition} - ${condition.specification}`
-      : condition.condition
+  const medicalConditions = (formData.medicalConditions || []).map(
+    (condition) =>
+      condition.specification
+        ? `${condition.condition} - ${condition.specification}`
+        : condition.condition
   );
 
   // Convert height from centimeters to feet and inches.
@@ -115,7 +116,10 @@ export const registerUser = async (formData) => {
   const heightFeet = Math.floor(totalInches / 12);
   const heightInches = totalInches % 12;
 
+  console.log("Form Data in registerUser:", formData);
+
   // Create a new FormData object.
+
   const payload = new FormData();
   payload.append("email", formData.email);
   payload.append("password", formData.password);
@@ -131,18 +135,19 @@ export const registerUser = async (formData) => {
   payload.append("activity_level", mapActivityLevel(formData.activityLevel));
   payload.append("allergies", JSON.stringify(formData.allergies));
   payload.append("medical_conditions", JSON.stringify(medicalConditions));
-  payload.append("current_medications", JSON.stringify(formData.currentMedications));
+  payload.append(
+    "current_medications",
+    JSON.stringify(formData.currentMedications)
+  );
   payload.append("diet_restriction", mapDietType(formData.dietType));
   payload.append("smoking_status", mapSmokingStatus(formData.smokingStatus));
-  payload.append("alcohol_consumption", mapAlcoholConsumption(formData.alcoholConsumption));
+  payload.append(
+    "alcohol_consumption",
+    mapAlcoholConsumption(formData.alcoholConsumption)
+  );
   payload.append("monthly_budget", mapBudget(formData.monthlyBudget));
   payload.append("sleep_hours", parseFloat(formData.sleepHours));
-
-  if (formData.family && formData.family.length > 0) {
-    payload.append("family", JSON.stringify(formData.family));
-  } else if (formData.referralCode) {
-    payload.append("referral_code", formData.referralCode);
-  }
+  // ------------------------------
 
   if (formData.bloodWorkFiles && formData.bloodWorkFiles.length > 0) {
     const bloodFile = formData.bloodWorkFiles[0];
@@ -160,8 +165,18 @@ export const registerUser = async (formData) => {
     console.log("No genetic test file found.");
   }
 
+  // -----------------------------
+  if (formData.family && formData.family.length > 0) {
+    payload.append("family", JSON.stringify(formData.family));
+  } else if (formData.referralCode) {
+    payload.append("referral_code", formData.referralCode);
+  }
+
   try {
-    const response = await axios.post(`${API_URL}/api/v1/auth/register/`, payload);
+    const response = await axios.post(
+      `${API_URL}/api/v1/auth/register/`,
+      payload
+    );
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
