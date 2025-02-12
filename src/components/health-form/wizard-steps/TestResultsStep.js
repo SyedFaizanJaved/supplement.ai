@@ -25,28 +25,49 @@ export const TestResultsStep = ({ form }) => {
   const [proceedWithoutTests, setProceedWithoutTests] = useState(false);
   const [biomarkerConcerns, setBiomarkerConcerns] = useState("");
 
+  // State to hold the uploaded file names so they can be displayed.
+  const [bloodFileName, setBloodFileName] = useState("");
+  const [geneticFileName, setGeneticFileName] = useState("");
+
   const handleBloodFile = (e, field) => {
     const files = e.target.files;
-    field.onChange([...files]);
-    toast({
+    if (files && files.length > 0) {
+      setBloodFileName(files[0].name);
+      field.onChange([...files]);
+      toast({
         title: "File uploaded successfully",
-        description: "Your blood test files has been uploaded",
+        description: "Your blood test file has been uploaded",
       });
+    }
   };
 
   const handleGeneticFile = (e, field) => {
     const files = e.target.files;
-    field.onChange([...files]);
-    toast({
-      title: "File uploaded successfully",
-      description: "Your genetic test files has been uploaded",
-    });
+    if (files && files.length > 0) {
+      setGeneticFileName(files[0].name);
+      field.onChange([...files]);
+      toast({
+        title: "File uploaded successfully",
+        description: "Your genetic test file has been uploaded",
+      });
+    }
+  };
+
+  // Remove functions clear both the form field value and the local file name.
+  const handleRemoveBloodFile = () => {
+    setBloodFileName("");
+    form.setValue("bloodWorkFiles", null);
+  };
+
+  const handleRemoveGeneticFile = () => {
+    setGeneticFileName("");
+    form.setValue("geneticTestFiles", null);
   };
 
   return (
     <div className={styles.container}>
-      {/* Rest of the JSX remains the same */}
       <div className={styles.uploadGrid}>
+        {/* Blood Test Results Upload Section */}
         <div className={styles.uploadSection}>
           <Label className={styles.sectionTitle}>Blood Test Results</Label>
           <div className={styles.uploadBox}>
@@ -85,6 +106,16 @@ export const TestResultsStep = ({ form }) => {
                   <Loader2 className={styles.buttonIcon} />
                   Uploading...
                 </>
+              ) : bloodFileName ? (
+                <div className={styles.fileContainer}>
+                  <span className={styles.fileName}>{bloodFileName}</span>
+                  <span
+                    className={styles.removeFile}
+                    onClick={handleRemoveBloodFile}
+                  >
+                    ×
+                  </span>
+                </div>
               ) : (
                 <>
                   <Upload className={styles.buttonIcon} />
@@ -95,6 +126,7 @@ export const TestResultsStep = ({ form }) => {
           </div>
         </div>
 
+        {/* Genetic Test Results Upload Section */}
         <div className={styles.uploadSection}>
           <div className={styles.titleWithTooltip}>
             <Label className={styles.sectionTitle}>Genetic Test Results</Label>
@@ -132,7 +164,7 @@ export const TestResultsStep = ({ form }) => {
                     className={styles.hiddenInput}
                     onChange={(e) => handleGeneticFile(e, field)}
                     disabled={
-                      uploading.bloodwork || noTestsYet || proceedWithoutTests
+                      uploading.genetic || noTestsYet || proceedWithoutTests
                     }
                   />
                 )}
@@ -142,13 +174,25 @@ export const TestResultsStep = ({ form }) => {
               variant="outline"
               className={styles.uploadButton}
               onClick={() => document.getElementById("genetic")?.click()}
-              disabled={uploading.genetic || noTestsYet || proceedWithoutTests}
+              disabled={
+                uploading.genetic || noTestsYet || proceedWithoutTests
+              }
             >
               {uploading.genetic ? (
                 <>
                   <Loader2 className={styles.buttonIcon} />
                   Uploading...
                 </>
+              ) : geneticFileName ? (
+                <div className={styles.fileContainer}>
+                  <span className={styles.fileName}>{geneticFileName}</span>
+                  <span
+                    className={styles.removeFile}
+                    onClick={handleRemoveGeneticFile}
+                  >
+                    ×
+                  </span>
+                </div>
               ) : (
                 <>
                   <Upload className={styles.buttonIcon} />
@@ -218,6 +262,8 @@ export const TestResultsStep = ({ form }) => {
                   form.setValue("geneticTestFiles", null);
                   form.setValue("hasBloodwork", false);
                   form.setValue("hasGeneticTesting", false);
+                  setBloodFileName("");
+                  setGeneticFileName("");
                 }
               }}
             />
@@ -238,6 +284,8 @@ export const TestResultsStep = ({ form }) => {
                   form.setValue("geneticTestFiles", null);
                   form.setValue("hasBloodwork", false);
                   form.setValue("hasGeneticTesting", false);
+                  setBloodFileName("");
+                  setGeneticFileName("");
                 }
               }}
             />

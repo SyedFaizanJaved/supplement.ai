@@ -144,7 +144,7 @@ const StepWizard = () => {
           member.status === "Unregistered" &&
           member.joined_at === null
       );
-      console.log("data----", data);
+      // console.log("data----", data);
       const formattedData = {
         ...data,
         family: validFamilyMembers.map(({ first_name, last_name, email }) => ({

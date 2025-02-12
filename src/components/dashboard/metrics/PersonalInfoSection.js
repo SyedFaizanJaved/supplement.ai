@@ -50,7 +50,7 @@ export const PersonalInfoSection = ({
         </div>
 
         <div className={styles.field}>
-          <label className={styles.label}>Height</label>
+          <label className={styles.label}>Height (feet' inches'')</label>
           {isEditing ? (
             <Input
               value={personalInfo.height}
@@ -65,7 +65,7 @@ export const PersonalInfoSection = ({
         </div>
 
         <div className={styles.field}>
-          <label className={styles.label}>Weight</label>
+          <label className={styles.label}>Weight (lbs)</label>
           {isEditing ? (
             <Input
               value={personalInfo.weight}

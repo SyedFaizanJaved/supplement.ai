@@ -116,7 +116,7 @@ export const registerUser = async (formData) => {
   const heightFeet = Math.floor(totalInches / 12);
   const heightInches = totalInches % 12;
 
-  console.log("Form Data in registerUser:", formData);
+  // console.log("Form Data in registerUser:", formData);
 
   // Create a new FormData object.
 

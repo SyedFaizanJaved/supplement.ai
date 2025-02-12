@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { Button } from "../../ui/button";
-import { Users, ArrowRight, Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import {  ArrowRight, Loader2 } from "lucide-react";
 import styles from "./FinalStep.module.css";
 
 export const FinalStep = ({ form, formData, isSubmitting, onSubmit }) => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const navigate = useNavigate();
 
   const handleCheckboxChange = (event) => {
     setAcceptedTerms(event.target.checked);
   };
 
-  React.useEffect(() => {
-    console.log("form-data", formData);
-  }, [formData]);
+  // React.useEffect(() => {
+  //   console.log("form-data", formData);
+  // }, [formData]);
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();

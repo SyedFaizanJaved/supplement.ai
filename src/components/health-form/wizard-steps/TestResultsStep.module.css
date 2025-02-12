@@ -10,6 +10,27 @@
   gap: 24px;
 }
 
+.fileContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; 
+}
+
+.fileName {
+  max-width: 150px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.removeFile {
+  cursor: pointer;
+  color: #324154; /* Or any color of your choice */
+  font-weight: bold;
+}
+
+
 @media (min-width: 768px) {
   .uploadGrid {
     grid-template-columns: 1fr 1fr;

@@ -8,30 +8,62 @@ import styles from "./BasicMetricsInputs.module.css";
 export const BasicMetricsInputs = ({ form }) => {
   const [feet, setFeet] = useState("");
   const [inches, setInches] = useState("");
-
+  const [heightError, setHeightError] = useState("");
 
   const updateHeight = (newFeet, newInches) => {
-    const totalInches = (parseInt(newFeet, 10) || 0) * 12 + (parseInt(newInches, 10) || 0);
-    const cm = Math.round(totalInches * 2.54);
-    form.setValue("height", cm.toString());
+    const f = parseInt(newFeet, 10) || 0;
+    const i = parseInt(newInches, 10) || 0;
+
+    if (f > 8 || (f === 8 && i > 0)) {
+      setHeightError("Height cannot exceed 8'0\"");
+      form.setValue("height", "");
+      return;
+    } else {
+      setHeightError("");
+      const totalInches = f * 12 + i;
+      const cm = Math.round(totalInches * 2.54);
+      form.setValue("height", cm.toString());
+    }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.row}>
+        {/* Age Field with validation */}
         <FormField
           control={form.control}
           name="age"
+          rules={{
+            max: { value: 110, message: "Age cannot exceed 110 years" },
+          }}
           render={({ field }) => (
             <FormItem className={styles.ageField}>
               <FormLabel>Age</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Enter age" />
+                <Input
+                  {...field}
+                  type="number"
+                  placeholder="Enter age"
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    field.onChange(val);
+                    if (parseInt(val, 10) > 110) {
+                      form.setError("age", { message: "Age cannot exceed 110 years" });
+                    } else {
+                      form.clearErrors("age");
+                    }
+                  }}
+                />
               </FormControl>
-              <FormMessage />
+              <span className={styles.formMessage}>
+                <FormMessage />
+              </span>
             </FormItem>
+
           )}
         />
+
+        {/* Gender Field */}
         <FormField
           control={form.control}
           name="gender"
@@ -61,6 +93,7 @@ export const BasicMetricsInputs = ({ form }) => {
       </div>
 
       <div className={styles.row}>
+        {/* Height Fields */}
         <div className={styles.heightContainer}>
           <Label>Height</Label>
           <div className={styles.heightInputs}>
@@ -87,15 +120,34 @@ export const BasicMetricsInputs = ({ form }) => {
               />
             </div>
           </div>
+          {heightError && <span className={styles.errorMessage}>{heightError}</span>}
         </div>
+
+        {/* Weight Field with validation */}
         <FormField
           control={form.control}
           name="weight"
+          rules={{
+            max: { value: 600, message: "Weight cannot exceed 600 lbs" },
+          }}
           render={({ field }) => (
             <FormItem className={styles.weightField}>
               <FormLabel>Weight (lbs)</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Enter weight in lbs" />
+                <Input
+                  {...field}
+                  type="number"
+                  placeholder="Enter weight in lbs"
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    field.onChange(val);
+                    if (parseFloat(val) > 600) {
+                      form.setError("weight", { message: "Weight cannot exceed 600 lbs" });
+                    } else {
+                      form.clearErrors("weight");
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

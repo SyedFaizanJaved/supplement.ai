@@ -1,81 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from "react";
 import { Button } from "../../ui/button";
 import { Upload, ShoppingCart, Loader2 } from "lucide-react";
 import { useToast } from "../../ui/use-toast";
-import { supabase } from "../../integrations/supabase/client";
-import styles from './LabTestsSection.module.css';
+import styles from "./LabTestsSection.module.css";
 
-export const LabTestsSection = () => {
+export const LabTestsSection = ({
+  bloodTestFile,
+  geneticTestFile,
+  onBloodTestUpload,
+  onGeneticTestUpload,
+}) => {
   const { toast } = useToast();
-  const [isUploading, setIsUploading] = useState(false);
 
-  const handleFileUpload = async (event) => {
+  const [uploading, setUploading] = useState({
+    blood: false,
+    genetic: false,
+  });
+
+  // Create refs for the hidden file inputs.
+  const bloodInputRef = useRef(null);
+  const geneticInputRef = useRef(null);
+
+  const handleBloodFile = (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     if (file.type !== "application/pdf") {
       toast({
         title: "Invalid file type",
-        description: "Please upload a PDF file",
+        description: "Please upload a PDF file.",
         variant: "destructive",
       });
       return;
     }
 
-    setIsUploading(true);
-
-    try {
-      // First, upload the file to Supabase Storage
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      const filePath = `lab_results/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('health_files')
-        .upload(filePath, file);
-
-      if (uploadError) {
-        throw new Error('Failed to upload file');
-      }
-
-      // Now call the process-lab-results function
-      const { data: session } = await supabase.auth.getSession();
-      if (!session?.session?.access_token) {
-        throw new Error('No authentication session found');
-      }
-
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await supabase.functions.invoke('process-lab-results', {
-        body: formData,
-      });
-
-      if (response.error) {
-        throw new Error(response.error.message);
-      }
-
+    setUploading((prev) => ({ ...prev, blood: true }));
+    // Simulate file upload delay.
+    setTimeout(() => {
       toast({
-        title: "Lab results uploaded successfully",
-        description: "Your results are being processed and will be available shortly.",
+        title: "File uploaded successfully",
+        description: "Your lab test file has been uploaded.",
       });
+      setUploading((prev) => ({ ...prev, blood: false }));
+      // Pass the file object up to the parent.
+      onBloodTestUpload(file);
+    }, 1500);
+  };
 
-    } catch (error) {
-      console.error('Upload error:', error);
+  const handleGeneticFile = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
       toast({
-        title: "Upload failed",
-        description: error.message || "There was an error uploading your lab results.",
+        title: "Invalid file type",
+        description: "Please upload a PDF file.",
         variant: "destructive",
       });
-    } finally {
-      setIsUploading(false);
+      return;
     }
+
+    setUploading((prev) => ({ ...prev, genetic: true }));
+    // Simulate file upload delay.
+    setTimeout(() => {
+      toast({
+        title: "File uploaded successfully",
+        description: "Your genetic test file has been uploaded.",
+      });
+      setUploading((prev) => ({ ...prev, genetic: false }));
+      // Pass the file object up to the parent.
+      onGeneticTestUpload(file);
+    }, 1500);
+  };
+
+  const handleRemoveBloodFile = () => {
+    onBloodTestUpload(null); // Remove file in parent state.
+  };
+
+  const handleRemoveGeneticFile = () => {
+    onGeneticTestUpload(null); // Remove file in parent state.
   };
 
   const handlePurchase = () => {
     toast({
       title: "Redirecting to lab test purchase",
-      description: "You'll be redirected to our partner's website to purchase your lab test.",
+      description:
+        "You'll be redirected to our partner's website to purchase your lab test.",
     });
     window.open("/purchase-tests", "_blank");
   };
@@ -84,40 +94,99 @@ export const LabTestsSection = () => {
     <div className={styles.container}>
       <h3 className={styles.title}>Lab Tests</h3>
       <div className={styles.grid}>
+        {/* Lab Test Upload */}
         <div className={styles.card}>
           <Upload className={styles.icon} />
-          <h4 className={styles.cardTitle}>Upload Your Lab Tests</h4>
+          <h4 className={styles.cardTitle}>Lab Test</h4>
           <p className={styles.cardDescription}>
-            Drop your lab test results here or click to upload
+            Upload your lab test results here
           </p>
-          <label className={styles.fullWidth}>
-            <input
-              type="file"
-              className={styles.hiddenInput}
-              accept=".pdf"
-              onChange={handleFileUpload}
-              disabled={isUploading}
-            />
-            <Button 
-              variant="outline" 
-              className={styles.uploadButton}
-              disabled={isUploading}
-            >
-              {isUploading ? (
-                <>
-                  <Loader2 className={styles.spinningIcon} />
-                  Processing...
-                </>
-              ) : (
-                <>
-                  <Upload className={styles.buttonIcon} />
-                  Choose PDF File
-                </>
-              )}
-            </Button>
-          </label>
+          <input
+            type="file"
+            ref={bloodInputRef}
+            style={{ display: "none" }}
+            accept=".pdf"
+            onChange={handleBloodFile}
+            disabled={uploading.blood}
+          />
+          <Button
+            variant="outline"
+            className={styles.uploadButton}
+            disabled={uploading.blood}
+            onClick={() => {
+              if (!bloodTestFile) {
+                bloodInputRef.current?.click();
+              }
+            }}
+          >
+            {uploading.blood ? (
+              <>
+                <Loader2 className={styles.spinningIcon} />
+                Processing...
+              </>
+            ) : bloodTestFile ? (
+              <div className={styles.fileContainer}>
+                <span>{bloodTestFile.name}</span>
+                <span className={styles.removeFile} onClick={handleRemoveBloodFile}>
+                  ×
+                </span>
+              </div>
+            ) : (
+              <>
+                <Upload className={styles.buttonIcon} />
+                Choose PDF File
+              </>
+            )}
+          </Button>
         </div>
-        
+
+        {/* Genetic Test Upload */}
+        <div className={styles.card}>
+          <Upload className={styles.icon} />
+          <h4 className={styles.cardTitle}>Genetic Test</h4>
+          <p className={styles.cardDescription}>
+            Upload your genetic test results here
+          </p>
+          <input
+            type="file"
+            ref={geneticInputRef}
+            style={{ display: "none" }}
+            accept=".pdf"
+            onChange={handleGeneticFile}
+            disabled={uploading.genetic}
+          />
+          <Button
+            variant="outline"
+            className={styles.uploadButton}
+            disabled={uploading.genetic}
+            onClick={() => {
+              if (!geneticTestFile) {
+                geneticInputRef.current?.click();
+              }
+            }}
+          >
+            {uploading.genetic ? (
+              <>
+                <Loader2 className={styles.spinningIcon} />
+                Processing...
+              </>
+            ) : geneticTestFile ? (
+              <div className={styles.fileContainer}>
+                <span>{geneticTestFile.name}</span>
+                <span className={styles.removeFile} onClick={handleRemoveGeneticFile}>
+                  ×
+                </span>
+              </div>
+            ) : (
+              <>
+                <Upload className={styles.buttonIcon} />
+                Choose PDF File
+              </>
+            )}
+          </Button>
+        </div>
+
+        {/* Purchase Lab Test */}
         <div className={styles.card}>
           <ShoppingCart className={styles.icon} />
           <h4 className={styles.cardTitle}>Purchase a Lab Test</h4>
@@ -132,3 +201,5 @@ export const LabTestsSection = () => {
     </div>
   );
 };
+
+export default LabTestsSection;
