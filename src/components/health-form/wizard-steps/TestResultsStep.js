@@ -24,10 +24,9 @@ export const TestResultsStep = ({ form }) => {
   const [noTestsYet, setNoTestsYet] = useState(false);
   const [proceedWithoutTests, setProceedWithoutTests] = useState(false);
   const [biomarkerConcerns, setBiomarkerConcerns] = useState("");
-
-  // State to hold the uploaded file names so they can be displayed.
   const [bloodFileName, setBloodFileName] = useState("");
   const [geneticFileName, setGeneticFileName] = useState("");
+  const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const handleBloodFile = (e, field) => {
     const files = e.target.files;
@@ -52,8 +51,6 @@ export const TestResultsStep = ({ form }) => {
       });
     }
   };
-
-  // Remove functions clear both the form field value and the local file name.
   const handleRemoveBloodFile = () => {
     setBloodFileName("");
     form.setValue("bloodWorkFiles", null);
@@ -67,7 +64,6 @@ export const TestResultsStep = ({ form }) => {
   return (
     <div className={styles.container}>
       <div className={styles.uploadGrid}>
-        {/* Blood Test Results Upload Section */}
         <div className={styles.uploadSection}>
           <Label className={styles.sectionTitle}>Blood Test Results</Label>
           <div className={styles.uploadBox}>
@@ -126,18 +122,26 @@ export const TestResultsStep = ({ form }) => {
           </div>
         </div>
 
-        {/* Genetic Test Results Upload Section */}
         <div className={styles.uploadSection}>
           <div className={styles.titleWithTooltip}>
             <Label className={styles.sectionTitle}>Genetic Test Results</Label>
             <TooltipProvider>
-              <Tooltip>
+              <Tooltip open={tooltipOpen} onOpenChange={setTooltipOpen}>
                 <TooltipTrigger asChild>
-                  <div className={styles.tooltipTrigger}>
+                  <div
+                    className={styles.tooltipTrigger}
+                    onMouseEnter={() => setTooltipOpen(true)}
+                    onMouseLeave={() => setTooltipOpen(false)}
+                  >
                     <HelpCircle className={styles.helpIcon} />
                   </div>
                 </TooltipTrigger>
-                <TooltipContent side="right" className={styles.tooltipContent}>
+                <TooltipContent
+                  side="right"
+                  className={styles.tooltipContent}
+                  onMouseEnter={() => setTooltipOpen(true)}
+                  onMouseLeave={() => setTooltipOpen(false)}
+                >
                   <p className={styles.tooltipText}>
                     Already completed any DNA test? Download the raw file and
                     upload it here. We can analyze it and find which supplements
@@ -204,17 +208,21 @@ export const TestResultsStep = ({ form }) => {
         </div>
       </div>
 
-      <div className={styles.biomarkerSection}>
+      <div className={styles.biomarkerSection} name="concerns">
         <Label className={styles.sectionTitle}>
           Describe any Biomarkers or Genetic Data you are concerned with
           specifically (Optional)
         </Label>
         <Textarea
-          placeholder="E.g., Vitamin D levels, MTHFR gene mutation, cholesterol levels..."
-          value={biomarkerConcerns}
-          onChange={(e) => setBiomarkerConcerns(e.target.value)}
-          className={styles.textarea}
-        />
+  placeholder="E.g., Vitamin D levels, MTHFR gene mutation, cholesterol levels..."
+  value={biomarkerConcerns}
+  onChange={(e) => {
+    setBiomarkerConcerns(e.target.value);
+    form.setValue("concerns", e.target.value);
+  }}
+  className={styles.textarea}
+/>
+
       </div>
 
       <div className={styles.providersSection}>
@@ -289,10 +297,7 @@ export const TestResultsStep = ({ form }) => {
                 }
               }}
             />
-            <Label
-              htmlFor="proceed-without-tests"
-              className={styles.checkboxLabel}
-            >
+            <Label htmlFor="proceed-without-tests" className={styles.checkboxLabel}>
               Proceed without any test results
             </Label>
           </div>

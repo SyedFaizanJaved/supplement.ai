@@ -96,86 +96,118 @@ export const SupplementPlan = () => {
     };
   }, [toast, user]);
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
     const pdf = new jsPDF();
-    pdf.setFontSize(15);
-    pdf.text("Personalized Supplement Plan", 15, 20);
-    pdf.setFontSize(12);
-
+    pdf.setFontSize(18);
+    pdf.text("Supplement Plan", 15, 20); // Main Title
+  
     let yOffset = 40;
     Object.entries(recommendations).forEach(([name, data]) => {
       if (yOffset > 250) {
         pdf.addPage();
-        yOffset = 15;
+        yOffset = 20;
       }
-      pdf.setFontSize(12);
+  
+      // Supplement Name
+      pdf.setFontSize(14);
       pdf.text(name, 15, yOffset);
       yOffset += 10;
-      pdf.setFontSize(9);
-      pdf.text(`Benefits: ${data.Benefits}`, 15, yOffset);
-      yOffset += 10;
-      pdf.text(
-        `Dosage: ${data["Medical-Grade Supplements"]["Dosage & Instructions"]}`,
-        15,
-        yOffset
-      );
+  
+      pdf.setFontSize(10);
+      pdf.text(data.Benefits || "Not specified", 15, yOffset, { maxWidth: 180 });
       yOffset += 20;
     });
-
-    return pdf;
-  };
-
-  const handleShare = async () => {
+  
+    // Add logo at the bottom center
+    const logoUrl = "/logo.png"; // Ensure this file is inside the public folder
     try {
-      const pdf = generatePDF();
-      const pdfBlob = pdf.output("blob");
-      const file = new File([pdfBlob], "supplement_plan.pdf", {
-        type: "application/pdf",
-      });
-
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: "My Supplement Plan",
-          text: "Check out my personalized supplement plan!",
-        });
-      } else {
-        throw new Error("Web Share API not supported");
+      const imgBase64 = await fetchImageAsBase64(logoUrl);
+      if (imgBase64) {
+        const imgWidth = 100; // Adjust width
+        const imgHeight = 35; // Adjust height
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgX = (pageWidth - imgWidth) / 2; 
+        const imgY = pageHeight - imgHeight - 10; 
+  
+        pdf.addImage(imgBase64, "PNG", imgX, imgY, imgWidth, imgHeight);
       }
     } catch (error) {
-      console.error("Error sharing:", error);
-      toast({
-        title: "Sharing not supported",
-        description:
-          "Your browser doesn't support direct file sharing. Please use the download or email options.",
-        variant: "destructive",
-      });
+      console.error("Error loading logo:", error);
     }
+  
+    return pdf;
   };
-
-  const handleDownload = () => {
-    const pdf = generatePDF();
-    pdf.save("supplement_plan.pdf");
-    toast({
-      title: "PDF Downloaded",
-      description: "Your supplement plan has been downloaded as a PDF.",
+  
+  // Function to fetch the image and convert it to base64
+  const fetchImageAsBase64 = (imageUrl) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous"; // Allows access from the public folder
+      img.src = imageUrl;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/png")); // Convert to base64
+      };
+      img.onerror = (error) => reject(error);
     });
   };
+ 
+const handleDownload = async () => {
+  const pdf = await generatePDF(); 
+  pdf.save("supplement_plan.pdf");
+  toast({
+    title: "PDF Downloaded",
+    description: "Your supplement plan has been downloaded as a PDF.",
+  });
+};
 
-  const handleEmail = () => {
-    const pdf = generatePDF();
-    const pdfDataUri = pdf.output("datauristring");
-    const emailBody = encodeURIComponent(
-      "Please find attached my personalized supplement plan."
-    );
-    const mailtoLink = `mailto:?subject=My%20Supplement%20Plan&body=${emailBody}&attachment=${pdfDataUri}`;
-    window.location.href = mailtoLink;
+const handleShare = async () => {
+  try {
+    const pdf = await generatePDF(); 
+    const pdfBlob = pdf.output("blob");
+    const file = new File([pdfBlob], "supplement_plan.pdf", {
+      type: "application/pdf",
+    });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: "My Supplement Plan",
+        text: "Check out my personalized supplement plan!",
+      });
+    } else {
+      throw new Error("Web Share API not supported");
+    }
+  } catch (error) {
+    console.error("Error sharing:", error);
     toast({
-      title: "Email Client Opened",
+      title: "Sharing not supported",
       description:
-        "An email draft with your supplement plan has been created.",
+        "Your browser doesn't support direct file sharing. Please use the download or email options.",
+      variant: "destructive",
     });
-  };
+  }
+};
+
+const handleEmail = async () => {
+  const pdf = await generatePDF(); 
+  const pdfDataUri = pdf.output("datauristring");
+  const emailBody = encodeURIComponent(
+    "Please find attached my personalized supplement plan."
+  );
+  const mailtoLink = `mailto:?subject=My%20Supplement%20Plan&body=${emailBody}&attachment=${pdfDataUri}`;
+  window.location.href = mailtoLink;
+  toast({
+    title: "Email Client Opened",
+    description:
+      "An email draft with your supplement plan has been created.",
+  });
+};
 
   if (loading) {
     return <div className={styles.loading}>Loading supplements...</div>;

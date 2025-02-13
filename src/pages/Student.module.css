@@ -1,161 +1,107 @@
 .container {
-    min-height: 100vh;
-    background-color: #f8fafc;
-    padding: 1.5rem;
-  }
-  
-  .backButton {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 1.5rem;
-    color: #4b5563;
-  }
-  
-  .backButtonIcon {
-    height: 1rem;
-    width: 1rem;
-    margin-right: 0.5rem;
-  }
-  
-  .content {
-    max-width: 56rem;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  
-  .header {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .title {
-    font-size: 2.25rem;
-    font-weight: bold;
-    letter-spacing: -0.025em;
-  }
-  
-  .subtitle {
-    color: #6b7280;
-    font-size: 1.125rem;
-  }
-  
-  .tabsContainer {
-    width: 100%;
-  }
-  
-  .tabsList {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    width: 100%;
-    background-color: #f3f4f6;
-    border-radius: 0.5rem;
-    padding: 0.25rem;
-    margin-bottom: 1rem;
-  }
-  
-  .tabsTrigger {
-    padding: 0.5rem;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-weight: 500;
-    border-radius: 0.375rem;
-    transition: all 0.2s;
-  }
-  
-  .tabsTrigger:hover {
-    background-color: #e5e7eb;
-  }
-  
-  .tabsTrigger.activeTab {
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .tabContent[hidden] {
-    display: none;
-  }
-  
-  .card {
-    border: 1px solid #e5e7eb;
-    border-radius: 0.75rem;
-    background-color: white;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  }
-  
-  .cardHeader {
-    padding: 1.25rem;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  
-  .cardTitle {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #111827;
-  }
-  
-  .cardDescription {
-    color: #6b7280;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-  }
-  
-  .cardContent {
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .pricingSection {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #3498db;
-  }
-  
-  .priceDescription {
-    color: #6b7280;
-  }
-  
-  .sectionTitle {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-  
-  .benefitsList {
-    list-style-type: disc;
-    padding-left: 1.5rem;
-    color: #6b7280;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .actionButton {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 1rem;
-  }
-  
-  .actionButton:hover {
-    background-color: #2980b9;
-  }
+  min-height: 100vh;
+  background-color: var(--background);
+  padding: 1.5rem;
+}
+
+.backButton {
+  background-image: linear-gradient(to right, #0EA5E9, #10B981); 
+  margin-bottom: 1.5rem;
+}
+
+.backIcon {
+  height: 1rem;
+  width: 1rem;
+  margin-right: 0.5rem;
+}
+
+.content {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--muted-foreground);
+}
+
+.tabs {
+  width: 100%;
+}
+
+.tabsList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+}
+
+.priceSection {
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3498DB;
+  margin-bottom: 0.5rem;
+}
+
+.priceDescription {
+  color: var(--muted-foreground);
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.listContainer {
+  margin-bottom: 1rem;
+}
+
+.listTitle {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.benefitsList {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: var(--muted-foreground);
+}
+
+.benefitsList li {
+  margin-bottom: 0.5rem;
+}
+
+.ctaButton {
+  width: 100%;
+  background-color: #3498DB;
+}
+
+.ctaButton:hover {
+  background-color: rgba(52, 152, 219, 0.9);
+}
+
+.ambassadorContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.applyButton {
+  width: 100%;
+}

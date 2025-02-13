@@ -15,35 +15,24 @@ import styles from './AllergiesStep.module.css';
 const ALLERGY_OPTIONS = [
   {
     label: "Seasonal",
-    description: "Pollen, dust mites, animal dander"
-  },
-  {
-    label: "Food",
-    description: "Common food allergies"
   },
   {
     label: "Insect Stings",
-    description: "Bee, wasp, hornet stings"
   },
   {
     label: "Dairy",
-    description: "Milk and dairy products"
   },
   {
     label: "Gluten",
-    description: "Wheat and related proteins"
   },
   {
     label: "Shellfish",
-    description: "Crustaceans and mollusks"
   },
   {
     label: "Nuts",
-    description: "Tree nuts and peanuts"
   },
   {
     label: "Latex",
-    description: "Natural rubber latex"
   }
 ];
 

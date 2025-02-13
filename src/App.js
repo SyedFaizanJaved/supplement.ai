@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import { Toaster } from "./components/ui/toaster";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import PurchaseTestsPage from "./pages/PurchaseTestsPage";
 
 const Index = lazy(() => import("./pages/Index"));
 const InputPage = lazy(() => import("./pages/InputPage"));
@@ -17,7 +18,7 @@ const RewardsPage = lazy(() => import("./pages/Rewards"));
 const Login = lazy(() => import("./pages/Login"));
 const TermsandConditions = lazy(() => import("./pages/TermsandConditions"));
 const StudentsPage = lazy(() => import("./pages/Student"));
-const FamilyPlanPage = lazy(() => import("./pages/FamilyPlanPage"));
+// const FamilyPlanPage = lazy(() => import("./pages/FamilyPlanPage"));
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
     element: <Suspense fallback={<LoadingSpinner />}><Login /></Suspense>
   },
   {
-    path: "/dashboard",
+    path: "/dashboard/*",
     element: <ProtectedRoute><Suspense fallback={<LoadingSpinner />}><DashboardPage /></Suspense></ProtectedRoute>
   },
   {
@@ -79,9 +80,13 @@ const router = createBrowserRouter([
     element: <Suspense fallback={<LoadingSpinner />}><RewardsPage /></Suspense>
   },
   {
-    path: "/family-plan",
-    element: <Suspense fallback={<LoadingSpinner />}><FamilyPlanPage /></Suspense>
+    path: "/purchase-tests",
+    element: <Suspense fallback={<LoadingSpinner />}><PurchaseTestsPage /></Suspense>
   },
+  // {
+  //   path: "/family-plan",
+  //   element: <Suspense fallback={<LoadingSpinner />}><FamilyPlanPage /></Suspense>
+  // },
   {
     path: "/students",
     element: <Suspense fallback={<LoadingSpinner />}><StudentsPage /></Suspense>

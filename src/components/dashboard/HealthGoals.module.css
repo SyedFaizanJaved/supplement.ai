@@ -61,6 +61,50 @@
   border-radius: 1rem;
 }
 
+/* ButtonGroup.module.css */
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.button {
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 100%;
+  font-weight:600;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.button:hover {
+  background:#fa7516;
+}
+
+.button:active {
+  background: linear-gradient(to right, #0EA5E9, #10B981);
+  border-color: transparent;
+}
+
+.icon {
+  height: 1rem;
+  width: 1rem;
+  margin-right: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .buttonContainer {
+    flex-direction: row;
+    width: auto;
+  }
+
+  .button {
+    width: auto;
+  }
+}
+
 .cardContent {
   padding: 1.5rem;
 }
@@ -123,13 +167,14 @@
   margin-bottom: 1.5rem;
   background: transparent;
   backdrop-filter: blur(6px);
-  border-radius: 0.5rem;
+  border: 1px solid #727c82;
   padding: 0.25rem;
   gap: 0.25rem;
 }
 
 .tabsTrigger {
   color: white;
+  font-weight:600;
   transition: all 0.3s;
   padding: 0.5rem;
   text-align: center;
@@ -139,24 +184,21 @@
   background-color: #0EA5E9;
   color: white;
   border-radius: 0.25rem;
+  padding: 8px 35px;
+}
+.bottomcontainer {
+  margin: 0 1.5rem 1.5rem 1.5rem;
 }
 
-.addGoalButton {
-  background: rgba(14, 165, 233, 0.1);
-  border: 2px dashed rgba(14, 165, 233, 0.3);
-  width: 100%;
-  padding: 2rem;
-  transition: all 0.3s;
-  border-radius: 0.5rem;
+.card {
+  backdrop-filter: blur(24px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(14, 165, 233, 0.2);
 }
 
-.bottomSection {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  margin: 1.5rem;
+.content {
+  padding: 1rem;
 }
-
 /* Responsive Adjustments */
 @media screen and (max-width: 768px) {
   .mainCard {

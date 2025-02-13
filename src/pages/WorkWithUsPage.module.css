@@ -8,9 +8,9 @@
   .backButton {
     padding: 0.5rem 1rem;
     font-size: 1rem;
-    background-color: var(--light);
+    background-image: linear-gradient(to right, #0EA5E9, #10B981); 
     margin-bottom: 1.5rem;
-    color : #000;
+    color : #fff;
     border-radius:5px;
     border: none;
     display: flex;
@@ -20,8 +20,8 @@
   }
 
   .backButton:hover {
-    background-color: #f37218;
-    transition: 0.2s;
+    background-color: linear-gradient(to right, #0EA5e9, #10B981);;
+    opacity: 0.9;
     color: white;
   }
   

@@ -1,0 +1,165 @@
+.container {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #1A1F2C, #1E293B);
+    padding: 1.5rem;
+  }
+  
+  .content {
+    max-width: 56rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .backButton {
+    border-radius: 9999px;
+    background: transparent;
+    color: white;
+  }
+  
+  .backButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+  
+  .backIcon {
+    height: 1rem;
+    width: 1rem;
+  }
+  
+  .backText {
+    display: none;
+    margin-left: 0.5rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+  }
+  
+  .supplementCard {
+    backdrop-filter: blur(24px);
+    background-color: white;
+    border-color: rgba(14, 165, 233, 0.2);
+  }
+  
+  .supplementContent {
+    padding: 2rem;
+  }
+  
+  .supplementInner {
+    max-width: 32rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .supplementTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, #0EA5E9, #10B981);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .supplementForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .questionLabel {
+    font-size: 1.125rem;
+    color: #374151;
+    display: block;
+  }
+  
+  .radioGroup {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+  
+  .radioWrapper {
+    position: relative;
+  }
+  
+  .radioInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .radioBox {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(14, 165, 233, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    transition: all 0.3s;
+  }
+  
+  .radioBox:hover {
+    border-color: rgb(14, 165, 233);
+    background-color: #f9fafb;
+  }
+  
+  .radio {
+    border-color: rgb(14, 165, 233);
+    height: 2rem;
+    width: 2rem;
+  }
+  
+  .radioLabel {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #374151;
+  }
+  
+  .submitButton {
+    width: 100%;
+    max-width: 20rem;
+    color:#fff;
+    border: none;
+    font-weight:600;
+    margin: 2rem auto 0;
+    background: linear-gradient(to right, #0EA5E9, #10B981);
+    transition: opacity 0.3s;
+  }
+  
+  .submitButton:hover {
+    opacity: 0.9;
+  }
+  
+  .trackerCard {
+    backdrop-filter: blur(24px);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(14, 165, 233, 0.2);
+  }
+  
+  .trackerContent {
+    padding: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .backText {
+      display: inline;
+    }
+    
+    .backIcon {
+      margin-right: 0.5rem;
+    }
+  }

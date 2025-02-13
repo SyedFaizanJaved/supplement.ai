@@ -16,6 +16,10 @@
   gap: 0.5rem; 
 }
 
+.textarea::placeholder {
+  font-family: Poppins, sans-serif !important;
+}
+
 .fileName {
   max-width: 150px; 
   overflow: hidden;

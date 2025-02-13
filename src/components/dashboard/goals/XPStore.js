@@ -150,8 +150,24 @@ export const XPStore = () => {
               <span className={styles.xpAmount}>50 XP</span>
             </li>
             <li className={styles.xpEarningItem}>
+              <span>7 Day Quiz Streak</span>
+              <span className={styles.xpAmount}>200 XP</span>
+            </li>
+            <li className={styles.xpEarningItem}>
+              <span>14 Day Quiz Streak</span>
+              <span className={styles.xpAmount}>400 XP</span>
+            </li>
+            <li className={styles.xpEarningItem}>
               <span>Refer a Friend</span>
               <span className={styles.xpAmount}>500 XP</span>
+            </li>
+            <li className={styles.xpEarningItem}>
+              <span>21 Day Quiz Streak</span>
+              <span className={styles.xpAmount}>600 XP</span>
+            </li>
+            <li className={styles.xpEarningItem}>
+              <span>28 Day Quiz Streak</span>
+              <span className={styles.xpAmount}>800 XP</span>
             </li>
           </ul>
         </div>
@@ -159,5 +175,3 @@ export const XPStore = () => {
     </Card>
   );
 };
-
-export default XPStore;

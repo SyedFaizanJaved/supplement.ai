@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     border-radius:5px;
-    background: none;
+    background-image: linear-gradient(to right, #06b6d4, #14b8a6);
     border: none;
     cursor: pointer;
     font-size: 0.875rem;
@@ -18,8 +18,9 @@
 
   .backButton:hover {
     transition: 0.3s;
-    background-color: #f37218;
+    background-image: linear-gradient(to right, #06b6d4, #14b8a6);
     color: white;
+    opacity: 0.9;
   }
   
   .backIcon {

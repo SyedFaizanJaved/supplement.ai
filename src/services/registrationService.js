@@ -5,52 +5,42 @@ const healthGoalDetails = {
   weight_management: {
     name: "Weight Management",
     description: "Support healthy weight goals",
-    category: "wellness",
   },
   energy_focus: {
     name: "Energy & Focus",
     description: "Improve daily energy levels and mental clarity",
-    category: "wellness",
   },
   immune_support: {
     name: "Immune Support",
     description: "Strengthen immune system function",
-    category: "wellness",
   },
   sleep_stress: {
     name: "Sleep & Stress",
     description: "Better sleep quality and stress management",
-    category: "fitness",
   },
   fitness_performance: {
     name: "Fitness Performance",
     description: "Enhance workout results and recovery",
-    category: "fitness",
   },
   mental_health: {
     name: "Mental Health",
     description: "Support cognitive function and emotional well-being",
-    category: "wellness",
   },
   hormone_balance: {
     name: "Hormone Balance",
     description: "Optimize hormone levels naturally",
-    category: "nutrition",
   },
   longevity: {
     name: "Longevity",
     description: "Support healthy aging and cellular health",
-    category: "wellness",
   },
   chronic_conditions: {
     name: "Manage Chronic Conditions",
     description: "Support overall health with existing conditions",
-    category: "wellness",
   },
   beauty: {
     name: "Beauty & Aesthetics",
     description: "Support skin health and natural beauty from within",
-    category: "nutrition",
   },
 };
 
@@ -82,20 +72,17 @@ export const registerUser = async (formData) => {
       return {
         name: healthGoalDetails[goalKey].name,
         description: healthGoalDetails[goalKey].description,
-        category: healthGoalDetails[goalKey].category,
       };
     }
     // Fallback if the key is not found.
     return {
       name: goalKey,
       description: "",
-      category: "",
     };
   });
   const customGoals = (formData.otherHealthGoals || []).map((goal) => ({
     name: goal,
     description: "",
-    category: "",
   }));
   const userGoals = [...predefinedGoals, ...customGoals];
 
@@ -141,13 +128,10 @@ export const registerUser = async (formData) => {
   );
   payload.append("diet_restriction", mapDietType(formData.dietType));
   payload.append("smoking_status", mapSmokingStatus(formData.smokingStatus));
-  payload.append(
-    "alcohol_consumption",
-    mapAlcoholConsumption(formData.alcoholConsumption)
-  );
+  payload.append("alcohol_consumption",mapAlcoholConsumption(formData.alcoholConsumption));
   payload.append("monthly_budget", mapBudget(formData.monthlyBudget));
-  payload.append("sleep_hours", parseFloat(formData.sleepHours));
-  // ------------------------------
+  payload.append("average_sleep", parseFloat(formData.sleepHours));
+  payload.append("concerns", formData.concerns);
 
   if (formData.bloodWorkFiles && formData.bloodWorkFiles.length > 0) {
     const bloodFile = formData.bloodWorkFiles[0];
@@ -165,7 +149,6 @@ export const registerUser = async (formData) => {
     console.log("No genetic test file found.");
   }
 
-  // -----------------------------
   if (formData.family && formData.family.length > 0) {
     payload.append("family", JSON.stringify(formData.family));
   } else if (formData.referralCode) {

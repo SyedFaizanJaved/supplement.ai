@@ -1,6 +1,11 @@
 import React from "react";
 import { Plus, Trash2, HelpCircle } from "lucide-react";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "../components/ui/tooltip";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "../components/ui/tooltip";
 import styles from "./FamilyPlanPage.module.css";
 
 const FamilyPlanPage = ({
@@ -10,7 +15,9 @@ const FamilyPlanPage = ({
   onRemoveFamilyMember,
 }) => {
   const generateNewMember = () => ({
-    id: Date.now().toString(36) + Math.random().toString(36).substring(2, 5),
+    id:
+      Date.now().toString(36) +
+      Math.random().toString(36).substring(2, 5),
     first_name: "",
     last_name: "",
     email: "",
@@ -37,16 +44,25 @@ const FamilyPlanPage = ({
           <div className={styles.headerContainer}>
             <h1 className={styles.pageTitle}>
               Family Health Plan
+              {/* Wrap your tooltip inside the provider */}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button className={styles.helpButton} aria-label="Help Information">
+                    {/* This button is the hover target */}
+                    <button
+                      className={styles.helpButton}
+                      aria-label="Help Information"
+                    >
                       <HelpCircle className={styles.helpIcon} />
                     </button>
                   </TooltipTrigger>
+                  {/* This content is shown when the trigger is hovered */}
                   <TooltipContent className={styles.tooltipContent} sideOffset={2}>
                     <p>
-                      After you input your health metrics, invite at least two other family members to join and pay at a new rate of $15/month for each member. They will get a sign up confirmation link after payment.
+                      After you input your health metrics, invite at least two
+                      other family members to join and pay at a new rate of
+                      $15/month for each member. They will get a sign up
+                      confirmation link after payment.
                     </p>
                   </TooltipContent>
                 </Tooltip>
@@ -81,7 +97,11 @@ const FamilyPlanPage = ({
                         id={`firstName-${member.id}`}
                         value={member.first_name}
                         onChange={(e) =>
-                          updateFamilyMember(member.id, "first_name", e.target.value)
+                          updateFamilyMember(
+                            member.id,
+                            "first_name",
+                            e.target.value
+                          )
                         }
                         placeholder="Enter first name"
                         className={styles.input}
@@ -95,7 +115,11 @@ const FamilyPlanPage = ({
                         id={`lastName-${member.id}`}
                         value={member.last_name}
                         onChange={(e) =>
-                          updateFamilyMember(member.id, "last_name", e.target.value)
+                          updateFamilyMember(
+                            member.id,
+                            "last_name",
+                            e.target.value
+                          )
                         }
                         placeholder="Enter last name"
                         className={styles.input}
@@ -119,7 +143,10 @@ const FamilyPlanPage = ({
               </div>
             ))}
 
-            <button className={styles.addMemberButton} onClick={addFamilyMember}>
+            <button
+              className={styles.addMemberButton}
+              onClick={addFamilyMember}
+            >
               <Plus className={styles.addIcon} />
               Add Family Member
             </button>

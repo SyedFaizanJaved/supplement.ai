@@ -12,8 +12,8 @@
     display: flex;
     align-items: center;
     border-radius:5px;
-    background: #fff;
-    color: #000;
+    background-image: linear-gradient(to right, #0EA5E9, #10B981); 
+    color: #fff;
     border: none;
     cursor: pointer;
     font-size: 0.875rem;
@@ -21,8 +21,8 @@
   }
 
   .backButton:hover {
-    transition: 0.3s;
-    background-color: #f37218;
+    opacity: 0.9;
+    background-image: linear-gradient(to right, #0EA5E9, #10B981); 
     color: #fff;
   }
 

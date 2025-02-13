@@ -13,22 +13,19 @@ import { Plus } from "lucide-react";
 import { useToast } from "./use-toast";
 import styles from "./addgoaldialog.module.css";
 
-const AddGoalDialog = ({ category, onAddGoal, initialGoal }) => {
+const AddGoalDialog = ({ onAddGoal, initialGoal }) => {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const isEditMode = Boolean(initialGoal);
 
+  // Only store name and description; backend will handle target, progress, etc.
   const [goal, setGoal] = useState(
     initialGoal || {
       name: "",
       description: "",
-      target: 100,
-      progress: 0,
-      category: category,
     }
   );
 
-  // Update state when initialGoal changes (for edit mode)
   useEffect(() => {
     if (initialGoal) {
       setGoal(initialGoal);
@@ -39,9 +36,6 @@ const AddGoalDialog = ({ category, onAddGoal, initialGoal }) => {
     setGoal({
       name: "",
       description: "",
-      target: 100,
-      progress: 0,
-      category: category,
     });
   };
 
@@ -77,7 +71,7 @@ const AddGoalDialog = ({ category, onAddGoal, initialGoal }) => {
           ) : (
             <>
               <Plus className={styles.plusIcon} />
-              Add New Goal
+              <span className={styles.text}>Add New Goal</span>
             </>
           )}
         </Button>
@@ -85,7 +79,7 @@ const AddGoalDialog = ({ category, onAddGoal, initialGoal }) => {
       <DialogContent className={styles.dialogContent}>
         <DialogHeader>
           <DialogTitle>
-            {isEditMode ? "Edit" : "Add New"} {category} Goal
+            {isEditMode ? "Edit Goal" : "Add New Goal"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -110,20 +104,6 @@ const AddGoalDialog = ({ category, onAddGoal, initialGoal }) => {
                 setGoal({ ...goal, description: e.target.value })
               }
               placeholder="Enter goal description"
-              required
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <Label htmlFor="target">Target Value</Label>
-            <input
-              id="target"
-              type="number"
-              className={styles.input}
-              value={goal.target}
-              onChange={(e) =>
-                setGoal({ ...goal, target: Number(e.target.value) })
-              }
-              min="0"
               required
             />
           </div>

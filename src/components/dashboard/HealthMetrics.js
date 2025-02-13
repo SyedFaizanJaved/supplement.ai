@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { useToast } from "../hooks/use-toast";
 import { PersonalInfoSection } from "./metrics/PersonalInfoSection";
 import { HealthStatusSection } from "./metrics/HealthStatusSection";
-import { VitaminMetricsSection } from "./metrics/VitaminMetricsSection";
+// import { VitaminMetricsSection } from "./metrics/VitaminMetricsSection";
 import { Share2 } from "lucide-react";
 import styles from "./HealthMetrics.module.css";
 import { useAuth } from "../../context/AuthContext";
@@ -130,6 +130,14 @@ export const HealthMetrics = () => {
           description: "Weight cannot exceed 600 lbs",
           variant: "destructive",
         });
+          return;
+      }
+      else if(weightNumber < 40){
+        toast({
+          title: "Invalid Weight",
+          description: "Weight cannot less than 40 lbs",
+          variant: "destructive",
+        });
         return;
       }
       // --- End Validation ---
@@ -177,7 +185,7 @@ export const HealthMetrics = () => {
       setIsEditing(false);
       toast({
         title: "Changes saved",
-        description: "Your profile has been updated",
+        description: "Your health information has been updated",
       });
     } catch (error) {
       console.error("Error saving profile:", error);
@@ -186,6 +194,29 @@ export const HealthMetrics = () => {
         description:
           error?.response?.data?.message || "Failed to save changes",
         variant: "destructive",
+      });
+    }
+  };
+
+  const handleReferFriend = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Join me on Health Dashboard',
+        text: 'I\'ve been using this great health tracking app. Join me!',
+        url: window.location.origin
+      }).catch((error) => {
+        console.log('Error sharing:', error);
+        toast({
+          title: "Error sharing",
+          description: "There was an error sharing the link.",
+          variant: "destructive"
+        });
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.origin);
+      toast({
+        title: "Link copied to clipboard",
+        description: "Share this link with your friends to invite them!",
       });
     }
   };
@@ -212,12 +243,7 @@ export const HealthMetrics = () => {
             </Button>
             <Button
               variant="outline"
-              onClick={() =>
-                toast({
-                  title: "Coming Soon",
-                  description: "The referral system will be available soon!",
-                })
-              }
+              onClick={handleReferFriend}
               className={styles.referButton}
             >
               <Share2 className={styles.referIcon} /> Refer a Friend
@@ -238,7 +264,7 @@ export const HealthMetrics = () => {
           />
         </div>
 
-        <VitaminMetricsSection />
+        {/* <VitaminMetricsSection /> */}
 
         <LabTestsSection
           bloodTestFile={labTests.blood_work_test[0] || null}

@@ -4,46 +4,52 @@ import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
 import { useToast } from "../../ui/use-toast";
 import { supabase } from "../../integrations/supabase/client";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../ui/select";
-import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 import { Label } from "../../ui/label";
+import  {Slider} from "../../ui/slider";
 import styles from './SymptomTracker.module.css';
 
 export const SymptomTracker = () => {
-  const [wellnessType, setWellnessType] = useState("");
-  const [rating, setRating] = useState("");
-  const [notes, setNotes] = useState("");
-  const [tookSupplements, setTookSupplements] = useState("");
+  const [energyLevel, setEnergyLevel] = useState(3);
+  const [stressLevel, setStressLevel] = useState(3);
+  const [sleepQuality, setSleepQuality] = useState(3);
+  const [otherSymptoms, setOtherSymptoms] = useState("");
   const { toast } = useToast();
-
-  const wellnessTypes = [
-    "Energy Level",
-    "Mental Clarity",
-    "Physical Activity",
-    "Sleep Quality",
-    "Mood",
-    "Digestion",
-    "Immune Health",
-    "Overall Wellness"
-  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No user found");
+
       const { error } = await supabase
         .from('symptom_tracking')
-        .insert({
-          symptom: wellnessType,
-          severity: parseInt(rating),
-          notes: `Supplements taken: ${tookSupplements}. Notes: ${notes}`,
-        });
+        .insert([
+          {
+            user_id: user.id,
+            symptom: "Energy Level",
+            severity: energyLevel,
+            notes: "Daily energy tracking"
+          },
+          {
+            user_id: user.id,
+            symptom: "Sleep Quality",
+            severity: sleepQuality,
+            notes: "Daily sleep quality tracking"
+          },
+          {
+            user_id: user.id,
+            symptom: "Stress/Anxiety",
+            severity: stressLevel,
+            notes: "Daily stress tracking"
+          },
+          ...(otherSymptoms ? [{
+            user_id: user.id,
+            symptom: "Other",
+            severity: 0,
+            notes: otherSymptoms
+          }] : [])
+        ]);
 
       if (error) throw error;
 
@@ -53,10 +59,10 @@ export const SymptomTracker = () => {
       });
 
       // Reset form
-      setWellnessType("");
-      setRating("");
-      setNotes("");
-      setTookSupplements("");
+      setEnergyLevel(3);
+      setStressLevel(3);
+      setSleepQuality(3);
+      setOtherSymptoms("");
     } catch (error) {
       console.error('Error tracking wellness:', error);
       toast({
@@ -67,75 +73,71 @@ export const SymptomTracker = () => {
     }
   };
 
+  const renderSliderSection = (label, value, setValue, minLabel, maxLabel) => (
+    <div className={styles.sliderSection}>
+      <Label>{label}</Label>
+      <div className={styles.sliderContainer}>
+        <Slider
+          value={[value]}
+          onValueChange={(value) => setValue(value[0])}
+          max={5}
+          min={1}
+          step={1}
+          className={styles.slider}
+        />
+        <div className={styles.numberLabels}>
+          <span>1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>4</span>
+          <span>5</span>
+        </div>
+        <div className={styles.textLabels}>
+          <span>{minLabel}</span>
+          <span>{maxLabel}</span>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <Card className={styles.card}>
       <h3 className={styles.title}>Daily Wellness Journal</h3>
-      <p className={styles.description}>
-        Track your daily wellness journey and celebrate your progress
-      </p>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div>
-          <Select
-            value={wellnessType}
-            onValueChange={setWellnessType}
-          >
-            <SelectTrigger className={styles.selectTrigger}>
-              <SelectValue placeholder="What would you like to track?" />
-            </SelectTrigger>
-            <SelectContent className={styles.selectContent}>
-              {wellnessTypes.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Select
-            value={rating}
-            onValueChange={setRating}
-          >
-            <SelectTrigger className={styles.selectTrigger}>
-              <SelectValue placeholder="How are you feeling? (1-10)" />
-            </SelectTrigger>
-            <SelectContent className={styles.selectContent}>
-              {[...Array(10)].map((_, i) => {
-                const value = i + 1;
-                return (
-                  <SelectItem key={value} value={value.toString()}>
-                    {value}{value === 1 ? " - Poor :(" : value === 10 ? " - Amazing!" : ""}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className={styles.supplementSection}>
-          <Label>Did you take your supplements today?</Label>
-          <RadioGroup
-            value={tookSupplements}
-            onValueChange={setTookSupplements}
-            className={styles.radioGroup}
-          >
-            <div className={styles.radioItem}>
-              <RadioGroupItem value="yes" id="yes" />
-              <Label htmlFor="yes">Yes</Label>
-            </div>
-            <div className={styles.radioItem}>
-              <RadioGroupItem value="no" id="no" />
-              <Label htmlFor="no">No</Label>
-            </div>
-          </RadioGroup>
-        </div>
-        <div>
+        {renderSliderSection(
+          "How is your energy today?",
+          energyLevel,
+          setEnergyLevel,
+          "Low Energy",
+          "Great Energy"
+        )}
+
+        {renderSliderSection(
+          "How well did you sleep?",
+          sleepQuality,
+          setSleepQuality,
+          "Poor Sleep",
+          "Great Sleep"
+        )}
+
+        {renderSliderSection(
+          "Did you feel anxious or stressed today?",
+          stressLevel,
+          setStressLevel,
+          "Not at all",
+          "Very"
+        )}
+
+        <div className={styles.textareaSection}>
+          <Label>Any other symptoms you want to track?</Label>
           <Textarea
-            placeholder="Share your wellness journey... What's working well? What makes you feel energized today?"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Enter any other symptoms or notes here..."
+            value={otherSymptoms}
+            onChange={(e) => setOtherSymptoms(e.target.value)}
             className={styles.textarea}
           />
         </div>
+
         <Button type="submit" className={styles.submitButton}>
           Record Wellness Entry
         </Button>

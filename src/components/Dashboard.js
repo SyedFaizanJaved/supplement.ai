@@ -33,7 +33,7 @@ export const Dashboard = () => {
                 <ChevronLeft className={styles.icon} />
                 Back
               </Button>
-              <h1 className={styles.title}>Your Health Dashboard</h1>
+              {/* <h1 className={styles.title}>Your Health Dashboard</h1> */}
             </div>
 
             <div className={styles.btnContainer}>

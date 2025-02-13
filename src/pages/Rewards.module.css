@@ -9,16 +9,17 @@
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 2rem;
-    background: none;
+    background-image: linear-gradient(to right, #0EA5E9, #10B981); 
     padding: 0.8rem;
+    color:#fff;
     border-radius:5px;
     border: none;
     cursor: pointer;
   }
 
   .backButton:hover {
-    transition: 0.3s;
-    background-color: #f37218;
+    opacity: 0.9 ;
+    background-image: linear-gradient(to right, #0EA5E9, #10B981); 
     color:#fff;
   }
   

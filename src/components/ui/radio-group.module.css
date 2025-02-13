@@ -32,6 +32,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: rgb(14, 165, 233);
 }
 
 .circle {

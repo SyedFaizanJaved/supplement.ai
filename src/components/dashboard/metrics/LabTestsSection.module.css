@@ -1,125 +1,157 @@
 .container {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    border: 2px dashed var(--border-color);
-    border-radius: 0.5rem;
-    background-color: #cad2db;
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border: 2px dashed var(--border-color);
+  border-radius: 0.5rem;
+  background-color: #cad2db;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: var(--background);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.icon {
+  height: 2rem;
+  width: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.cardTitle {
+  color: var(--tertiary);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.fileContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 250px; /* Default max-width for larger screens */
+  overflow: hidden;
+}
+
+.fileContainer span:first-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
+.uploadButton {
+  width: 100%;
+  display: flex;
+  border-color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+  color: var(--tertiary);
+  border: 1px solid #007bff;
+  align-items: center;
+  justify-content: center;
+}
+
+.purchaseButton {
+  width: 100%;
+  display: flex;
+  color: var(--light);
+  border: 1px solid #e5e7eb;
+  background: var(--primary);
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.uploadButton:hover {
+  background-color: #fa7516;
+  color: var(--light);
+}
+
+.purchaseButton:hover {
+  background-color: #6b7280;
+  color: var(--light);
+  transition: transform 0.3s ease;
+  transform: scale(1.01);
+}
+
+.buttonIcon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.spinningIcon {
+  height: 1rem;
+  width: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-  
-  .title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+  to {
+    transform: rotate(360deg);
   }
-  
+}
+
+/* Media query for medium screens and above */
+@media (min-width: 768px) {
   .grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
   }
-  
-  .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    background-color: var(--background);
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-color);
+}
+
+/* Adjustments for small screens */
+@media (max-width: 767px) {
+  .fileContainer {
+    max-width: 200px; /* Reduce max-width to prevent disturbance on smaller screens */
   }
-  
-  .icon {
-    height: 2rem;
-    width: 2rem;
-    margin-bottom: 0.5rem;
-    color: var(--primary-color);
-  }
-  
+
+  /* Optional: Adjust font sizes for better responsiveness */
   .cardTitle {
-    color: var(--tertiary);
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
   }
-  
   .cardDescription {
-    font-size: 0.875rem;
-    color: var(--muted-foreground);
-    text-align: center;
-    margin-bottom: 1rem;
+    font-size: 0.75rem;
   }
-  
-  .fullWidth {
-    width: 100%;
-  }
-  
-  .hiddenInput {
-    display: none;
-  }
-  
-  .uploadButton {
-    width: 100%;
-    display: flex;
-    background-color: var(--light);
-    color : var(--tertiary);
-    border:1px solid #e5e7eb ;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  
-  .purchaseButton {
-    width: 100%;
-    display: flex;
-    color : var(--light);
-    border:1px solid #e5e7eb ;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
+}
 
-  .uploadButton:hover {
-    background-color: #fa7516;
-    color : var(--light);
-  }
-
-  .purchaseButton:hover {
-    background-color: var(--secondary);
-    color : var(--light);
-  }
-
-  
-  .buttonIcon {
-    height: 1rem;
-    width: 1rem;
-  }
-  
-  .spinningIcon {
-    height: 1rem;
-    width: 1rem;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  /* Media query for medium screens and above */
-  @media (min-width: 768px) {
-    .grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  :root {
-    --primary-color: #0070f3;
-    --background: #ffffff;
-    --border-color: #e5e7eb;
-    --muted-rgb: 240, 240, 240;
-    --muted-foreground: #6b7280;
-  }
+:root {
+  --primary-color: #0070f3;
+  --background: #ffffff;
+  --border-color: #e5e7eb;
+  --muted-rgb: 240, 240, 240;
+  --muted-foreground: #6b7280;
+}

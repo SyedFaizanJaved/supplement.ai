@@ -37,7 +37,7 @@ const steps = [
   "Lifestyle",
   "Test Results",
   "Monthly Budget",
-  "Family Plan",
+  "Family Plan (Optional)",
   "Review & Submit",
 ];
 
@@ -69,6 +69,7 @@ const defaultValues = {
   height: "",
   family: [],
   weight: "",
+  concerns: "",
   activityLevel: "sedentary",
   medicalConditions: [],
   allergies: [],

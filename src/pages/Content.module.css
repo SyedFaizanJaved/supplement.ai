@@ -25,11 +25,13 @@
 
 .backButton {
   margin-bottom: 1.5rem;
-  background-color: #fff;
+  background-image: linear-gradient(to right, #06b6d4, #14b8a6);
+  color: #fff;
 }
 
 .backButton:hover {
-  background-color: #f37218;
+  opacity: 0.9;
+  background-image: linear-gradient(to right, #06b6d4, #14b8a6);
   color: #fff;
 }
 
@@ -51,7 +53,7 @@
 }
 
 .section {
-  gap: 1.5rem;
+ padding: 0 5rem;
 }
 
 .header {

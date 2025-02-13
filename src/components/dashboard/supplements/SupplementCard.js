@@ -15,14 +15,18 @@ const SupplementCard = ({ supplementName, supplementData }) => {
     },
   } = supplementData
 
-  // Convert productUrl to an array if it's a string
   const productUrls = Array.isArray(productUrl) ? productUrl : [{ name: "View Product", url: productUrl }]
 
   return (
     <div className={styles.card}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <img src={imageUrl || "/placeholder.svg"} alt={supplementName} className={styles.image} />
+          <img
+            src={imageUrl || "/placeholder.svg"}
+            alt={supplementName}
+            className={styles.image}
+            onError={(e) => (e.target.src = "/lovable-uploads/alter.png")}
+          />
           <div>
             <h3 className={styles.title}>{supplementName}</h3>
             <p className={styles.subtitle}>{productBrand}</p>

@@ -62,9 +62,14 @@
 }
 
 .deleteButton {
+  background: #FF474C;
   display: flex;
   align-items: center;
   gap: 0.25rem;
+}
+
+.deleteButton:hover {
+  background: #FF7F7F;
 }
 
 .trashIcon {

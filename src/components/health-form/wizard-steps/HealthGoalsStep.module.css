@@ -42,7 +42,7 @@
   .addbutton {
     min-width:70px;
     border-radius:5px;
-    background-color:var(--secondary);
+    background: #0790b3;
     color:#fff;
     border:none;
   }

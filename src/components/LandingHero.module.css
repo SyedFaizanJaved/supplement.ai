@@ -20,17 +20,17 @@
   align-items: center;
   height: 3rem;
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 8px auto;
+}
+
+.container {
+  display: flex;
+  align-items: center;
 }
 
 .logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  background: linear-gradient(to right, #06b6d4, #14b8a6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: textShimmer 2s infinite;
+  height: 3rem; 
+  width: auto;
 }
 
 .navButtons {
@@ -178,6 +178,7 @@
   font-size: 1.125rem;
   border: none;
   height: 3.5rem;
+  font-weight:bold;
   padding: 0 2rem;
   border-radius: 9999px;
   animation: gradientFlow 1s infinite;
@@ -197,7 +198,7 @@
   min-width: 190px;
   border-radius: 9999px;
   font-size: 1.125rem;
-  font-weight: 500;
+  font-weight:bold;
   transition: all 0.3s;
 }
 
@@ -303,6 +304,127 @@
   width: 3rem;
   color: #5eead4;
   animation: floatCircular 4s infinite;
+}
+
+.whySection {
+  max-width: 56rem;
+  margin: 4rem auto 3rem;
+  padding: 2rem 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transition: all 700ms;
+}
+
+.visible {
+  transform: translateY(0) scale(1.05);
+  opacity: 1;
+}
+
+.hidden {
+  transform: translateY(5rem) scale(0.95);
+  opacity: 0;
+}
+
+.mainTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(to right, #06b6d4, #14b8a6);
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: glowPulse 2s infinite;
+}
+
+.content {
+  text-align:center;
+  max-width: 48rem;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  color: #22d3ee;
+  margin-bottom: 2rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #2dd4bf;
+  margin-bottom: 0.5rem;
+}
+
+.subsectionList {
+  padding-left: 1rem;
+}
+
+.subsection {
+  margin-bottom: 0.5rem;
+}
+
+.subsectionTitle {
+  color: #67e8f9;
+  font-size:18px;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.text {
+  color: #e5e7eb;
+  font-size:18px;
+}
+
+.ctaSection {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.ctaTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #22d3ee;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes glowPulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+@media (min-width: 640px) {
+  .whySection {
+    padding: 4rem 2rem;
+    margin: 6rem auto 4rem;
+  }
+
+  .mainTitle {
+    font-size: 2.25rem;
+    margin-bottom: 3rem;
+  }
+
+  .subtitle {
+    font-size: 1.75rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.375rem;
+  }
+
+  .ctaTitle {
+    font-size: 1.75rem;
+  }
 }
 
 .footer {

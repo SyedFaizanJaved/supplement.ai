@@ -29,11 +29,11 @@ const ContentPage = () => {
           </div>
           
           <Tabs defaultValue="blogs" className={styles.tabs}>
-            <TabsList className={styles.tabsList}>
+            {/* <TabsList className={styles.tabsList}>
               <TabsTrigger value="blogs" className={styles.tabTrigger}>Blog Posts</TabsTrigger>
               <TabsTrigger value="videos" className={styles.tabTrigger}>Videos</TabsTrigger>
             </TabsList>
-            
+             */}
             <TabsContent value="blogs" className={styles.tabContent}>
               <div className={styles.grid}>
                 <Card className={styles.card}>
@@ -59,7 +59,7 @@ const ContentPage = () => {
               </div>
             </TabsContent>
             
-            <TabsContent value="videos" className={styles.tabContent}>
+            {/* <TabsContent value="videos" className={styles.tabContent}>
               <div className={styles.grid}>
                 <Card className={styles.card}>
                   <div className={styles.videoPlaceholder}></div>
@@ -82,7 +82,7 @@ const ContentPage = () => {
                   <p className={styles.cardDescription}>Debunking common health and supplement myths.</p>
                 </Card>
               </div>
-            </TabsContent>
+            </TabsContent> */}
           </Tabs>
         </div>
       </div>

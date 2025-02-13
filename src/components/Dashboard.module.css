@@ -44,7 +44,7 @@
 }
 
 .adminButton {
-  background-color: #fa7516;
+  background-color: #0790b3;
   color: white;
   margin-top:6px;
   border-radius: 0.375rem;
@@ -99,12 +99,15 @@
   align-items: center;
   background-color: var(--light);
   gap: 0.5rem;
+  border-radius: 9999px;
   flex-shrink: 0;
-  border: 1px solid #e1e8f0;
+  padding:20px;
+  font-weight: 500;
+  /* border: 1px solid #e1e8f0; */
 }
 
 .backButton:hover {
-  background-color: #fa7516;
+  background-image: linear-gradient(to right, #06b6d4, #14b8a6);
   color: var(--light);
 }
 
@@ -113,14 +116,14 @@
   width: 1rem;
 }
 
-.title {
+/* .title {
   font-size: 1.5rem;
   font-weight: bold;
   color: #164f63;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
+} */
 
 @media (min-width: 768px) {
   .title {
@@ -133,6 +136,7 @@
   margin:auto;
   background-color: var(--light);
   border: 1px solid var(--border-color);
+  border-radius: 50px;
   width: 100%;
 }
 

@@ -84,7 +84,7 @@ export const HealthGoalsStep = ({ form }) => {
         name="healthGoals"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>What are your health goals?</FormLabel>
+            <FormLabel>What are your health goals? (atleast one option required)</FormLabel>
             <div className={styles.goalsGrid}>
               {healthGoalOptions.map((option) => (
                 <BubbleOption

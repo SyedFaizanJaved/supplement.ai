@@ -128,6 +128,7 @@ export const BasicMetricsInputs = ({ form }) => {
           control={form.control}
           name="weight"
           rules={{
+            min: { value: 40, message: "Weight cannot less than 40 lbs" },
             max: { value: 600, message: "Weight cannot exceed 600 lbs" },
           }}
           render={({ field }) => (
@@ -143,7 +144,10 @@ export const BasicMetricsInputs = ({ form }) => {
                     field.onChange(val);
                     if (parseFloat(val) > 600) {
                       form.setError("weight", { message: "Weight cannot exceed 600 lbs" });
-                    } else {
+                    }else if (parseFloat(val) < 40){
+                      form.setError("weight", { message: "Weight cannot less than 40 lbs" });
+                    }
+                     else {
                       form.clearErrors("weight");
                     }
                   }}

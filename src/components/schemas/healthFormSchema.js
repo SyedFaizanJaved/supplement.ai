@@ -29,7 +29,7 @@ export const healthFormSchema = z.object({
   phoneNumber: z
     .string()
     .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number must be less than 15 digits")
+    .max(12, "Phone number must be less than 12 digits")
     .regex(/^\+?[\d\s-()]+$/, "Please enter a valid phone number"),
   password: z
     .string()
@@ -54,7 +54,7 @@ export const healthFormSchema = z.object({
   weight: z
     .string()
     .refine((val) => !isNaN(Number(val)), "Weight must be a number")
-    .refine((val) => Number(val) > 0, "Weight must be greater than 0"),
+    .refine((val) => Number(val) > 40  && Number(val) <= 600, "Weight must be in between 40lbs to 600lbs"),
   activityLevel: z.enum(["sedentary", "moderate", "active", "very_active"]),
   medicalConditions: z.array(medicalConditionSchema).default([]),
   allergies: z.array(z.string()).default([]),

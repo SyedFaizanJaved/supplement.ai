@@ -76,7 +76,7 @@
 
 .header {
   padding: 0.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid #fff;
   background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.05), rgba(0,0,0,0.1));
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
@@ -116,7 +116,7 @@
 }
 
 .title {
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: 1.9rem;
   font-weight: bold;
   background: linear-gradient(to right, #0EA5E9, #38BDF8, #7DD3FC);
   -webkit-background-clip: text;

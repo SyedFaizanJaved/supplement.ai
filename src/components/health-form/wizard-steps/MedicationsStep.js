@@ -53,6 +53,7 @@ export const MedicationsStep = ({ form }) => {
             type="button"
             onClick={handleAddMedication}
             disabled={!newMedication.trim() || noMedications}
+            className={styles.plusadd}
           >
             <Plus className={styles.plusIcon} />
             Add

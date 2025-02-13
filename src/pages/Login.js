@@ -84,7 +84,7 @@ const Login = () => {
         password: formData.password
       });
 
-      const { access, refresh } = response.data;
+      const { access, refresh, first_name } = response.data;
       
       localStorage.setItem('accessToken', access);
       localStorage.setItem('refreshToken', refresh);
@@ -92,12 +92,14 @@ const Login = () => {
       authLogin({
         token: access,
         refreshToken: refresh,
-        email: formData.email
+        email: formData.email,
+        first_name, // This property will be used by HealthAssistant.
       });
 
       try {
         await verifyToken(access);
       } catch (verifyError) {
+        console.error('Token verification error:', verifyError);
       }
 
       try {
@@ -106,6 +108,7 @@ const Login = () => {
           localStorage.setItem('accessToken', refreshResult.access);
         }
       } catch (refreshError) {
+        console.error('Token refresh error:', refreshError);
       }
 
       navigate('/dashboard');

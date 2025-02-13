@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { HowItWorksModal } from "./HowItWorksModal";
 import { Book, LogIn, LogOut, ShieldCheck } from "lucide-react";
@@ -9,8 +9,34 @@ import { useToast } from "./ui/use-toast";
 export const LandingHero = () => {
   const navigate = useNavigate();
   const [showHowItWorks, setShowHowItWorks] = useState(false);
+  const [isWhyVisible, setIsWhyVisible] = useState(false);
   const { toast } = useToast();
   const { user, logout } = useAuth();
+
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsWhyVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const whySection = document.getElementById("why-section");
+    if (whySection) {
+      observer.observe(whySection);
+    }
+
+    return () => {
+      if (whySection) {
+        observer.unobserve(whySection);
+      }
+    };
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -27,7 +53,13 @@ export const LandingHero = () => {
       <div className={styles.navBar}>
         <div className={styles.navContainer}>
           <div className={styles.navContent}>
-            <h1 className={styles.logo}>SupplementScribe.ai</h1>
+          <div className={styles.container}>
+      <img 
+        src="/lovable-uploads/logo.png" 
+        alt="SupplementScribe Logo" 
+        className={styles.logo}
+      />
+    </div>
             <div className={styles.navButtons}>
               {user && user.token ? (
                 <button
@@ -151,6 +183,66 @@ export const LandingHero = () => {
             </div>
           </div>
 
+          <div 
+      id="why-section"
+      className={`${styles.whySection} ${isWhyVisible ? styles.visible : styles.hidden}`}
+    >
+      <h2 className={styles.mainTitle}>
+        Why SupplementScribe?
+      </h2>
+      <div className={styles.content}>
+        <h3 className={styles.subtitle}>
+          Stop Wasting Money on Generic Supplements!
+        </h3>
+        
+        <div className={styles.section}>
+          <h4 className={styles.sectionTitle}>Overwhelmed by Choices?</h4>
+          <p className={styles.text}>
+            Up to 80% of supplement users take products that aren't tailored to their unique needs. That means you might be wasting money and even risking your health.
+          </p>
+        </div>
+
+        <div className={styles.section}>
+          <h4 className={styles.sectionTitle}>Not Getting the Results You Need?</h4>
+          <p className={styles.text}>
+            Standard multivitamins and powders often miss the mark. They don't match your body's exact nutritional needs, which can lead to under- or over-supplementation.
+          </p>
+        </div>
+
+        <div className={styles.section}>
+          <h4 className={styles.sectionTitle}>Experience a Tailor-Made Supplement Plan:</h4>
+          <div className={styles.subsectionList}>
+            <div className={styles.subsection}>
+              <p className={styles.subsectionTitle}>Personal Data, Personal Plan:</p>
+              <p className={styles.text}>
+                SupplementScribe collects your health info, lifestyle habits, blood test results, and even genetic insights.
+              </p>
+            </div>
+            <div className={styles.subsection}>
+              <p className={styles.subsectionTitle}>Customized Just for You:</p>
+              <p className={styles.text}>
+                We create a supplement plan that fits your unique body profile—so you only get what you truly need.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <h4 className={styles.sectionTitle}>Feel Energized and Confident:</h4>
+          <p className={styles.text}>
+            Imagine a supplement regimen that boosts your energy, supports your well-being, and saves you from unnecessary spending.
+          </p>
+        </div>
+
+        <div className={styles.ctaSection}>
+          <p className={styles.ctaTitle}>Take Control of Your Health Today!</p>
+          <p className={styles.text}>
+            Discover your personalized supplement plan with SupplementScribe and finally get the tailored support your body deserves.
+          </p>
+        </div>
+      </div>
+    </div>
+
           <div className={styles.footer}>
             <div className={styles.footerLinks}>
               <Link to="/privacy" className={styles.footerLink}>Privacy Policy</Link>
@@ -168,4 +260,3 @@ export const LandingHero = () => {
   );
 };
 
-export default LandingHero;
