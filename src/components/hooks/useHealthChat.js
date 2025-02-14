@@ -19,7 +19,6 @@ export const useHealthChat = () => {
 
   // Fetch the chat history when the hook is mounted.
   useEffect(() => {
-    // Function to fetch chat history from the server
     const fetchChatHistory = async () => {
       let token = localStorage.getItem("accessToken");
       try {
@@ -29,12 +28,18 @@ export const useHealthChat = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        // Assuming response.data is an array of chat messages.
-        if (response.data && Array.isArray(response.data)) {
-          setChatHistory(response.data);
+        // Adjust this based on your actual response structure.
+        // For example, if your API returns:
+        // { history: { user_id: "202", history: [ ...chat messages... ] } }
+        if (
+          response.data.history &&
+          response.data.history.history &&
+          Array.isArray(response.data.history.history)
+        ) {
+          setChatHistory(response.data.history.history);
         }
       } catch (error) {
-        // If token is invalid or expired, try to refresh it.
+        // Refresh token logic if token is invalid.
         if (error.response?.data?.code === "token_not_valid") {
           const refresh = localStorage.getItem("refreshToken");
           if (refresh) {
@@ -48,8 +53,12 @@ export const useHealthChat = () => {
                   Authorization: `Bearer ${token}`,
                 },
               });
-              if (response.data && Array.isArray(response.data)) {
-                setChatHistory(response.data);
+              if (
+                response.data.history &&
+                response.data.history.history &&
+                Array.isArray(response.data.history.history)
+              ) {
+                setChatHistory(response.data.history.history);
               }
             } else {
               toast({
@@ -69,7 +78,7 @@ export const useHealthChat = () => {
         }
       }
     };
-  
+
     fetchChatHistory();
   }, [toast]);
 
@@ -173,7 +182,7 @@ export const useHealthChat = () => {
         }
       }
 
-      const assistantReply = response.data.reply || "Sorry, no response was returned.";
+      const assistantReply = response.data.msg || "Sorry, no response was returned.";
       const assistantMessage = {
         role: "assistant",
         content: assistantReply,

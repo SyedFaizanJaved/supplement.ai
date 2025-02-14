@@ -116,16 +116,21 @@ const AdminDashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Retrieve token from storage (adjust as needed)
+  const token = localStorage.getItem("token");
+
   // Fetch users from API
   const fetchUsers = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/users/admin/`, {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
       });
       // Map API response to local user objects.
-      // Make sure your backend returns a numeric id for each user.
       const mappedUsers = response.data.map((user) => ({
-        id: user.id, // <-- Ensure backend returns a numeric id here
+        id: user.id, // Ensure backend returns a numeric id
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
         phone: user.phone_number,
@@ -206,11 +211,16 @@ const AdminDashboard = () => {
         phone_number: updatedUser.phone,
       };
       const userIdentifier = updatedUser.id;
-      // Call the PATCH endpoint. Adjust URL if your backend requires a trailing slash.
+      // Call the PATCH endpoint.
       await axios.patch(
         `${API_URL}/api/v1/users/admin/${userIdentifier}/`,
         patchData,
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        }
       );
       // Update local state.
       setUsers(
@@ -251,7 +261,10 @@ const AdminDashboard = () => {
     try {
       const userIdentifier = userToDelete.id;
       await axios.delete(`${API_URL}/api/v1/users/admin/${userIdentifier}/`, {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
       });
       setUsers(users.filter((u) => u.id !== userIdentifier));
       setIsDeleteDialogOpen(false);
