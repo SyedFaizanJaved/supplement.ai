@@ -151,8 +151,7 @@ export const HealthMetrics = () => {
       formData.append("height_in_feet", height_in_feet);
       formData.append("height_in_inches", height_in_inches);
       formData.append("weight", weightNumber);
-
-      // Append file fields if present.
+      
       if (labTests.blood_work_test.length > 0) {
         formData.append("blood_work_test", labTests.blood_work_test[0]);
       }

@@ -18,11 +18,14 @@ export const verifyToken = async (token) => {
 export const refreshToken = async (refresh) => {
   try {
     const response = await axios.post(`${API_URL}/api/v1/auth/token/refresh/`, { refresh });
-    return response.data;
+    return response.data; 
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Token refresh failed.');
+    throw new Error(
+      error.response?.data?.message || "Token refresh failed."
+    );
   }
 };
+
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -85,7 +88,7 @@ const Login = () => {
       });
   
       // Assume the response includes `first_name`
-      const { access, refresh, first_name } = response.data;
+      const { access, refresh} = response.data;
       
       localStorage.setItem('accessToken', access);
       localStorage.setItem('refreshToken', refresh);
@@ -95,7 +98,6 @@ const Login = () => {
         token: access,
         refreshToken: refresh,
         email: formData.email,
-        first_name, // <-- Added this property
       });
   
       try {

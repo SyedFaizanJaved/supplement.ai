@@ -145,7 +145,7 @@ const StepWizard = () => {
           member.status === "Unregistered" &&
           member.joined_at === null
       );
-      // console.log("data----", data);
+      // Prepare the formatted data with family details
       const formattedData = {
         ...data,
         family: validFamilyMembers.map(({ first_name, last_name, email }) => ({
@@ -156,15 +156,22 @@ const StepWizard = () => {
           joined_at: null,
         })),
       };
-
+  
       const userData = await registerUser(formattedData);
-      authLogin(userData);
-
+  
+      const userDataWithFirstName = {
+        ...userData,
+        first_name: data.firstName,
+      };
+  
+      // Store the user data (including first_name) in local storage via the auth context
+      authLogin(userDataWithFirstName);
+  
       toast({
         title: "Success!",
         description: "Please login to your account.",
       });
-
+  
       await new Promise((resolve) => setTimeout(resolve, 500));
       const encodedEmail = encodeURIComponent(data.email);
       const planType = validFamilyMembers.length > 0 ? "family" : "individual";
@@ -181,6 +188,7 @@ const StepWizard = () => {
       setIsSubmitting(false);
     }
   };
+  
 
   const renderStep = () => {
     const formData = form.getValues();

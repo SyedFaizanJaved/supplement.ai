@@ -1,90 +1,202 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useToast } from "./use-toast";
-import { useAIChat } from "./useAIChat";
 import { persistMessage } from "../../api/chatApi";
-import { supabase } from "../integrations/supabase/client";
+import API_URL from "../../config";
+import { refreshToken as refreshTokenAPI } from "../../pages/Login"; 
 
 export const useHealthChat = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [chatHistory, setChatHistory] = useState([{
-    role: "assistant",
-    content: "Hi! I'm your personal health assistant. How can I help!",
-    timestamp: new Date().toISOString()
-  }]);
+  const [chatHistory, setChatHistory] = useState([
+    {
+      role: "assistant",
+      content: "Hi! I'm your personal health assistant. How can I help!",
+      timestamp: new Date().toISOString(),
+    },
+  ]);
 
-  const { processAIResponse } = useAIChat();
+  // Fetch the chat history when the hook is mounted.
+  useEffect(() => {
+    // Function to fetch chat history from the server
+    const fetchChatHistory = async () => {
+      let token = localStorage.getItem("accessToken");
+      try {
+        const response = await axios.get(`${API_URL}/api/v1/assistant/chat-history/`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // Assuming response.data is an array of chat messages.
+        if (response.data && Array.isArray(response.data)) {
+          setChatHistory(response.data);
+        }
+      } catch (error) {
+        // If token is invalid or expired, try to refresh it.
+        if (error.response?.data?.code === "token_not_valid") {
+          const refresh = localStorage.getItem("refreshToken");
+          if (refresh) {
+            const refreshResult = await refreshTokenAPI(refresh);
+            if (refreshResult.access) {
+              localStorage.setItem("accessToken", refreshResult.access);
+              token = refreshResult.access;
+              const response = await axios.get(`${API_URL}/api/v1/assistant/chat-history/`, {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              if (response.data && Array.isArray(response.data)) {
+                setChatHistory(response.data);
+              }
+            } else {
+              toast({
+                title: "Error",
+                description: "Failed to refresh access token.",
+                variant: "destructive",
+              });
+            }
+          }
+        } else {
+          console.error("Failed to fetch chat history:", error);
+          toast({
+            title: "Error",
+            description: "Failed to fetch chat history.",
+            variant: "destructive",
+          });
+        }
+      }
+    };
+  
+    fetchChatHistory();
+  }, [toast]);
 
+  // Clear chat history from server and local state.
   const clearHistory = async () => {
+    let token = localStorage.getItem("accessToken");
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
-      const { error } = await supabase
-        .from('chat_history')
-        .delete()
-        .eq('user_id', user.id);
-
-      if (error) throw error;
-
-      setChatHistory([{
+      await axios.delete(`${API_URL}/api/v1/assistant/clear-chat-history/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      // If token is invalid or expired, try to refresh it.
+      if (error.response?.data?.code === "token_not_valid") {
+        const refresh = localStorage.getItem("refreshToken");
+        if (refresh) {
+          const refreshResult = await refreshTokenAPI(refresh);
+          if (refreshResult.access) {
+            localStorage.setItem("accessToken", refreshResult.access);
+            token = refreshResult.access;
+            await axios.delete(`${API_URL}/api/v1/assistant/clear-chat-history/`, {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            });
+          } else {
+            throw new Error("Failed to refresh access token.");
+          }
+        } else {
+          throw new Error("No refresh token available.");
+        }
+      } else {
+        throw error;
+      }
+    }
+    // After successfully clearing history on the server, reset local state.
+    setChatHistory([
+      {
         role: "assistant",
         content: "Hi! I'm your personal health assistant. How can I help!",
-        timestamp: new Date().toISOString()
-      }]);
-
-    } catch (error) {
-      console.error('Failed to clear chat history:', error);
-      throw error;
-    }
+        timestamp: new Date().toISOString(),
+      },
+    ]);
   };
 
   const handleSendMessage = async (message) => {
     if (!message.trim()) return;
-    
+
     setIsLoading(true);
-    const userMessage = { 
-      role: "user", 
+    const userMessage = {
+      role: "user",
       content: message,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
-    setChatHistory(prev => [...prev, userMessage]);
+    setChatHistory((prev) => [...prev, userMessage]);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
+      // Optionally, persist the user's message.
       persistMessage(userMessage).catch(console.error);
-      
       setIsTyping(true);
-      
-      const response = await processAIResponse(message, user.id);
-      
-      const assistantMessage = { 
-        role: "assistant", 
-        content: response,
-        timestamp: new Date().toISOString()
-      };
-      
-      persistMessage(assistantMessage).catch(console.error);
-      
-      setChatHistory(prev => [...prev, assistantMessage]);
 
+      let token = localStorage.getItem("accessToken");
+
+      // Helper function to make the API call.
+      const makeRequest = async (authToken) => {
+        return await axios.post(
+          `${API_URL}/api/v1/assistant/chat/`,
+          { user_query: message },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+      };
+
+      let response;
+      try {
+        response = await makeRequest(token);
+      } catch (error) {
+        if (error.response?.data?.code === "token_not_valid") {
+          const refresh = localStorage.getItem("refreshToken");
+          if (refresh) {
+            const refreshResult = await refreshTokenAPI(refresh);
+            if (refreshResult.access) {
+              localStorage.setItem("accessToken", refreshResult.access);
+              token = refreshResult.access;
+              response = await makeRequest(token);
+            } else {
+              throw new Error("Failed to refresh access token.");
+            }
+          } else {
+            throw new Error("No refresh token available.");
+          }
+        } else {
+          throw error;
+        }
+      }
+
+      const assistantReply = response.data.reply || "Sorry, no response was returned.";
+      const assistantMessage = {
+        role: "assistant",
+        content: assistantReply,
+        timestamp: new Date().toISOString(),
+      };
+
+      persistMessage(assistantMessage).catch(console.error);
+      setChatHistory((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Chat error:', error);
-      
+      console.error("Chat error:", error);
       toast({
         title: "Error",
-        description: error.message || "I'm having trouble processing your request. Please try again.",
-        variant: "destructive"
+        description:
+          error.message || "I'm having trouble processing your request. Please try again.",
+        variant: "destructive",
       });
-      
-      const errorMessage = { 
-        role: "assistant", 
-        content: "I apologize, but I'm having trouble accessing the information right now. Please try asking your question again in a moment.",
-        timestamp: new Date().toISOString()
+      const errorMessage = {
+        role: "assistant",
+        content:
+          "I apologize, but I'm having trouble accessing the information right now. Please try asking your question again in a moment.",
+        timestamp: new Date().toISOString(),
       };
-      setChatHistory(prev => [...prev, errorMessage]);
+      setChatHistory((prev) => [...prev, errorMessage]);
     } finally {
       setIsTyping(false);
       setIsLoading(false);
@@ -96,6 +208,6 @@ export const useHealthChat = () => {
     isLoading,
     isTyping,
     handleSendMessage,
-    clearHistory
+    clearHistory,
   };
 };

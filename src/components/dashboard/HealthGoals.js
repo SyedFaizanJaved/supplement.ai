@@ -17,7 +17,7 @@ import {
 import AddGoalDialog from "../ui/addgoaldialog";
 import styles from "./HealthGoals.module.css";
 import API_URL from "../../config";
-import FileUploadDialog from "../ui/fileupload";
+// import FileUploadDialog from "../ui/fileupload";
 
 const HealthGoals = () => {
   const [goals, setGoals] = useState([]);
@@ -241,11 +241,11 @@ const HealthGoals = () => {
               </TabsContent>
 
               <TabsContent value="biomarker" className={styles.tabContent}>
-              <FileUploadDialog tabName="Biomarker" />
+              {/* <FileUploadDialog tabName="Biomarker" /> */}
               </TabsContent>
 
               <TabsContent value="gene" className={styles.tabContent}>
-              <FileUploadDialog tabName="Gene" />
+              {/* <FileUploadDialog tabName="Gene" /> */}
               </TabsContent>
             </Tabs>
           </div>

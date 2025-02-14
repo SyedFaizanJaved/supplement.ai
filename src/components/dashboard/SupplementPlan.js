@@ -87,7 +87,7 @@ export const SupplementPlan = () => {
   
     fetchSupplements();
   
-    intervalId.current = setInterval(fetchSupplements, 10000);
+    intervalId.current = setInterval(fetchSupplements, 15000);
   
     return () => {
       if (intervalId.current) {
