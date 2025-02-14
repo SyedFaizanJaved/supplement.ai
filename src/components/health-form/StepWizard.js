@@ -50,7 +50,7 @@ const stepFieldMapping = [
   ["medicalConditions"],
   ["currentMedications"],
   ["dietType"],
-  ["sleepHours", "smokingStatus", "alcoholConsumption"],
+  ["sleepHours"],
   ["bloodWorkFiles", "geneticTestFiles"],
   ["monthlyBudget"],
   [],

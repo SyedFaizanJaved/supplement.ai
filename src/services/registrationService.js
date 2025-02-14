@@ -130,7 +130,7 @@ export const registerUser = async (formData) => {
   payload.append("smoking_status", mapSmokingStatus(formData.smokingStatus));
   payload.append("alcohol_consumption",mapAlcoholConsumption(formData.alcoholConsumption));
   payload.append("monthly_budget", mapBudget(formData.monthlyBudget));
-  payload.append("average_sleep", parseFloat(formData.sleepHours));
+  payload.append("average_sleep", formData.sleepHours);
   payload.append("concerns", formData.concerns);
 
   if (formData.bloodWorkFiles && formData.bloodWorkFiles.length > 0) {

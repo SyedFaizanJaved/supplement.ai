@@ -54,7 +54,10 @@ export const healthFormSchema = z.object({
   weight: z
     .string()
     .refine((val) => !isNaN(Number(val)), "Weight must be a number")
-    .refine((val) => Number(val) > 40  && Number(val) <= 600, "Weight must be in between 40lbs to 600lbs"),
+    .refine(
+      (val) => Number(val) > 40 && Number(val) <= 600,
+      "Weight must be in between 40lbs to 600lbs"
+    ),
   activityLevel: z.enum(["sedentary", "moderate", "active", "very_active"]),
   medicalConditions: z.array(medicalConditionSchema).default([]),
   allergies: z.array(z.string()).default([]),
@@ -62,18 +65,23 @@ export const healthFormSchema = z.object({
   hasBloodwork: z.boolean().default(false),
   hasGeneticTesting: z.boolean().default(false),
   healthGoals: z.array(z.string()).min(1, "Select at least one health goal"),
-  otherHealthGoals: z.array(z.string().min(2, "Custom goal must be at least 2 characters")).optional(),
+  otherHealthGoals: z
+    .array(z.string().min(2, "Custom goal must be at least 2 characters"))
+    .optional(),
   monthlyBudget: z.string().min(1, "Please select a monthly budget"),
-  dietType: z.enum([
-    "vegan_vegetarian",
-    "animal_based",
-    "keto",
-    "processed_food",
-    "balanced",
-    "healthy_balanced"
-  ]).optional(),
-  sleepHours: z
+  dietType: z
+    .enum([
+      "vegan_vegetarian",
+      "animal_based",
+      "keto",
+      "processed_food",
+      "balanced",
+      "healthy_balanced",
+    ])
+    .optional(),
+    sleepHours: z
     .string()
+    .nonempty("Sleep hours is required")
     .refine((val) => !isNaN(Number(val)), "Sleep hours must be a number")
     .refine(
       (val) => Number(val) >= 0 && Number(val) <= 24,

@@ -77,9 +77,9 @@ export const HealthAssistant = () => {
         <div className={styles.header}>
           <div className={styles.headerContent}>
             <div className={styles.headerTitle}>
-              <h2 className={styles.title}>
-                Welcome {user?.first_name || "User"} to Your Health Journey
-              </h2>
+            <h2 className={styles.title}>
+  Welcome {user?.first_name || "User"} to Your Health Journey
+</h2>
             </div>
             <Button variant="ghost" size="sm" onClick={handleClearChat} className={styles.clearButton}>
               <Trash2 className={styles.trashIcon} />

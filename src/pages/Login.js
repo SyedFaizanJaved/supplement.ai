@@ -76,32 +76,34 @@ const Login = () => {
     if (!validateForm()) {
       return;
     }
-
+  
     setIsLoading(true);
     try {
       const response = await axios.post(`${API_URL}/api/v1/auth/login/`, {
         email: formData.email,
         password: formData.password
       });
-
+  
+      // Assume the response includes `first_name`
       const { access, refresh, first_name } = response.data;
       
       localStorage.setItem('accessToken', access);
       localStorage.setItem('refreshToken', refresh);
-
+  
+      // Pass first_name along with the other user data.
       authLogin({
         token: access,
         refreshToken: refresh,
         email: formData.email,
-        first_name, // This property will be used by HealthAssistant.
+        first_name, // <-- Added this property
       });
-
+  
       try {
         await verifyToken(access);
       } catch (verifyError) {
         console.error('Token verification error:', verifyError);
       }
-
+  
       try {
         const refreshResult = await refreshToken(refresh);
         if (refreshResult.access) {
@@ -110,7 +112,7 @@ const Login = () => {
       } catch (refreshError) {
         console.error('Token refresh error:', refreshError);
       }
-
+  
       navigate('/dashboard');
       
     } catch (error) {
@@ -119,7 +121,7 @@ const Login = () => {
       setIsLoading(false);
     }
   };
-
+  
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>

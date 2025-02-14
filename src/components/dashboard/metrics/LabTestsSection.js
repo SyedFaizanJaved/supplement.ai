@@ -1,10 +1,18 @@
 import React, { useState, useRef } from "react";
 import { Button } from "../../ui/button";
-import { Upload, ShoppingCart, Loader2 } from "lucide-react";
+import { Upload, ShoppingCart, Loader2, HelpCircle } from "lucide-react";
 import { useToast } from "../../ui/use-toast";
+// Import the tooltip components
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "../../ui/tooltip";
 import styles from "./LabTestsSection.module.css";
 
-export const LabTestsSection = ({
+const LabTestsSection = ({
+  isEditing,
   bloodTestFile,
   geneticTestFile,
   onBloodTestUpload,
@@ -42,7 +50,6 @@ export const LabTestsSection = ({
         description: "Your lab test file has been uploaded.",
       });
       setUploading((prev) => ({ ...prev, blood: false }));
-      // Pass the file object up to the parent.
       onBloodTestUpload(file);
     }, 1500);
   };
@@ -68,17 +75,18 @@ export const LabTestsSection = ({
         description: "Your genetic test file has been uploaded.",
       });
       setUploading((prev) => ({ ...prev, genetic: false }));
-      // Pass the file object up to the parent.
       onGeneticTestUpload(file);
     }, 1500);
   };
 
   const handleRemoveBloodFile = () => {
-    onBloodTestUpload(null); // Remove file in parent state.
+    if (!isEditing) return;
+    onBloodTestUpload(null);
   };
 
   const handleRemoveGeneticFile = () => {
-    onGeneticTestUpload(null); // Remove file in parent state.
+    if (!isEditing) return;
+    onGeneticTestUpload(null);
   };
 
   const handlePurchase = () => {
@@ -92,7 +100,22 @@ export const LabTestsSection = ({
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>Lab Tests</h3>
+      <h3 className={styles.title}>
+        Lab Tests{" "}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className={styles.tooltipTrigger}>
+                <HelpCircle className={styles.helpIcon}/>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" className={styles.tooltipContent}>
+              Click on the Edit information button to upload a file and save the information
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </h3>
+
       <div className={styles.grid}>
         {/* Lab Test Upload */}
         <div className={styles.card}>
@@ -107,14 +130,13 @@ export const LabTestsSection = ({
             style={{ display: "none" }}
             accept=".pdf"
             onChange={handleBloodFile}
-            disabled={uploading.blood}
           />
           <Button
             variant="outline"
             className={styles.uploadButton}
-            disabled={uploading.blood}
+            disabled={!isEditing || uploading.blood}
             onClick={() => {
-              if (!bloodTestFile) {
+              if (isEditing && !bloodTestFile) {
                 bloodInputRef.current?.click();
               }
             }}
@@ -127,9 +149,14 @@ export const LabTestsSection = ({
             ) : bloodTestFile ? (
               <div className={styles.fileContainer}>
                 <span>{bloodTestFile.name}</span>
-                <span className={styles.removeFile} onClick={handleRemoveBloodFile}>
-                  ×
-                </span>
+                {isEditing && (
+                  <span
+                    className={styles.removeFile}
+                    onClick={handleRemoveBloodFile}
+                  >
+                    ×
+                  </span>
+                )}
               </div>
             ) : (
               <>
@@ -153,14 +180,13 @@ export const LabTestsSection = ({
             style={{ display: "none" }}
             accept=".pdf"
             onChange={handleGeneticFile}
-            disabled={uploading.genetic}
           />
           <Button
             variant="outline"
             className={styles.uploadButton}
-            disabled={uploading.genetic}
+            disabled={!isEditing || uploading.genetic}
             onClick={() => {
-              if (!geneticTestFile) {
+              if (isEditing && !geneticTestFile) {
                 geneticInputRef.current?.click();
               }
             }}
@@ -173,9 +199,14 @@ export const LabTestsSection = ({
             ) : geneticTestFile ? (
               <div className={styles.fileContainer}>
                 <span>{geneticTestFile.name}</span>
-                <span className={styles.removeFile} onClick={handleRemoveGeneticFile}>
-                  ×
-                </span>
+                {isEditing && (
+                  <span
+                    className={styles.removeFile}
+                    onClick={handleRemoveGeneticFile}
+                  >
+                    ×
+                  </span>
+                )}
               </div>
             ) : (
               <>

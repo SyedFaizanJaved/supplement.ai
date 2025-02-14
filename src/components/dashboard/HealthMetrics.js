@@ -52,7 +52,6 @@ export const HealthMetrics = () => {
           ? `${data.height_in_feet}' ${data.height_in_inches}''`
           : "",
       weight: data.weight ? `${data.weight} lbs` : "",
-      // Instead of converting to lowercase, keep the exercise level as returned.
       exerciseLevel: data.activity_level || "",
       medications: data.current_medications
         ? data.current_medications.map((med) => `- ${med}`).join("\n")
@@ -87,11 +86,9 @@ export const HealthMetrics = () => {
     fetchProfile();
   }, [fetchProfile]);
 
-  // Save updated profile data using FormData.
   const handleSave = async () => {
     if (!user?.token) return;
     try {
-      // Parse height: expected format "X' Y''"
       const heightRegex = /^(\d+)' ?(\d+)''$/;
       const heightMatch = personalInfo.height.match(heightRegex);
       let height_in_feet = 0;
@@ -100,11 +97,9 @@ export const HealthMetrics = () => {
         height_in_feet = parseInt(heightMatch[1], 10);
         height_in_inches = parseInt(heightMatch[2], 10);
       }
-      // Extract a number from the weight field.
       const weightMatch = personalInfo.weight.match(/(\d+(\.\d+)?)/);
       const weightNumber = weightMatch ? parseFloat(weightMatch[0]) : 0;
 
-      // --- Validation Limits ---
       const ageNumber = parseInt(personalInfo.age, 10);
       if (ageNumber > 110) {
         toast({
@@ -114,7 +109,6 @@ export const HealthMetrics = () => {
         });
         return;
       }
-      // Validate Height: maximum allowed is 8'0''.
       if (heightMatch && (height_in_feet > 8 || (height_in_feet === 8 && height_in_inches > 0))) {
         toast({
           title: "Invalid Height",
@@ -123,26 +117,22 @@ export const HealthMetrics = () => {
         });
         return;
       }
-      // Validate Weight: must not exceed 600 lbs.
       if (weightNumber > 600) {
         toast({
           title: "Invalid Weight",
           description: "Weight cannot exceed 600 lbs",
           variant: "destructive",
         });
-          return;
-      }
-      else if(weightNumber < 40){
+        return;
+      } else if (weightNumber < 40) {
         toast({
           title: "Invalid Weight",
-          description: "Weight cannot less than 40 lbs",
+          description: "Weight cannot be less than 40 lbs",
           variant: "destructive",
         });
         return;
       }
-      // --- End Validation ---
 
-      // Build FormData for multipart request.
       const formData = new FormData();
       formData.append("age", personalInfo.age);
       formData.append("gender", personalInfo.gender === "female" ? "F" : "M");
@@ -267,6 +257,7 @@ export const HealthMetrics = () => {
         {/* <VitaminMetricsSection /> */}
 
         <LabTestsSection
+          isEditing={isEditing} 
           bloodTestFile={labTests.blood_work_test[0] || null}
           geneticTestFile={labTests.genetic_test[0] || null}
           onBloodTestUpload={(file) =>
