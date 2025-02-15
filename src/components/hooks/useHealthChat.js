@@ -3,7 +3,22 @@ import axios from "axios";
 import { useToast } from "./use-toast";
 import { persistMessage } from "../../api/chatApi";
 import API_URL from "../../config";
-import { refreshToken as refreshTokenAPI } from "../../pages/Login"; 
+import { refreshToken as refreshTokenAPI } from "../../pages/Login";
+
+// Updated helper function to convert escape sequences and remove unwanted characters
+const unescapeText = (text) => {
+  let result = text;
+  // Convert known escape sequences to their actual characters
+  result = result
+    .replace(/\\n/g, "\n")
+    .replace(/\\r/g, "\r")
+    .replace(/\\t/g, "\t")
+    .replace(/\\"/g, '"')
+    .replace(/\\'/g, "'");
+  // Remove any remaining backslashes
+  result = result.replace(/\\/g, "");
+  return result;
+};
 
 export const useHealthChat = () => {
   const { toast } = useToast();
@@ -28,9 +43,7 @@ export const useHealthChat = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        // Adjust this based on your actual response structure.
-        // For example, if your API returns:
-        // { history: { user_id: "202", history: [ ...chat messages... ] } }
+
         if (
           response.data.history &&
           response.data.history.history &&
@@ -93,7 +106,6 @@ export const useHealthChat = () => {
         },
       });
     } catch (error) {
-      // If token is invalid or expired, try to refresh it.
       if (error.response?.data?.code === "token_not_valid") {
         const refresh = localStorage.getItem("refreshToken");
         if (refresh) {
@@ -182,7 +194,10 @@ export const useHealthChat = () => {
         }
       }
 
-      const assistantReply = response.data.msg || "Sorry, no response was returned.";
+      // Unescape the text from the response.
+      const rawReply = response.data.msg || "Sorry, no response was returned.";
+      const assistantReply = unescapeText(rawReply);
+
       const assistantMessage = {
         role: "assistant",
         content: assistantReply,

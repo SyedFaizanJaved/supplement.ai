@@ -37,17 +37,16 @@ const quickReplies = [
 export const HealthAssistant = () => {
   const { chatHistory, isLoading, isTyping, handleSendMessage, clearHistory } = useHealthChat();
   const scrollAreaRef = useRef(null);
+  const lastMessageRef = useRef(null); // This ref will always be attached to the very last element
   const { toast } = useToast();
   const { user } = useAuth();
 
   // State to hold the user's first name from the profile API
   const [firstName, setFirstName] = useState("");
 
-  // Fetch the user profile on component mount and extract first_name,
-  // including the Bearer token in the header.
+  // Fetch the user profile on component mount and extract first_name
   useEffect(() => {
     const fetchProfile = async () => {
-      // Only attempt fetching if the token is available.
       if (!user?.token) {
         console.warn("No authentication token available");
         return;
@@ -71,10 +70,10 @@ export const HealthAssistant = () => {
     fetchProfile();
   }, [user?.token]);
 
-  // Scroll to the bottom whenever chat history updates or assistant is typing
+  // Scroll to the last element (message or typing indicator) whenever chatHistory updates or assistant is typing
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   }, [chatHistory, isTyping]);
 
@@ -143,16 +142,21 @@ export const HealthAssistant = () => {
 
         <ScrollArea className={styles.scrollArea} ref={scrollAreaRef}>
           <div className={styles.chatMessages}>
-            {chatHistory.map((msg, index) => (
-              <ChatMessage
-                key={index}
-                role={msg.role}
-                content={msg.content}
-                timestamp={msg.timestamp || new Date().toISOString()}
-              />
-            ))}
+            {chatHistory.map((msg, index) => {
+              // Attach the ref to the last chat message if the assistant is not typing.
+              const isLastMessage = index === chatHistory.length - 1 && !isTyping;
+              return (
+                <div key={index} ref={isLastMessage ? lastMessageRef : null}>
+                  <ChatMessage
+                    role={msg.role}
+                    content={msg.content}
+                    timestamp={msg.timestamp || new Date().toISOString()}
+                  />
+                </div>
+              );
+            })}
             {isTyping && (
-              <div className={styles.typingIndicator}>
+              <div ref={lastMessageRef} className={styles.typingIndicator}>
                 <Loader2 className={styles.loaderIcon} />
                 <span className={styles.typingText}>Assistant is thinking...</span>
               </div>
