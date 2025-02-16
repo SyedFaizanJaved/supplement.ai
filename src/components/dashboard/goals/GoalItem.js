@@ -93,7 +93,7 @@ export const GoalItem = ({
             }
             placeholder="Add a description for your goal"
             className={styles.descriptionTextarea}
-          />         
+          />
           <div className={styles.buttonGroup}>
             <Button onClick={handleSave} className={styles.saveButton}>
               Save Changes
@@ -139,7 +139,9 @@ export const GoalItem = ({
                   Progress: {goal.progress} / {goal.target}
                 </span>
                 <span className={styles.progressText}>
-                  {Math.round(calculateProgress(goal.progress, goal.target))}%
+                  {goal.progress && goal.target
+                    ? `${Math.round(calculateProgress(goal.progress, goal.target))}%`
+                    : '%'}
                 </span>
               </>
             )}
