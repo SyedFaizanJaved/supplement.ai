@@ -100,7 +100,7 @@ const StepWizard = () => {
 
   useEffect(() => {
     form.setValue("family", familyMembers);
-  }, [familyMembers, form]);
+  }, [familyMembers]);
 
   const handleAddFamilyMember = (member) => {
     setFamilyMembers([...familyMembers, member]);
@@ -119,17 +119,11 @@ const StepWizard = () => {
   };
 
   const handleNext = async () => {
-    // const fieldsToValidate = stepFieldMapping[currentStep] || [];
-    // const isValid = await form.trigger(fieldsToValidate);
-    // if (!isValid) {
-    //   toast({
-    //     title: "Incomplete Form",
-    //     description: "Please review the required fields.",
-    //     variant: "destructive",
-    //   });
-    //   return;
-    // }
-    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+    const fieldsToValidate = stepFieldMapping[currentStep] || [];
+    const isValid = await form.trigger(fieldsToValidate);
+    if (isValid) {
+      setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+    }
   };
 
   const handleSubmit = async () => {
@@ -156,22 +150,22 @@ const StepWizard = () => {
           joined_at: null,
         })),
       };
-  
+
       const userData = await registerUser(formattedData);
-  
+
       const userDataWithFirstName = {
         ...userData,
         first_name: data.firstName,
       };
-  
+
       // Store the user data (including first_name) in local storage via the auth context
       authLogin(userDataWithFirstName);
-  
+
       toast({
         title: "Success!",
         description: "Please login to your account.",
       });
-  
+
       await new Promise((resolve) => setTimeout(resolve, 500));
       const encodedEmail = encodeURIComponent(data.email);
       const planType = validFamilyMembers.length > 0 ? "family" : "individual";
@@ -188,10 +182,9 @@ const StepWizard = () => {
       setIsSubmitting(false);
     }
   };
-  
 
   const renderStep = () => {
-    const formData = form.getValues();
+    // const formData = form.getValues();
     switch (currentStep) {
       case 0:
         return <PersonalInfoStep form={form} />;
@@ -227,10 +220,10 @@ const StepWizard = () => {
       case 12:
         return (
           <FinalStep
-            form={form}
-            formData={formData}
+            // form={form}
+            // formData={formData}
             isSubmitting={isSubmitting}
-          // onSubmit={form.handleSubmit(handleSubmit)}
+            // onSubmit={form.handleSubmit(handleSubmit)}
           />
         );
       default:
@@ -247,8 +240,9 @@ const StepWizard = () => {
             {steps.map((_, index) => (
               <div
                 key={index}
-                className={`${styles.progressStep} ${index <= currentStep ? styles.progressStepActive : ""
-                  }`}
+                className={`${styles.progressStep} ${
+                  index <= currentStep ? styles.progressStepActive : ""
+                }`}
               />
             ))}
           </div>

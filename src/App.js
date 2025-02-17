@@ -1,5 +1,9 @@
 import React, { Suspense, lazy } from "react";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import { Toaster } from "./components/ui/toaster";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -33,19 +37,39 @@ const ProtectedRoute = ({ children }) => {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Suspense fallback={<LoadingSpinner />}><Index /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <Index />
+      </Suspense>
+    ),
   },
   {
     path: "/login",
-    element: <Suspense fallback={<LoadingSpinner />}><Login /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     path: "/dashboard/*",
-    element: <ProtectedRoute><Suspense fallback={<LoadingSpinner />}><DashboardPage /></Suspense></ProtectedRoute>
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<LoadingSpinner />}>
+          <DashboardPage />
+        </Suspense>
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/admin",
-    element: <ProtectedRoute><Suspense fallback={<LoadingSpinner />}><Admin /></Suspense></ProtectedRoute>
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Admin />
+        </Suspense>
+      </ProtectedRoute>
+    ),
   },
   // {
   //   path: "/payment",
@@ -53,35 +77,67 @@ const router = createBrowserRouter([
   // },
   {
     path: "/input",
-    element: <Suspense fallback={<LoadingSpinner />}><InputPage /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <InputPage />
+      </Suspense>
+    ),
   },
   {
     path: "/content",
-    element: <Suspense fallback={<LoadingSpinner />}><ContentPage /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <ContentPage />
+      </Suspense>
+    ),
   },
   {
     path: "/about",
-    element: <Suspense fallback={<LoadingSpinner />}><AboutPage /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <AboutPage />
+      </Suspense>
+    ),
   },
   {
     path: "/terms",
-    element: <Suspense fallback={<LoadingSpinner />}><TermsandConditions /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <TermsandConditions />
+      </Suspense>
+    ),
   },
   {
     path: "/privacy",
-    element: <Suspense fallback={<LoadingSpinner />}><PrivacyPage /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <PrivacyPage />
+      </Suspense>
+    ),
   },
   {
     path: "/work-with-us",
-    element: <Suspense fallback={<LoadingSpinner />}><WorkWithUsPage /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <WorkWithUsPage />
+      </Suspense>
+    ),
   },
   {
     path: "/rewards",
-    element: <Suspense fallback={<LoadingSpinner />}><RewardsPage /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <RewardsPage />
+      </Suspense>
+    ),
   },
   {
     path: "/purchase-tests",
-    element: <Suspense fallback={<LoadingSpinner />}><PurchaseTestsPage /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <PurchaseTestsPage />
+      </Suspense>
+    ),
   },
   // {
   //   path: "/family-plan",
@@ -89,8 +145,12 @@ const router = createBrowserRouter([
   // },
   {
     path: "/students",
-    element: <Suspense fallback={<LoadingSpinner />}><StudentsPage /></Suspense>
-  }
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <StudentsPage />
+      </Suspense>
+    ),
+  },
 ]);
 
 function App() {

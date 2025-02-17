@@ -100,8 +100,8 @@ const FileUploadDialog = ({ onFileUpload }) => {
             </div>
           </div>
           <DialogFooter className={styles.dialogFooter}>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className={styles.submitButton}
               disabled={uploading || !file}
             >

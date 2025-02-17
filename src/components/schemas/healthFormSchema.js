@@ -15,32 +15,40 @@ const medicalConditionSchema = z.object({
 export const healthFormSchema = z.object({
   firstName: z
     .string()
-    .min(2, "First name must be at least 2 characters")
-    .max(50, "First name must be less than 50 characters").required() ,
+    .max(50, "First name must be less than 50 characters")
+    .nonempty("First name is required"),
   lastName: z
     .string()
-    .min(2, "Last name must be at least 2 characters")
-    .max(50, "Last name must be less than 50 characters"),
-  email: z
-    .string()
-    .email("Please enter a valid email address")
-    .min(5, "Email must be at least 5 characters")
-    .max(100, "Email must be less than 100 characters"),
+    .max(50, "Last name must be less than 50 characters")
+    .nonempty("Last name is required"),
+  email: z.string().email(),
   phoneNumber: z
     .string()
+    .nonempty("Phone number is required")
     .min(10, "Phone number must be at least 10 digits")
     .max(12, "Phone number must be less than 12 digits")
     .regex(/^\+?[\d\s-()]+$/, "Please enter a valid phone number"),
   password: z
     .string()
+    .nonempty("Password is required")
     .min(8, "Password must be at least 8 characters")
     .max(100, "Password must be less than 100 characters")
-    .regex(passwordRegex.uppercase, "Password must contain at least one uppercase letter")
-    .regex(passwordRegex.lowercase, "Password must contain at least one lowercase letter")
+    .regex(
+      passwordRegex.uppercase,
+      "Password must contain at least one uppercase letter"
+    )
+    .regex(
+      passwordRegex.lowercase,
+      "Password must contain at least one lowercase letter"
+    )
     .regex(passwordRegex.number, "Password must contain at least one number")
-    .regex(passwordRegex.special, "Password must contain at least one special character"),
+    .regex(
+      passwordRegex.special,
+      "Password must contain at least one special character"
+    ),
   age: z
     .string()
+    .nonempty("Age is required")
     .refine((val) => !isNaN(Number(val)), "Age must be a number")
     .refine(
       (val) => Number(val) >= 18 && Number(val) <= 120,
@@ -79,7 +87,7 @@ export const healthFormSchema = z.object({
       "healthy_balanced",
     ])
     .optional(),
-    sleepHours: z
+  sleepHours: z
     .string()
     .nonempty("Sleep hours is required")
     .refine((val) => !isNaN(Number(val)), "Sleep hours must be a number")
@@ -87,7 +95,12 @@ export const healthFormSchema = z.object({
       (val) => Number(val) >= 0 && Number(val) <= 24,
       "Sleep hours must be between 0 and 24"
     ),
-  smokingStatus: z.enum(["non_smoker", "former_smoker", "current_smoker", "vaper"]),
+  smokingStatus: z.enum([
+    "non_smoker",
+    "former_smoker",
+    "current_smoker",
+    "vaper",
+  ]),
   alcoholConsumption: z.enum(["none", "occasional", "moderate", "frequent"]),
 });
 

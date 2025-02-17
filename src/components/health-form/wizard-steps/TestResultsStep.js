@@ -178,9 +178,7 @@ export const TestResultsStep = ({ form }) => {
               variant="outline"
               className={styles.uploadButton}
               onClick={() => document.getElementById("genetic")?.click()}
-              disabled={
-                uploading.genetic || noTestsYet || proceedWithoutTests
-              }
+              disabled={uploading.genetic || noTestsYet || proceedWithoutTests}
             >
               {uploading.genetic ? (
                 <>
@@ -214,15 +212,14 @@ export const TestResultsStep = ({ form }) => {
           specifically (Optional)
         </Label>
         <Textarea
-  placeholder="E.g., Vitamin D levels, MTHFR gene mutation, cholesterol levels..."
-  value={biomarkerConcerns}
-  onChange={(e) => {
-    setBiomarkerConcerns(e.target.value);
-    form.setValue("concerns", e.target.value);
-  }}
-  className={styles.textarea}
-/>
-
+          placeholder="E.g., Vitamin D levels, MTHFR gene mutation, cholesterol levels..."
+          value={biomarkerConcerns}
+          onChange={(e) => {
+            setBiomarkerConcerns(e.target.value);
+            form.setValue("concerns", e.target.value);
+          }}
+          className={styles.textarea}
+        />
       </div>
 
       <div className={styles.providersSection}>
@@ -265,6 +262,7 @@ export const TestResultsStep = ({ form }) => {
               checked={noTestsYet}
               onCheckedChange={(checked) => {
                 setNoTestsYet(checked);
+                setProceedWithoutTests(false);
                 if (checked) {
                   form.setValue("bloodWorkFiles", null);
                   form.setValue("geneticTestFiles", null);
@@ -272,6 +270,8 @@ export const TestResultsStep = ({ form }) => {
                   form.setValue("hasGeneticTesting", false);
                   setBloodFileName("");
                   setGeneticFileName("");
+                  document.getElementById("bloodwork").value = "";
+                  document.getElementById("genetic").value = "";
                 }
               }}
             />
@@ -286,6 +286,8 @@ export const TestResultsStep = ({ form }) => {
               checked={proceedWithoutTests}
               onCheckedChange={(checked) => {
                 setProceedWithoutTests(checked);
+                setNoTestsYet(false);
+
                 if (checked) {
                   setNoTestsYet(false);
                   form.setValue("bloodWorkFiles", null);
@@ -294,10 +296,15 @@ export const TestResultsStep = ({ form }) => {
                   form.setValue("hasGeneticTesting", false);
                   setBloodFileName("");
                   setGeneticFileName("");
+                  document.getElementById("bloodwork").value = "";
+                  document.getElementById("genetic").value = "";
                 }
               }}
             />
-            <Label htmlFor="proceed-without-tests" className={styles.checkboxLabel}>
+            <Label
+              htmlFor="proceed-without-tests"
+              className={styles.checkboxLabel}
+            >
               Proceed without any test results
             </Label>
           </div>

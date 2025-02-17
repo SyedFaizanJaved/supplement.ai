@@ -15,9 +15,7 @@ const FamilyPlanPage = ({
   onRemoveFamilyMember,
 }) => {
   const generateNewMember = () => ({
-    id:
-      Date.now().toString(36) +
-      Math.random().toString(36).substring(2, 5),
+    id: Date.now().toString(36) + Math.random().toString(36).substring(2, 5),
     first_name: "",
     last_name: "",
     email: "",
@@ -57,7 +55,10 @@ const FamilyPlanPage = ({
                     </button>
                   </TooltipTrigger>
                   {/* This content is shown when the trigger is hovered */}
-                  <TooltipContent className={styles.tooltipContent} sideOffset={2}>
+                  <TooltipContent
+                    className={styles.tooltipContent}
+                    sideOffset={2}
+                  >
                     <p>
                       After you input your health metrics, invite at least two
                       other family members to join and pay at a new rate of
@@ -108,9 +109,7 @@ const FamilyPlanPage = ({
                       />
                     </div>
                     <div>
-                      <label htmlFor={`lastName-${member.id}`}>
-                        Last Name
-                      </label>
+                      <label htmlFor={`lastName-${member.id}`}>Last Name</label>
                       <input
                         id={`lastName-${member.id}`}
                         value={member.last_name}
@@ -144,6 +143,7 @@ const FamilyPlanPage = ({
             ))}
 
             <button
+              type="button"
               className={styles.addMemberButton}
               onClick={addFamilyMember}
             >

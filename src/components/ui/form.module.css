@@ -5,7 +5,7 @@
 }
 
 .labelError {
-  color:  var(--tertiary);
+  color: var(--tertiary);
 }
 
 .formDescription {
@@ -15,7 +15,6 @@
 
 .formMessage {
   font-size: 0.875rem;
-  font-weight: 500;
-  color:  var(--tertiary);
+  font-weight: 400;
+  color: var(--error);
 }
-

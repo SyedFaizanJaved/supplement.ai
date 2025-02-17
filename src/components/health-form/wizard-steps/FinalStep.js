@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "../../ui/button";
-import {  ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import styles from "./FinalStep.module.css";
 
 export const FinalStep = ({ form, formData, isSubmitting, onSubmit }) => {
@@ -10,19 +10,15 @@ export const FinalStep = ({ form, formData, isSubmitting, onSubmit }) => {
     setAcceptedTerms(event.target.checked);
   };
 
-  // React.useEffect(() => {
-  //   console.log("form-data", formData);
-  // }, [formData]);
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   // e.stopPropagation();
-  //   if (acceptedTerms && !isSubmitting) {
-  //     try {
-  //       await onSubmit();
-  //     } catch (error) {}
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (acceptedTerms && !isSubmitting) {
+      try {
+        await onSubmit();
+      } catch (error) {}
+    }
+  };
 
   return (
     <div className={styles.finalStepContainer}>
@@ -42,7 +38,7 @@ export const FinalStep = ({ form, formData, isSubmitting, onSubmit }) => {
       <div className={styles.buttonContainer}>
         <Button
           type="submit"
-          //   onClick={handleSubmit}
+          // onClick={handleSubmit}
           disabled={!acceptedTerms || isSubmitting}
           className={`${styles.submitButton} ${styles.mainButton}`}
         >

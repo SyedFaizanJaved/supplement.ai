@@ -128,7 +128,7 @@ export const GoalItem = ({
               </Button>
             )}
           </div>
-          <div className={styles.progressContainer}>
+          {/* <div className={styles.progressContainer}>
             {goal.target === 1 ? (
               <span className={styles.progressText}>
                 Status: {goal.progress ? "Completed" : "Not Started"}
@@ -145,11 +145,12 @@ export const GoalItem = ({
                 </span>
               </>
             )}
-          </div>
-          <Progress
+          </div> */}
+
+          {/* <Progress
             value={calculateProgress(goal.progress, goal.target)}
             className={styles.progressBar}
-          />
+          /> */}
         </div>
       )}
     </div>

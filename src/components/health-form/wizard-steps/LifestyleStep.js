@@ -4,6 +4,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "../../ui/form";
 import { Input } from "../../ui/input";
 import { BubbleOption } from "../BubbleOption";
@@ -42,6 +43,7 @@ export const LifestyleStep = ({ form }) => {
                 {...field}
               />
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />

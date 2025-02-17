@@ -37,12 +37,15 @@ export const useHealthChat = () => {
     const fetchChatHistory = async () => {
       let token = localStorage.getItem("accessToken");
       try {
-        const response = await axios.get(`${API_URL}/api/v1/assistant/chat-history/`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${API_URL}/api/v1/assistant/chat-history/`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (
           response.data.history &&
@@ -60,12 +63,15 @@ export const useHealthChat = () => {
             if (refreshResult.access) {
               localStorage.setItem("accessToken", refreshResult.access);
               token = refreshResult.access;
-              const response = await axios.get(`${API_URL}/api/v1/assistant/chat-history/`, {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              });
+              const response = await axios.get(
+                `${API_URL}/api/v1/assistant/chat-history/`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
               if (
                 response.data.history &&
                 response.data.history.history &&
@@ -85,7 +91,7 @@ export const useHealthChat = () => {
           console.error("Failed to fetch chat history:", error);
           toast({
             title: "Error",
-            description: "Failed to fetch chat history.",
+            description: "Unable to load history",
             variant: "destructive",
           });
         }
@@ -113,12 +119,15 @@ export const useHealthChat = () => {
           if (refreshResult.access) {
             localStorage.setItem("accessToken", refreshResult.access);
             token = refreshResult.access;
-            await axios.delete(`${API_URL}/api/v1/assistant/clear-chat-history/`, {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            });
+            await axios.delete(
+              `${API_URL}/api/v1/assistant/clear-chat-history/`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
           } else {
             throw new Error("Failed to refresh access token.");
           }
@@ -211,7 +220,8 @@ export const useHealthChat = () => {
       toast({
         title: "Error",
         description:
-          error.message || "I'm having trouble processing your request. Please try again.",
+          error.message ||
+          "I'm having trouble processing your request. Please try again.",
         variant: "destructive",
       });
       const errorMessage = {

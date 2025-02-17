@@ -6,62 +6,61 @@ import { Button } from "../../ui/button";
 import { X } from "lucide-react";
 import styles from "./HealthGoalsStep.module.css";
 
+const healthGoalOptions = [
+  {
+    value: "weight_management",
+    label: "Weight Management",
+    description: "Support healthy weight goals",
+  },
+  {
+    value: "energy_focus",
+    label: "Energy & Focus",
+    description: "Improve daily energy levels and mental clarity",
+  },
+  {
+    value: "immune_support",
+    label: "Immune Support",
+    description: "Strengthen immune system function",
+  },
+  {
+    value: "sleep_stress",
+    label: "Sleep & Stress",
+    description: "Better sleep quality and stress management",
+  },
+  {
+    value: "fitness_performance",
+    label: "Fitness Performance",
+    description: "Enhance workout results and recovery",
+  },
+  {
+    value: "mental_health",
+    label: "Mental Health",
+    description: "Support cognitive function and emotional well-being",
+  },
+  {
+    value: "hormone_balance",
+    label: "Hormone Balance",
+    description: "Optimize hormone levels naturally",
+  },
+  {
+    value: "longevity",
+    label: "Longevity",
+    description: "Support healthy aging and cellular health",
+  },
+  {
+    value: "chronic_conditions",
+    label: "Manage Chronic Conditions",
+    description: "Support overall health with existing conditions",
+  },
+  {
+    value: "beauty",
+    label: "Beauty & Aesthetics",
+    description: "Support skin health and natural beauty from within",
+  },
+];
 export const HealthGoalsStep = ({ form }) => {
   const [newGoal, setNewGoal] = useState("");
   const otherHealthGoals = form.watch("otherHealthGoals") || [];
-
-  const healthGoalOptions = [
-    {
-      value: "weight_management",
-      label: "Weight Management",
-      description: "Support healthy weight goals",
-    },
-    {
-      value: "energy_focus",
-      label: "Energy & Focus",
-      description: "Improve daily energy levels and mental clarity",
-    },
-    {
-      value: "immune_support",
-      label: "Immune Support",
-      description: "Strengthen immune system function",
-    },
-    {
-      value: "sleep_stress",
-      label: "Sleep & Stress",
-      description: "Better sleep quality and stress management",
-    },
-    {
-      value: "fitness_performance",
-      label: "Fitness Performance",
-      description: "Enhance workout results and recovery",
-    },
-    {
-      value: "mental_health",
-      label: "Mental Health",
-      description: "Support cognitive function and emotional well-being",
-    },
-    {
-      value: "hormone_balance",
-      label: "Hormone Balance",
-      description: "Optimize hormone levels naturally",
-    },
-    {
-      value: "longevity",
-      label: "Longevity",
-      description: "Support healthy aging and cellular health",
-    },
-    {
-      value: "chronic_conditions",
-      label: "Manage Chronic Conditions",
-      description: "Support overall health with existing conditions",
-    },
-    {
-      value: "beauty",
-      label: "Beauty & Aesthetics",
-      description: "Support skin health and natural beauty from within",
-    },
-  ];
 
   const handleAddCustomGoal = () => {
     if (newGoal.trim()) {
@@ -70,6 +69,10 @@ export const HealthGoalsStep = ({ form }) => {
       setNewGoal("");
     }
   };
+
+  React.useEffect(() => {
+    console.log("FORM_STATE", form.getValues("otherHealthGoals"));
+  }, [newGoal]);
 
   const handleRemoveCustomGoal = (index) => {
     const currentGoals = form.getValues("otherHealthGoals") || [];
@@ -84,7 +87,9 @@ export const HealthGoalsStep = ({ form }) => {
         name="healthGoals"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>What are your health goals? (atleast one option required)</FormLabel>
+            <FormLabel>
+              What are your health goals? (atleast one option required)
+            </FormLabel>
             <div className={styles.goalsGrid}>
               {healthGoalOptions.map((option) => (
                 <BubbleOption
@@ -144,6 +149,13 @@ export const HealthGoalsStep = ({ form }) => {
           ))}
         </div>
       </div>
+
+      {form.getValues("otherHealthGoals").length <= 0 &&
+        form.getValues("healthGoals").length <= 0 && (
+          <p className={styles.errorMessage}>
+            Please select at least one health goal
+          </p>
+        )}
     </div>
   );
 };

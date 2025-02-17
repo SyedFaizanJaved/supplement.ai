@@ -3,20 +3,17 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { Button } from "../ui/button";
-import { HelpCircle, BookOpen } from "lucide-react";
-import { Card } from "../ui/card";
+import { HelpCircle, BookOpen, Loader2 } from "lucide-react";
+import { Card, CardContent } from "../ui/card";
 import { useToast } from "../ui/use-toast";
 import { GoalItem } from "./goals/GoalItem";
 import { XPStore } from "./goals/XPStore";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import AddGoalDialog from "../ui/addgoaldialog";
 import styles from "./HealthGoals.module.css";
 import API_URL from "../../config";
+
 // import FileUploadDialog from "../ui/fileupload";
 
 const HealthGoals = () => {
@@ -26,25 +23,30 @@ const HealthGoals = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [popoverOpen, setPopoverOpen] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   // GET: Fetch all goals
   const fetchGoals = useCallback(async () => {
     if (!user) return;
     try {
+      setIsLoading(true);
       const response = await axios.get(`${API_URL}/api/v1/goals/`, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${user?.token}`
+          Authorization: `Bearer ${user?.token}`,
         },
       });
       setGoals(response.data);
+      // setIsLoading(false);
     } catch (error) {
       console.error("Error fetching goals:", error);
-      toast({
-        title: "Error fetching goals",
-        description: "There was an error fetching your goals. Please try again.",
-        variant: "destructive",
-      });
+      // toast({
+      //   // title: "Error fetching goals",
+      //   description: "Unable to load goals",
+      //   variant: "destructive",
+      // });
+      // setIsLoading(false);
+      setIsError(true);
     }
   }, [user, toast]);
 
@@ -68,21 +70,21 @@ const HealthGoals = () => {
       const response = await axios.post(`${API_URL}/api/v1/goals/`, newGoal, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${user?.token}`
+          Authorization: `Bearer ${user?.token}`,
         },
       });
       // Append the new goal to the current list.
       setGoals((prevGoals) => [...prevGoals, response.data]);
       toast({
         title: "Goal added",
-        description: "New goal has been created successfully.",
+        // description: "New goal has been created successfully.",
       });
       return true;
     } catch (error) {
       console.error("Error adding goal:", error);
       toast({
-        title: "Error",
-        description: "Failed to add goal. Please try again.",
+        // title: "Error",
+        description: "Unable to add goal",
         variant: "destructive",
       });
       return false;
@@ -92,26 +94,22 @@ const HealthGoals = () => {
   // PATCH: Update an existing goal
   const handleUpdateGoal = async (goalId, updatedFields) => {
     try {
-      await axios.patch(
-        `${API_URL}/api/v1/goals/${goalId}/`,
-        updatedFields,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${user?.token}`
-          }
-        }
-      );
+      await axios.patch(`${API_URL}/api/v1/goals/${goalId}/`, updatedFields, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
       await fetchGoals();
       toast({
         title: "Goal updated",
-        description: "Your goal has been updated successfully.",
+        // description: "Your goal has been updated successfully.",
       });
     } catch (error) {
       console.error("Error updating goal:", error);
       toast({
-        title: "Error",
-        description: "Failed to update goal. Please try again.",
+        // title: "Error",
+        description: "Unable to update goal.",
         variant: "destructive",
       });
     }
@@ -123,19 +121,19 @@ const HealthGoals = () => {
       await axios.delete(`${API_URL}/api/v1/goals/${goalId}/`, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${user?.token}`
+          Authorization: `Bearer ${user?.token}`,
         },
       });
       await fetchGoals();
       toast({
         title: "Goal deleted",
-        description: "Your goal has been deleted successfully.",
+        // description: "Your goal has been deleted successfully.",
       });
     } catch (error) {
       console.error("Error deleting goal:", error);
       toast({
-        title: "Error",
-        description: "Failed to delete goal. Please try again.",
+        // title: "Error",
+        description: "Unable to delete goal",
         variant: "destructive",
       });
     }
@@ -155,23 +153,28 @@ const HealthGoals = () => {
       filteredGoals = goals.filter((goal) => goal.category === category);
     }
     return (
-      <div className={styles.goalsList}>
-        {filteredGoals.map((goal) => (
-          <Card key={goal.id} className={styles.goalCard}>
-            <GoalItem
-              goal={goal}
-              onUpdate={fetchGoals}
-              isEditing={isEditing}
-              updateGoal={handleUpdateGoal}
-              deleteGoal={handleDeleteGoal}
-            />
-          </Card>
-        ))}
-        <AddGoalDialog onAddGoal={handleAddGoal} />
-      </div>
+      <>
+        <div className="loader-container">
+          {isLoading && <Loader2 className="animate-spin loader" />}
+          {isError && <p>Unable to load goals</p>}
+        </div>
+        <div className={styles.goalsList}>
+          {filteredGoals.map((goal) => (
+            <Card key={goal.id} className={styles.goalCard}>
+              <GoalItem
+                goal={goal}
+                onUpdate={fetchGoals}
+                isEditing={isEditing}
+                updateGoal={handleUpdateGoal}
+                deleteGoal={handleDeleteGoal}
+              />
+            </Card>
+          ))}
+          <AddGoalDialog onAddGoal={handleAddGoal} />
+        </div>
+      </>
     );
   };
-  
 
   return (
     <div className={styles.container}>
@@ -194,7 +197,11 @@ const HealthGoals = () => {
                       onMouseEnter={() => setPopoverOpen(true)}
                       onMouseLeave={() => setPopoverOpen(false)}
                     >
-                      <Button variant="ghost" size="icon" className={styles.helpButton}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className={styles.helpButton}
+                      >
                         <HelpCircle className={styles.helpIcon} />
                       </Button>
                     </div>
@@ -204,18 +211,25 @@ const HealthGoals = () => {
                     onMouseLeave={() => setPopoverOpen(false)}
                     className={styles.popoverContent}
                   >
-                    Track your progress towards your goals and earn XP for completing activities
+                    Track your progress towards your goals and earn XP for
+                    completing activities
                   </PopoverContent>
                 </Popover>
               </div>
               <div className={styles.buttonContainer}>
-                <Button variant="outline" onClick={handleJournalClick} className={styles.button}>
+                <Button
+                  variant="outline"
+                  onClick={handleJournalClick}
+                  className={styles.button}
+                >
                   <BookOpen className={styles.icon} />
                   Journal
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+                  onClick={() =>
+                    isEditing ? handleSave() : setIsEditing(true)
+                  }
                   className={styles.button}
                 >
                   {isEditing ? "Save Changes" : "Edit Goals"}
@@ -241,11 +255,11 @@ const HealthGoals = () => {
               </TabsContent>
 
               <TabsContent value="biomarker" className={styles.tabContent}>
-              {/* <FileUploadDialog tabName="Biomarker" /> */}
+                {/* <FileUploadDialog tabName="Biomarker" /> */}
               </TabsContent>
 
               <TabsContent value="gene" className={styles.tabContent}>
-              {/* <FileUploadDialog tabName="Gene" /> */}
+                {/* <FileUploadDialog tabName="Gene" /> */}
               </TabsContent>
             </Tabs>
           </div>
