@@ -45,6 +45,8 @@ export const HealthAssistant = () => {
   const {
     chatHistory,
     isLoading,
+    chatError,
+    chatLoading,
     isTyping,
     handleSendMessage,
     clearHistory,
@@ -179,44 +181,62 @@ export const HealthAssistant = () => {
 
         <ScrollArea className={styles.scrollArea} ref={scrollAreaRef}>
           <div className={styles.chatMessages}>
-            {/* Default greetings */}
-            {greeting.map((msg, index) => {
-              // Attach the ref to the last chat message if the assistant is not typing.
-              const isLastMessage =
-                index === chatHistory.length - 1 && !isTyping;
-              return (
-                <div key={index} ref={isLastMessage ? lastMessageRef : null}>
-                  <ChatMessage
-                    role={msg.role}
-                    content={msg.content}
-                    timestamp={msg.timestamp || new Date().toISOString()}
-                  />
-                </div>
-              );
-            })}
-            {/* History listing */}
-            {chatHistory.map((msg, index) => {
-              if (index === 0) return;
-              // Attach the ref to the last chat message if the assistant is not typing.
-              const isLastMessage =
-                index === chatHistory.length - 1 && !isTyping;
-              return (
-                <div key={index} ref={isLastMessage ? lastMessageRef : null}>
-                  <ChatMessage
-                    role={msg.role}
-                    content={msg.content}
-                    timestamp={msg.timestamp || new Date().toISOString()}
-                  />
-                </div>
-              );
-            })}
-            {isTyping && (
-              <div ref={lastMessageRef} className={styles.typingIndicator}>
-                <Loader2 className={styles.loaderIcon} />
-                <span className={styles.typingText}>
-                  <Loader2 className="animate-spin loader" />
-                </span>
+            {chatLoading ? (
+              <div className="container">
+                <Loader2 className="animate-spin loader " />
+                <p className="info-text">
+                  Your AI assistant is almost ready to chat.
+                </p>
               </div>
+            ) : (
+              <section>
+                {/* Default greetings */}
+                {greeting.map((msg, index) => {
+                  // Attach the ref to the last chat message if the assistant is not typing.
+                  const isLastMessage =
+                    index === chatHistory.length - 1 && !isTyping;
+                  return (
+                    <div
+                      key={index}
+                      ref={isLastMessage ? lastMessageRef : null}
+                    >
+                      <ChatMessage
+                        role={msg.role}
+                        content={msg.content}
+                        timestamp={msg.timestamp || new Date().toISOString()}
+                      />
+                    </div>
+                  );
+                })}
+
+                {/* Chat History listing */}
+                {chatHistory.map((msg, index) => {
+                  if (index === 0) return;
+
+                  const isLastMessage =
+                    index === chatHistory.length - 1 && !isTyping;
+                  return (
+                    <div
+                      key={index}
+                      ref={isLastMessage ? lastMessageRef : null}
+                    >
+                      <ChatMessage
+                        role={msg.role}
+                        content={msg.content}
+                        timestamp={msg.timestamp || new Date().toISOString()}
+                      />
+                    </div>
+                  );
+                })}
+                {isTyping && (
+                  <div ref={lastMessageRef} className={styles.typingIndicator}>
+                    <Loader2 className={styles.loaderIcon} />
+                    <span className={styles.typingText}>
+                      <Loader2 className="animate-spin loader" />
+                    </span>
+                  </div>
+                )}
+              </section>
             )}
           </div>
         </ScrollArea>

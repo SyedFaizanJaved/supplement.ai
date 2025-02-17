@@ -262,6 +262,8 @@ export const useHealthChat = () => {
     chatHistory,
     setChatHistory,
     isLoading,
+    chatError,
+    chatLoading,
     isTyping,
     handleSendMessage,
     clearHistory,
