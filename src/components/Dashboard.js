@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Button } from "./ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import HealthGoals from "./dashboard/HealthGoals";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { useIsMobile } from "./hooks/use-mobile";
 import { useToast } from "./hooks/use-toast";
+import BASE_URL from "../config";
 import styles from "./Dashboard.module.css";
 
 export const Dashboard = () => {
@@ -16,7 +18,42 @@ export const Dashboard = () => {
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
-  const isAdmin = true; 
+  // State to manage admin status
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Fetch the user's profile to determine their role
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/api/v1/users/profile/`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        // Adjust this based on your actual API response structure.
+        // For example, if your response is:
+        // { user_role: { role_name: "admin" } }
+        if (
+          response.data?.user_role &&
+          response.data.user_role.role_name === "admin"
+        ) {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch user profile.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchProfile();
+  }, [toast]);
 
   return (
     <div className={styles.container}>
@@ -33,7 +70,6 @@ export const Dashboard = () => {
                 <ChevronLeft className={styles.icon} />
                 Back
               </Button>
-              {/* <h1 className={styles.title}>Your Health Dashboard</h1> */}
             </div>
 
             <div className={styles.btnContainer}>
@@ -49,32 +85,16 @@ export const Dashboard = () => {
               </div>
 
               <TabsList className={styles.tabsList}>
-                <TabsTrigger
-                  value="assistant"
-                  className={styles.tabsTrigger}
-                  // onClick={handleSignUpPrompt}
-                >
+                <TabsTrigger value="assistant" className={styles.tabsTrigger}>
                   Assistant
                 </TabsTrigger>
-                <TabsTrigger
-                  value="metrics"
-                  className={styles.tabsTrigger}
-                  // onClick={handleSignUpPrompt}
-                >
+                <TabsTrigger value="metrics" className={styles.tabsTrigger}>
                   Metrics
                 </TabsTrigger>
-                <TabsTrigger
-                  value="supplements"
-                  className={styles.tabsTrigger}
-                  // onClick={handleSignUpPrompt}
-                >
+                <TabsTrigger value="supplements" className={styles.tabsTrigger}>
                   Plan
                 </TabsTrigger>
-                <TabsTrigger
-                  value="goals"
-                  className={styles.tabsTrigger}
-                  // onClick={handleSignUpPrompt}
-                >
+                <TabsTrigger value="goals" className={styles.tabsTrigger}>
                   Goals
                 </TabsTrigger>
               </TabsList>
@@ -99,3 +119,5 @@ export const Dashboard = () => {
     </div>
   );
 };
+
+

@@ -119,16 +119,16 @@ const StepWizard = () => {
   };
 
   const handleNext = async () => {
-    const fieldsToValidate = stepFieldMapping[currentStep] || [];
-    const isValid = await form.trigger(fieldsToValidate);
-    if (!isValid) {
-      toast({
-        title: "Incomplete Form",
-        description: "Please review the required fields.",
-        variant: "destructive",
-      });
-      return;
-    }
+    // const fieldsToValidate = stepFieldMapping[currentStep] || [];
+    // const isValid = await form.trigger(fieldsToValidate);
+    // if (!isValid) {
+    //   toast({
+    //     title: "Incomplete Form",
+    //     description: "Please review the required fields.",
+    //     variant: "destructive",
+    //   });
+    //   return;
+    // }
     setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
   };
 
