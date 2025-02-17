@@ -52,8 +52,23 @@ a {
   color: white;
 }
 
-.loader-container {
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-block: 14px;
+  gap: 8px;
+}
+
+.info-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.ghost-btn {
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
 }

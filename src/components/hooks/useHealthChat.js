@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useToast } from "./use-toast";
-import { persistMessage } from "../../api/chatApi";
+
 import API_URL from "../../config";
 import { refreshToken as refreshTokenAPI } from "../../pages/Login";
-
+import { useNavigate } from "react-router";
 // Updated helper function to convert escape sequences and remove unwanted characters
 const unescapeText = (text) => {
   let result = text;
@@ -21,12 +21,15 @@ const unescapeText = (text) => {
 };
 
 export const useHealthChat = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [chatLoading, setChatLoading] = useState(false);
+  const [chatError, setChatError] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [chatHistory, setChatHistory] = useState([
     {
-      role: "assistant",
+      role: "ai",
       content: "Hi! I'm your personal health assistant. How can I help!",
       timestamp: new Date().toISOString(),
     },
@@ -37,6 +40,7 @@ export const useHealthChat = () => {
     const fetchChatHistory = async () => {
       let token = localStorage.getItem("accessToken");
       try {
+        setChatLoading(true);
         const response = await axios.get(
           `${API_URL}/api/v1/assistant/chat-history/`,
           {
@@ -48,11 +52,13 @@ export const useHealthChat = () => {
         );
 
         if (
-          response.data.history &&
-          response.data.history.history &&
-          Array.isArray(response.data.history.history)
+          response.data.chat_history &&
+          response.data.chat_history &&
+          Array.isArray(response.data.chat_history)
         ) {
-          setChatHistory(response.data.history.history);
+          setChatHistory(response.data.chat_history);
+          setChatLoading(false);
+          setChatError(false);
         }
       } catch (error) {
         // Refresh token logic if token is invalid.
@@ -63,6 +69,9 @@ export const useHealthChat = () => {
             if (refreshResult.access) {
               localStorage.setItem("accessToken", refreshResult.access);
               token = refreshResult.access;
+
+              setChatLoading(true);
+
               const response = await axios.get(
                 `${API_URL}/api/v1/assistant/chat-history/`,
                 {
@@ -73,11 +82,13 @@ export const useHealthChat = () => {
                 }
               );
               if (
-                response.data.history &&
-                response.data.history.history &&
-                Array.isArray(response.data.history.history)
+                response.data.chat_history &&
+                response.data.chat_history &&
+                Array.isArray(response.data.chat_history)
               ) {
-                setChatHistory(response.data.history.history);
+                setChatHistory(response.data.chat_history);
+                setChatLoading(false);
+                setChatError(false);
               }
             } else {
               toast({
@@ -85,15 +96,19 @@ export const useHealthChat = () => {
                 description: "Failed to refresh access token.",
                 variant: "destructive",
               });
+              localStorage.clear();
+              navigate("/login");
             }
           }
         } else {
           console.error("Failed to fetch chat history:", error);
-          toast({
-            title: "Error",
-            description: "Unable to load history",
-            variant: "destructive",
-          });
+          // toast({
+          //   title: "Error",
+          //   description: "Unable to load history",
+          //   variant: "destructive",
+          // });
+          setChatError(true);
+          setChatLoading(false);
         }
       }
     };
@@ -129,10 +144,12 @@ export const useHealthChat = () => {
               }
             );
           } else {
-            throw new Error("Failed to refresh access token.");
+            localStorage.clear();
+            navigate("/login");
           }
         } else {
-          throw new Error("No refresh token available.");
+          localStorage.clear();
+          navigate("/login");
         }
       } else {
         throw error;
@@ -141,7 +158,7 @@ export const useHealthChat = () => {
     // After successfully clearing history on the server, reset local state.
     setChatHistory([
       {
-        role: "assistant",
+        role: "ai",
         content: "Hi! I'm your personal health assistant. How can I help!",
         timestamp: new Date().toISOString(),
       },
@@ -153,7 +170,7 @@ export const useHealthChat = () => {
 
     setIsLoading(true);
     const userMessage = {
-      role: "user",
+      role: "human",
       content: message,
       timestamp: new Date().toISOString(),
     };
@@ -161,7 +178,7 @@ export const useHealthChat = () => {
 
     try {
       // Optionally, persist the user's message.
-      persistMessage(userMessage).catch(console.error);
+      // persistMessage(userMessage).catch(console.error);
       setIsTyping(true);
 
       let token = localStorage.getItem("accessToken");
@@ -193,10 +210,12 @@ export const useHealthChat = () => {
               token = refreshResult.access;
               response = await makeRequest(token);
             } else {
-              throw new Error("Failed to refresh access token.");
+              localStorage.clear();
+              navigate("/login");
             }
           } else {
-            throw new Error("No refresh token available.");
+            localStorage.clear();
+            navigate("/login");
           }
         } else {
           throw error;
@@ -204,28 +223,30 @@ export const useHealthChat = () => {
       }
 
       // Unescape the text from the response.
-      const rawReply = response.data.msg || "Sorry, no response was returned.";
+      const rawReply =
+        response.data.response || "Sorry, no response was returned.";
       const assistantReply = unescapeText(rawReply);
 
       const assistantMessage = {
-        role: "assistant",
+        role: "ai",
         content: assistantReply,
         timestamp: new Date().toISOString(),
       };
 
-      persistMessage(assistantMessage).catch(console.error);
+      // persistMessage(assistantMessage).catch(console.error);
       setChatHistory((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      console.error("Chat error:", error);
-      toast({
-        title: "Error",
-        description:
-          error.message ||
-          "I'm having trouble processing your request. Please try again.",
-        variant: "destructive",
-      });
+      // console.error("Chat error:", error);
+      // toast({
+      //   title: "Error",
+      //   description:
+      //     error.message ||
+      //     "I'm having trouble processing your request. Please try again.",
+      //   variant: "destructive",
+      // });
+
       const errorMessage = {
-        role: "assistant",
+        role: "ai",
         content:
           "I apologize, but I'm having trouble accessing the information right now. Please try asking your question again in a moment.",
         timestamp: new Date().toISOString(),
@@ -239,6 +260,7 @@ export const useHealthChat = () => {
 
   return {
     chatHistory,
+    setChatHistory,
     isLoading,
     isTyping,
     handleSendMessage,

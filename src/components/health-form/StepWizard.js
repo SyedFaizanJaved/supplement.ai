@@ -100,7 +100,7 @@ const StepWizard = () => {
 
   useEffect(() => {
     form.setValue("family", familyMembers);
-  }, [familyMembers]);
+  }, [familyMembers, form]);
 
   const handleAddFamilyMember = (member) => {
     setFamilyMembers([...familyMembers, member]);

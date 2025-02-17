@@ -34,8 +34,22 @@ const quickReplies = [
   },
 ];
 
+const greeting = [
+  {
+    role: "ai",
+    content: "Hi! I'm your personal health assistant. How can I help!",
+    timestamp: new Date().toISOString(),
+  },
+];
 export const HealthAssistant = () => {
-  const { chatHistory, isLoading, isTyping, handleSendMessage, clearHistory } = useHealthChat();
+  const {
+    chatHistory,
+    isLoading,
+    isTyping,
+    handleSendMessage,
+    clearHistory,
+    setChatHistory,
+  } = useHealthChat();
   const scrollAreaRef = useRef(null);
   const lastMessageRef = useRef(null); // This ref will always be attached to the very last element
   const { toast } = useToast();
@@ -70,10 +84,25 @@ export const HealthAssistant = () => {
     fetchProfile();
   }, [user?.token]);
 
+  useEffect(() => {
+    if (chatHistory.length <= 0) {
+      setChatHistory([
+        {
+          role: "ai",
+          content: "Hi! I'm your personal health assistant. How can I help!",
+          timestamp: new Date().toISOString(),
+        },
+      ]);
+    }
+  }, [chatHistory]);
+
   // Scroll to the last element (message or typing indicator) whenever chatHistory updates or assistant is typing
   useEffect(() => {
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      lastMessageRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
     }
   }, [chatHistory, isTyping]);
 
@@ -81,13 +110,13 @@ export const HealthAssistant = () => {
     try {
       await clearHistory();
       toast({
-        title: "Chat history cleared",
-        description: "Your conversation has been reset.",
+        // title: "Chat history cleared",
+        description: "History cleared",
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to clear chat history. Please try again.",
+        title: "Unable to clear the history",
+        // description: "Unable to clear the history",
         variant: "destructive",
       });
     }
@@ -97,9 +126,15 @@ export const HealthAssistant = () => {
     <div className={styles.container}>
       <div className={styles.backgroundAnimation}>
         <div className={styles.backgroundOverlay}>
-          <div className={`${styles.backgroundGradient} ${styles.animationOne}`}></div>
-          <div className={`${styles.backgroundGradient} ${styles.animationTwo}`}></div>
-          <div className={`${styles.backgroundGradient} ${styles.animationThree}`}></div>
+          <div
+            className={`${styles.backgroundGradient} ${styles.animationOne}`}
+          ></div>
+          <div
+            className={`${styles.backgroundGradient} ${styles.animationTwo}`}
+          ></div>
+          <div
+            className={`${styles.backgroundGradient} ${styles.animationThree}`}
+          ></div>
         </div>
       </div>
 
@@ -124,7 +159,7 @@ export const HealthAssistant = () => {
           </div>
         </div>
 
-        {chatHistory.length === 0 && (
+        {/* {chatHistory.length === 0 && (
           <div className={styles.quickRepliesGrid}>
             {quickReplies.map((reply, index) => (
               <Card
@@ -134,17 +169,37 @@ export const HealthAssistant = () => {
               >
                 <div className={styles.quickReplyCardBackground} />
                 <h3 className={styles.quickReplyTitle}>{reply.text}</h3>
-                <p className={styles.quickReplyDescription}>{reply.description}</p>
+                <p className={styles.quickReplyDescription}>
+                  {reply.description}
+                </p>
               </Card>
             ))}
           </div>
-        )}
+        )} */}
 
         <ScrollArea className={styles.scrollArea} ref={scrollAreaRef}>
           <div className={styles.chatMessages}>
-            {chatHistory.map((msg, index) => {
+            {/* Default greetings */}
+            {greeting.map((msg, index) => {
               // Attach the ref to the last chat message if the assistant is not typing.
-              const isLastMessage = index === chatHistory.length - 1 && !isTyping;
+              const isLastMessage =
+                index === chatHistory.length - 1 && !isTyping;
+              return (
+                <div key={index} ref={isLastMessage ? lastMessageRef : null}>
+                  <ChatMessage
+                    role={msg.role}
+                    content={msg.content}
+                    timestamp={msg.timestamp || new Date().toISOString()}
+                  />
+                </div>
+              );
+            })}
+            {/* History listing */}
+            {chatHistory.map((msg, index) => {
+              if (index === 0) return;
+              // Attach the ref to the last chat message if the assistant is not typing.
+              const isLastMessage =
+                index === chatHistory.length - 1 && !isTyping;
               return (
                 <div key={index} ref={isLastMessage ? lastMessageRef : null}>
                   <ChatMessage
@@ -158,7 +213,9 @@ export const HealthAssistant = () => {
             {isTyping && (
               <div ref={lastMessageRef} className={styles.typingIndicator}>
                 <Loader2 className={styles.loaderIcon} />
-                <span className={styles.typingText}>Assistant is thinking...</span>
+                <span className={styles.typingText}>
+                  <Loader2 className="animate-spin loader" />
+                </span>
               </div>
             )}
           </div>
@@ -166,7 +223,10 @@ export const HealthAssistant = () => {
 
         <div className={styles.chatInputContainer}>
           <div className={styles.chatInputWrapper}>
-            <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
+            <ChatInput
+              onSendMessage={handleSendMessage}
+              isLoading={isLoading}
+            />
           </div>
         </div>
       </Card>

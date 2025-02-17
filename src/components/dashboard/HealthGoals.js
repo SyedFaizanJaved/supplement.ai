@@ -3,7 +3,13 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { Button } from "../ui/button";
-import { HelpCircle, BookOpen, Loader2 } from "lucide-react";
+import {
+  HelpCircle,
+  BookOpen,
+  Loader2,
+  RotateCcw,
+  RotateCcwIcon,
+} from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { useToast } from "../ui/use-toast";
 import { GoalItem } from "./goals/GoalItem";
@@ -23,7 +29,7 @@ const HealthGoals = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   // GET: Fetch all goals
   const fetchGoals = useCallback(async () => {
@@ -37,7 +43,8 @@ const HealthGoals = () => {
         },
       });
       setGoals(response.data);
-      // setIsLoading(false);
+      setIsError(false);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching goals:", error);
       // toast({
@@ -45,7 +52,7 @@ const HealthGoals = () => {
       //   description: "Unable to load goals",
       //   variant: "destructive",
       // });
-      // setIsLoading(false);
+      setIsLoading(false);
       setIsError(true);
     }
   }, [user, toast]);
@@ -139,6 +146,10 @@ const HealthGoals = () => {
     }
   };
 
+  const handleReloadGoals = () => {
+    fetchGoals();
+  };
+
   useEffect(() => {
     fetchGoals();
   }, [fetchGoals]);
@@ -154,9 +165,17 @@ const HealthGoals = () => {
     }
     return (
       <>
-        <div className="loader-container">
-          {isLoading && <Loader2 className="animate-spin loader" />}
-          {isError && <p>Unable to load goals</p>}
+        <div className="container">
+          {isLoading && <Loader2 className="animate-spin loader " />}
+          {isError && (
+            <div className="container">
+              <button className="ghost-btn" onClick={() => handleReloadGoals()}>
+                <RotateCcw className="info-text" />
+              </button>
+
+              <p className="info-text">Unable to load goals</p>
+            </div>
+          )}
         </div>
         <div className={styles.goalsList}>
           {filteredGoals.map((goal) => (
