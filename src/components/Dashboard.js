@@ -31,17 +31,11 @@ export const Dashboard = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        // Adjust this based on your actual API response structure.
-        // For example, if your response is:
-        // { user_role: { role_name: "admin" } }
-        if (
-          response.data?.user_role &&
-          response.data.user_role.role_name === "admin"
-        ) {
-          setIsAdmin(true);
-        } else {
-          setIsAdmin(false);
-        }
+
+        // Check if user_role contains "Admin"
+        const roles =
+          response.data?.user_role?.map((role) => role.role_name) || [];
+        setIsAdmin(roles.includes("Admin"));
       } catch (error) {
         console.error("Error fetching profile:", error);
         toast({
@@ -119,5 +113,3 @@ export const Dashboard = () => {
     </div>
   );
 };
-
-

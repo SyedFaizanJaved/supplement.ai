@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import API_URL from "../config";
@@ -46,10 +46,8 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
   );
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -91,7 +89,12 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
         />
       </div>
       <div className={styles.formActions}>
-        <Button type="button" variant="outline" onClick={onCancel}>
+        <Button
+          className={styles.cancelButton}
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+        >
           Cancel
         </Button>
         <Button type="submit">Save Changes</Button>
@@ -102,7 +105,6 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState("asc");
@@ -116,43 +118,57 @@ const AdminDashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Retrieve token from storage (adjust as needed)
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("accessToken");
 
-  // Fetch users from API
-  const fetchUsers = async () => {
+  // Redirect to login if token is missing.
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  // Fetch users from API.
+  const fetchUsers = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/v1/users/admin/`, {
+      const response = await axios.get(`${API_URL}/api/v1/admin/users/`, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      // Map API response to local user objects.
-      const mappedUsers = response.data.map((user) => ({
-        id: user.id, // Ensure backend returns a numeric id
+      const mappedUsers = response.data.results.map((user) => ({
+        id: user.id,
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
         phone: user.phone_number,
         status: user.is_active ? "active" : "inactive",
         lastLogin: user.last_login,
-        role: user.user_role.map((r) => r.role_name).join(", "),
+        role: user.roles.join(", "),
       }));
       setUsers(mappedUsers);
     } catch (error) {
+      if (
+        error.response?.data?.code === "token_not_valid" ||
+        error.response?.status === 401
+      ) {
+        localStorage.removeItem("accessToken");
+        navigate("/login");
+        return;
+      }
       toast({
         title: "Error",
         description: "Failed to fetch users.",
         variant: "destructive",
       });
     }
-  };
+  }, [token, navigate, toast]);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
-  useEffect(() => {
+  // Memoize filtered users.
+  const filteredUsers = useMemo(() => {
     let result = users;
     if (searchTerm) {
       result = result.filter(
@@ -170,17 +186,25 @@ const AdminDashboard = () => {
         user.role.toLowerCase().includes(roleFilter.toLowerCase())
       );
     }
-    result.sort((a, b) => {
-      if (a[sortColumn] < b[sortColumn]) return sortDirection === "asc" ? -1 : 1;
-      if (a[sortColumn] > b[sortColumn]) return sortDirection === "asc" ? 1 : -1;
+    return result.sort((a, b) => {
+      if (a[sortColumn] < b[sortColumn])
+        return sortDirection === "asc" ? -1 : 1;
+      if (a[sortColumn] > b[sortColumn])
+        return sortDirection === "asc" ? 1 : -1;
       return 0;
     });
-    setFilteredUsers(result);
-  }, [users, searchTerm, sortColumn, sortDirection, statusFilter, roleFilter]);
+  }, [users, searchTerm, statusFilter, roleFilter, sortColumn, sortDirection]);
+
+  // Memoize current paginated users.
+  const currentUsers = useMemo(() => {
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    return filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  }, [filteredUsers, currentPage, usersPerPage]);
 
   const handleSort = (column) => {
     if (column === sortColumn) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
     } else {
       setSortColumn(column);
       setSortDirection("asc");
@@ -191,7 +215,6 @@ const AdminDashboard = () => {
     setEditingUser(user);
   };
 
-  // Update a user via PATCH.
   const handleUpdateUser = async (updatedUser) => {
     if (!updatedUser.id) {
       toast({
@@ -202,7 +225,6 @@ const AdminDashboard = () => {
       return;
     }
     try {
-      // Split name into first and last names.
       const [firstName, ...lastNameParts] = updatedUser.name.split(" ");
       const patchData = {
         email: updatedUser.email,
@@ -210,22 +232,19 @@ const AdminDashboard = () => {
         last_name: lastNameParts.join(" "),
         phone_number: updatedUser.phone,
       };
-      const userIdentifier = updatedUser.id;
-      // Call the PATCH endpoint.
       await axios.patch(
-        `${API_URL}/api/v1/users/admin/${userIdentifier}/`,
+        `${API_URL}/api/v1/admin/users/${updatedUser.id}/`,
         patchData,
         {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      // Update local state.
-      setUsers(
-        users.map((user) =>
-          user.id === userIdentifier ? updatedUser : user
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id ? updatedUser : user
         )
       );
       setEditingUser(null);
@@ -234,6 +253,14 @@ const AdminDashboard = () => {
         description: "User information has been successfully updated.",
       });
     } catch (error) {
+      if (
+        error.response?.data?.code === "token_not_valid" ||
+        error.response?.status === 401
+      ) {
+        localStorage.removeItem("accessToken");
+        navigate("/login");
+        return;
+      }
       toast({
         title: "Error",
         description: "Failed to update user.",
@@ -242,15 +269,13 @@ const AdminDashboard = () => {
     }
   };
 
-  // Open delete dialog.
   const handleDelete = (user) => {
     setUserToDelete(user);
     setIsDeleteDialogOpen(true);
   };
 
-  // Delete a user via DELETE.
   const confirmDelete = async () => {
-    if (!userToDelete.id) {
+    if (!userToDelete?.id) {
       toast({
         title: "Error",
         description: "User id is missing.",
@@ -259,20 +284,29 @@ const AdminDashboard = () => {
       return;
     }
     try {
-      const userIdentifier = userToDelete.id;
-      await axios.delete(`${API_URL}/api/v1/users/admin/${userIdentifier}/`, {
+      await axios.delete(`${API_URL}/api/v1/admin/users/${userToDelete.id}/`, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      setUsers(users.filter((u) => u.id !== userIdentifier));
+      setUsers((prevUsers) =>
+        prevUsers.filter((u) => u.id !== userToDelete.id)
+      );
       setIsDeleteDialogOpen(false);
       toast({
         title: "User Deleted",
         description: `${userToDelete.name} has been removed from the system.`,
       });
     } catch (error) {
+      if (
+        error.response?.data?.code === "token_not_valid" ||
+        error.response?.status === 401
+      ) {
+        localStorage.removeItem("accessToken");
+        navigate("/login");
+        return;
+      }
       toast({
         title: "Error",
         description: "Failed to delete user.",
@@ -280,10 +314,6 @@ const AdminDashboard = () => {
       });
     }
   };
-
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   return (
     <>
@@ -378,7 +408,9 @@ const AdminDashboard = () => {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.phone}</TableCell>
                     <TableCell>
-                      <Badge className={`${styles.badge} ${styles[user.status]}`}>
+                      <Badge
+                        className={`${styles.badge} ${styles[user.status]}`}
+                      >
                         {user.status}
                       </Badge>
                     </TableCell>
@@ -402,7 +434,8 @@ const AdminDashboard = () => {
                           className={styles.deleteButton}
                           onClick={() => handleDelete(user)}
                         >
-                          <Trash2 size={14} className={styles.buttonIcon} /> Delete
+                          <Trash2 size={14} className={styles.buttonIcon} />{" "}
+                          Delete
                         </Button>
                       </div>
                     </TableCell>
@@ -421,10 +454,7 @@ const AdminDashboard = () => {
           />
         </div>
 
-        <Dialog
-          open={editingUser !== null}
-          onOpenChange={() => setEditingUser(null)}
-        >
+        <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
           <DialogContent className={styles.dialogContent}>
             <DialogHeader>
               <DialogTitle>Edit User</DialogTitle>
@@ -444,11 +474,16 @@ const AdminDashboard = () => {
             </DialogHeader>
             <Alert variant="destructive">
               <AlertDescription>
-                Are you sure you want to delete {userToDelete?.name}? This action cannot be undone.
+                Are you sure you want to delete {userToDelete?.name}? This
+                action cannot be undone.
               </AlertDescription>
             </Alert>
             <div className={styles.dialogActions}>
-              <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+              <Button
+                className={styles.cancelButton}
+                variant="outline"
+                onClick={() => setIsDeleteDialogOpen(false)}
+              >
                 Cancel
               </Button>
               <Button
