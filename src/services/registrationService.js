@@ -1,5 +1,6 @@
 import axios from "axios";
 import API_URL from "../config";
+import { toast } from "../components/hooks/use-toast";
 
 const healthGoalDetails = {
   weight_management: {
@@ -128,7 +129,10 @@ export const registerUser = async (formData) => {
   );
   payload.append("diet_restriction", mapDietType(formData.dietType));
   payload.append("smoking_status", mapSmokingStatus(formData.smokingStatus));
-  payload.append("alcohol_consumption",mapAlcoholConsumption(formData.alcoholConsumption));
+  payload.append(
+    "alcohol_consumption",
+    mapAlcoholConsumption(formData.alcoholConsumption)
+  );
   payload.append("monthly_budget", mapBudget(formData.monthlyBudget));
   payload.append("average_sleep", formData.sleepHours);
   payload.append("concerns", formData.concerns);
@@ -162,10 +166,18 @@ export const registerUser = async (formData) => {
     );
     return response.data;
   } catch (error) {
-    if (error.response && error.response.data) {
-      throw new Error(error.response.data.message);
-    }
-    throw new Error("Network error occurred");
+    const extractValues = (obj) => {
+      return Object.values(obj).flatMap((value) =>
+        typeof value === "object" && value !== null
+          ? extractValues(value)
+          : value
+      );
+    };
+
+    const errorValues = extractValues(error.response.data);
+    console.log("errorValues", errorValues);
+
+    throw new Error(errorValues[0]);
   }
 };
 

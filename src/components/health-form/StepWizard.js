@@ -162,8 +162,7 @@ const StepWizard = () => {
       authLogin(userDataWithFirstName);
 
       toast({
-        title: "Success!",
-        description: "Please login to your account.",
+        title: "Your account has been successfully created",
       });
 
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -171,11 +170,9 @@ const StepWizard = () => {
       const planType = validFamilyMembers.length > 0 ? "family" : "individual";
       navigate("/login");
     } catch (error) {
+      console.log("error:", error);
       toast({
-        title: "Error",
-        description:
-          error.message ||
-          "An error occurred while submitting the form. Please try again.",
+        title: error.message,
         variant: "destructive",
       });
     } finally {
