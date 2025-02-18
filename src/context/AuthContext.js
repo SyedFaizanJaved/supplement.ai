@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useToast } from "../components/ui/use-toast";
-
+import { useNavigate } from "react-router";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -18,16 +18,13 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
     toast({
-      title: "Logged in",
-      description: "You have been logged in successfully",
+      title: "Login success",
       variant: "success",
     });
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("accessToken");
+    localStorage.clear();
     setUser(null);
   };
 

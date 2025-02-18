@@ -117,7 +117,7 @@ export const SupplementPlan = () => {
       pdf.text(data.Benefits || "Not specified", 15, yOffset, {
         maxWidth: 180,
       });
-      yOffset += 20;
+      yOffset += 30;
     });
 
     // Add logo at the bottom center

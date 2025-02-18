@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Button } from "../../ui/button";
 import { Upload, ShoppingCart, Loader2, HelpCircle } from "lucide-react";
 import { useToast } from "../../ui/use-toast";
+
 // Import the tooltip components
 import {
   Tooltip,
@@ -10,6 +11,7 @@ import {
   TooltipProvider,
 } from "../../ui/tooltip";
 import styles from "./LabTestsSection.module.css";
+const supportedFiles = ["application/pdf", "text/csv", "text/plain"];
 
 const LabTestsSection = ({
   isEditing,
@@ -33,11 +35,10 @@ const LabTestsSection = ({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (file.type !== "application/pdf") {
+    if (!supportedFiles.includes(file.type)) {
       toast({
-        title: "Invalid file type",
-        description: "Please upload a PDF file.",
-        variant: "destructive",
+        title: "Only pdf, csv, text are supported",
+        variant: "warning",
       });
       return;
     }
@@ -58,7 +59,9 @@ const LabTestsSection = ({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (file.type !== "application/pdf") {
+    console.log("File-type", file.type);
+
+    if (!supportedFiles.includes(file.type)) {
       toast({
         title: "Invalid file type",
         description: "Please upload a PDF file.",
@@ -101,16 +104,17 @@ const LabTestsSection = ({
   return (
     <div className={styles.container}>
       <h3 className={styles.title}>
-        Lab Tests{" "}
+        Lab Tests
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <span className={styles.tooltipTrigger}>
-                <HelpCircle className={styles.helpIcon}/>
+                <HelpCircle className={styles.helpIcon} />
               </span>
             </TooltipTrigger>
             <TooltipContent side="bottom" className={styles.tooltipContent}>
-              Click on the Edit information button to upload a file and save the information
+              Click on the Edit information button to upload a file and save the
+              information
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -128,7 +132,7 @@ const LabTestsSection = ({
             type="file"
             ref={bloodInputRef}
             style={{ display: "none" }}
-            accept=".pdf"
+            accept=".pdf, .csv, .text"
             onChange={handleBloodFile}
           />
           <Button
@@ -161,7 +165,7 @@ const LabTestsSection = ({
             ) : (
               <>
                 <Upload className={styles.buttonIcon} />
-                Choose PDF File
+                Choose File
               </>
             )}
           </Button>
@@ -178,7 +182,7 @@ const LabTestsSection = ({
             type="file"
             ref={geneticInputRef}
             style={{ display: "none" }}
-            accept=".pdf"
+            accept=".pdf, .csv, .text"
             onChange={handleGeneticFile}
           />
           <Button
@@ -211,7 +215,7 @@ const LabTestsSection = ({
             ) : (
               <>
                 <Upload className={styles.buttonIcon} />
-                Choose PDF File
+                Choose File
               </>
             )}
           </Button>

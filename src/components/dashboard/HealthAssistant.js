@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../hooks/use-toast";
 import styles from "./HealthAssistant.module.css";
 import API_URL from "../../config";
+import { useNavigate } from "react-router";
 
 const quickReplies = [
   {

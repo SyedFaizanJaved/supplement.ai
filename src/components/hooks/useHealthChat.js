@@ -92,8 +92,7 @@ export const useHealthChat = () => {
               }
             } else {
               toast({
-                title: "Error",
-                description: "Failed to refresh access token.",
+                title: "Session expired",
                 variant: "destructive",
               });
               localStorage.clear();

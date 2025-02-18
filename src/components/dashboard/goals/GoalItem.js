@@ -39,14 +39,14 @@ export const GoalItem = ({
       });
       toast({
         title: "Goal updated",
-        description: "Your health goal has been updated successfully.",
+        // description: "Your health goal has been updated successfully.",
       });
       onUpdate();
     } catch (error) {
       console.error("Error updating goal:", error);
       toast({
-        title: "Error",
-        description: "Failed to update goal. Please try again.",
+        title: "Unable to update goal",
+        // description: "Failed to update goal. Please try again.",
         variant: "destructive",
       });
     }
@@ -58,14 +58,13 @@ export const GoalItem = ({
       await deleteGoal(goal.id);
       toast({
         title: "Goal deleted",
-        description: "Your health goal has been deleted successfully.",
+        // description: "Your health goal has been deleted successfully.",
       });
       onUpdate();
     } catch (error) {
       console.error("Error deleting goal:", error);
       toast({
-        title: "Error",
-        description: "Failed to delete goal. Please try again.",
+        title: "unable to delete goal",
         variant: "destructive",
       });
     }
