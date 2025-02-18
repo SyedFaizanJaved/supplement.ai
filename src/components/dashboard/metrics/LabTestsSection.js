@@ -132,7 +132,7 @@ const LabTestsSection = ({
             type="file"
             ref={bloodInputRef}
             style={{ display: "none" }}
-            accept=".pdf, .csv, .text"
+            accept=".pdf, .csv, .txt"
             onChange={handleBloodFile}
           />
           <Button
@@ -182,7 +182,7 @@ const LabTestsSection = ({
             type="file"
             ref={geneticInputRef}
             style={{ display: "none" }}
-            accept=".pdf, .csv, .text"
+            accept=".pdf, .csv, .txt"
             onChange={handleGeneticFile}
           />
           <Button
