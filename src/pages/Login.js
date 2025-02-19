@@ -120,6 +120,7 @@ const Login = () => {
 
       navigate("/dashboard");
     } catch (error) {
+      console.log("ERROR:", error);
       setErrors({
         submit:
           error.response?.data?.message || "username/password is incorrect",

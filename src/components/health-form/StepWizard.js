@@ -126,7 +126,7 @@ const StepWizard = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     const data = form.getValues();
     if (isSubmitting) return;
     try {
@@ -162,7 +162,7 @@ const StepWizard = () => {
       authLogin(userDataWithFirstName);
 
       toast({
-        title: "Your account has been successfully created",
+        title: "Registration successful",
       });
 
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -181,7 +181,6 @@ const StepWizard = () => {
   };
 
   const renderStep = () => {
-    // const formData = form.getValues();
     switch (currentStep) {
       case 0:
         return <PersonalInfoStep form={form} />;
@@ -220,7 +219,7 @@ const StepWizard = () => {
             // form={form}
             // formData={formData}
             isSubmitting={isSubmitting}
-            // onSubmit={form.handleSubmit(handleSubmit)}
+            // onSubmit={form.handleSubmit(handleSubmit)}s
           />
         );
       default:

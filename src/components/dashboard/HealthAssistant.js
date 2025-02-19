@@ -87,18 +87,6 @@ export const HealthAssistant = () => {
     fetchProfile();
   }, [user?.token]);
 
-  useEffect(() => {
-    if (chatHistory.length <= 0) {
-      setChatHistory([
-        {
-          role: "ai",
-          content: "Hi! I'm your personal health assistant. How can I help!",
-          timestamp: new Date().toISOString(),
-        },
-      ]);
-    }
-  }, [chatHistory]);
-
   // Scroll to the last element (message or typing indicator) whenever chatHistory updates or assistant is typing
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -209,11 +197,8 @@ export const HealthAssistant = () => {
                     </div>
                   );
                 })}
-
                 {/* Chat History listing */}
                 {chatHistory.map((msg, index) => {
-                  if (index === 0) return;
-
                   const isLastMessage =
                     index === chatHistory.length - 1 && !isTyping;
                   return (

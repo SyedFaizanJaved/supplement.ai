@@ -155,13 +155,13 @@ export const useHealthChat = () => {
       }
     }
     // After successfully clearing history on the server, reset local state.
-    setChatHistory([
-      {
-        role: "ai",
-        content: "Hi! I'm your personal health assistant. How can I help!",
-        timestamp: new Date().toISOString(),
-      },
-    ]);
+    // setChatHistory([
+    //   {
+    //     role: "ai",
+    //     content: "Hi! I'm your personal health assistant. How can I help!",
+    //     timestamp: new Date().toISOString(),
+    //   },
+    // ]);
   };
 
   const handleSendMessage = async (message) => {

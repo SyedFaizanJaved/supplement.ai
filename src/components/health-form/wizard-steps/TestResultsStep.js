@@ -90,6 +90,7 @@ export const TestResultsStep = ({ form }) => {
               />
             </div>
             <Button
+              type="button"
               variant="outline"
               className={styles.uploadButton}
               onClick={() => document.getElementById("bloodwork")?.click()}
@@ -175,6 +176,7 @@ export const TestResultsStep = ({ form }) => {
               />
             </div>
             <Button
+              type="button"
               variant="outline"
               className={styles.uploadButton}
               onClick={() => document.getElementById("genetic")?.click()}
@@ -311,6 +313,7 @@ export const TestResultsStep = ({ form }) => {
         </div>
 
         <Button
+          type="button"
           variant="outline"
           className={styles.purchaseButton}
           onClick={() => window.open("/purchase-tests", "_blank")}

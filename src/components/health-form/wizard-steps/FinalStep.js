@@ -3,7 +3,7 @@ import { Button } from "../../ui/button";
 import { ArrowRight, Loader2 } from "lucide-react";
 import styles from "./FinalStep.module.css";
 
-export const FinalStep = ({ form, formData, isSubmitting, onSubmit }) => {
+export const FinalStep = ({ isSubmitting, onSubmit }) => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const handleCheckboxChange = (event) => {
