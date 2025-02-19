@@ -86,7 +86,7 @@ const FileUploadDialog = ({ onFileUpload }) => {
                 type="file"
                 className={styles.fileInput}
                 onChange={handleFileChange}
-                accept=".pdf,.doc,.docx,.txt"
+                accept=".pdf,.doc,.txt"
               />
               <div className={styles.uploadArea}>
                 <Upload className={styles.uploadAreaIcon} />

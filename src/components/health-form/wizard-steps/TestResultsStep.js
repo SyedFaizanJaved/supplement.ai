@@ -164,7 +164,7 @@ export const TestResultsStep = ({ form }) => {
                 render={({ field }) => (
                   <input
                     type="file"
-                    accept=".pdf, .csv, .text"
+                    accept=".pdf, .csv, .txt"
                     id="genetic"
                     className={styles.hiddenInput}
                     onChange={(e) => handleGeneticFile(e, field)}
