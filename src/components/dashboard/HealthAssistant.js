@@ -58,6 +58,8 @@ export const HealthAssistant = () => {
   const { toast } = useToast();
   const { user } = useAuth();
 
+  const [assistantLoading, setAssistantLoading] = useState(true);
+
   // State to hold the user's first name from the profile API
   const [firstName, setFirstName] = useState("");
 
@@ -85,7 +87,7 @@ export const HealthAssistant = () => {
     };
 
     fetchProfile();
-  }, [user?.token]);
+  }, []);
 
   // Scroll to the last element (message or typing indicator) whenever chatHistory updates or assistant is typing
   useEffect(() => {
@@ -96,6 +98,14 @@ export const HealthAssistant = () => {
       });
     }
   }, [chatHistory, isTyping]);
+
+  useEffect(() => {
+    let timeout;
+
+    setTimeout(() => {
+      setAssistantLoading(false);
+    }, 2000);
+  }, []);
 
   const handleClearChat = async () => {
     try {
@@ -170,7 +180,7 @@ export const HealthAssistant = () => {
 
         <ScrollArea className={styles.scrollArea} ref={scrollAreaRef}>
           <div className={styles.chatMessages}>
-            {chatLoading ? (
+            {assistantLoading ? (
               <div className="container">
                 <Loader2 className="animate-spin loader " />
                 <p className="info-text">
@@ -197,6 +207,7 @@ export const HealthAssistant = () => {
                     </div>
                   );
                 })}
+
                 {/* Chat History listing */}
                 {chatHistory.map((msg, index) => {
                   const isLastMessage =
@@ -206,14 +217,17 @@ export const HealthAssistant = () => {
                       key={index}
                       ref={isLastMessage ? lastMessageRef : null}
                     >
-                      <ChatMessage
-                        role={msg.role}
-                        content={msg.content}
-                        timestamp={msg.timestamp || new Date().toISOString()}
-                      />
+                      {msg && (
+                        <ChatMessage
+                          role={msg.role}
+                          content={msg.content}
+                          timestamp={msg.timestamp || new Date().toISOString()}
+                        />
+                      )}
                     </div>
                   );
                 })}
+
                 {isTyping && (
                   <div ref={lastMessageRef} className={styles.typingIndicator}>
                     <Loader2 className={styles.loaderIcon} />

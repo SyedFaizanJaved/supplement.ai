@@ -8,7 +8,6 @@ import {
 } from "../../ui/form";
 import { Input } from "../../ui/input";
 import styles from "./PersonalInfoStep.module.css";
-
 export const PersonalInfoStep = ({ form }) => {
   return (
     <div className={styles.container}>
@@ -62,7 +61,11 @@ export const PersonalInfoStep = ({ form }) => {
           <FormItem>
             <FormLabel>Phone Number</FormLabel>
             <FormControl>
-              <Input type="tel" placeholder="e.g., +1 (555) 123-4567" {...field} />
+              <Input
+                type="tel"
+                placeholder="e.g., +1 (555) 123-4567"
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
