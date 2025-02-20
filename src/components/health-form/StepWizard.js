@@ -1,3 +1,4 @@
+import { checkEmailPhone } from "../../services/auth/index";
 import { registerUser } from "../../services/registrationService";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -57,7 +58,6 @@ const stepFieldMapping = [
   [],
 ];
 
-// schema
 const defaultValues = {
   firstName: "",
   lastName: "",
@@ -121,12 +121,39 @@ const StepWizard = () => {
   const handleNext = async () => {
     const fieldsToValidate = stepFieldMapping[currentStep] || [];
     const isValid = await form.trigger(fieldsToValidate);
-    if (isValid) {
+    if (!isValid) {
+      return;
+    }
+  
+    if (currentStep === 0) {
+      const formData = form.getValues();   
+      try {
+        await checkEmailPhone(formData.email, formData.phoneNumber);
+        setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+      } catch (error) {
+        const errorData = error.response?.data;
+        let errorMsg = "Error validating email/phone.";
+        if (errorData) {
+          if (errorData.email && errorData.phone_number) {
+            errorMsg = "Email and phone number already exist";
+          } else {
+            const emailError = errorData.email ? errorData.email.join(", ") : "";
+            const phoneError = errorData.phone_number ? errorData.phone_number.join(", ") : "";
+            errorMsg = [emailError, phoneError].filter(Boolean).join(" | ") || errorMsg;
+          }
+        }
+        toast({
+          title: errorMsg,
+          variant: "destructive",
+        });
+        return;
+      }
+    } else {
       setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     const data = form.getValues();
     if (isSubmitting) return;
     try {
@@ -139,7 +166,6 @@ const StepWizard = () => {
           member.status === "Unregistered" &&
           member.joined_at === null
       );
-      // Prepare the formatted data with family details
       const formattedData = {
         ...data,
         family: validFamilyMembers.map(({ first_name, last_name, email }) => ({
@@ -152,13 +178,11 @@ const StepWizard = () => {
       };
 
       const userData = await registerUser(formattedData);
-
       const userDataWithFirstName = {
         ...userData,
         first_name: data.firstName,
       };
 
-      // Store the user data (including first_name) in local storage via the auth context
       authLogin(userDataWithFirstName);
 
       toast({
@@ -166,8 +190,6 @@ const StepWizard = () => {
       });
 
       await new Promise((resolve) => setTimeout(resolve, 500));
-      const encodedEmail = encodeURIComponent(data.email);
-      const planType = validFamilyMembers.length > 0 ? "family" : "individual";
       navigate("/login");
     } catch (error) {
       console.log("error:", error);
@@ -214,14 +236,7 @@ const StepWizard = () => {
           />
         );
       case 12:
-        return (
-          <FinalStep
-            // form={form}
-            // formData={formData}
-            isSubmitting={isSubmitting}
-            // onSubmit={form.handleSubmit(handleSubmit)}s
-          />
-        );
+        return <FinalStep isSubmitting={isSubmitting} />;
       default:
         return null;
     }
@@ -236,19 +251,14 @@ const StepWizard = () => {
             {steps.map((_, index) => (
               <div
                 key={index}
-                className={`${styles.progressStep} ${
-                  index <= currentStep ? styles.progressStepActive : ""
-                }`}
+                className={`${styles.progressStep} ${index <= currentStep ? styles.progressStepActive : ""}`}
               />
             ))}
           </div>
         </div>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className={styles.form}
-          >
+          <form onSubmit={form.handleSubmit(handleSubmit)} className={styles.form}>
             <div className={styles.stepContent}>{renderStep()}</div>
 
             <div className={styles.buttonContainer}>
@@ -264,11 +274,7 @@ const StepWizard = () => {
               </Button>
 
               {currentStep < steps.length - 1 && (
-                <Button
-                  type="button"
-                  onClick={handleNext}
-                  className={styles.nextButton}
-                >
+                <Button type="button" onClick={handleNext} className={styles.nextButton}>
                   Next
                   <ArrowRight className={styles.buttonIcon} />
                 </Button>

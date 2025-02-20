@@ -33,7 +33,16 @@ const SupplementCard = ({ supplementName, supplementData }) => {
           </div>
         </div>
 
-        <p className={styles.description}>{Benefits}</p>
+        {Benefits && (
+  <ul className={styles.benefitsList}>
+    {Benefits.split("\n").map((benefit, index) => (
+      <li key={index} className={styles.benefitItem}>
+        {benefit.trim()}
+      </li>
+    ))}
+  </ul>
+)}
+
 
         <div className={styles.details}>
           <h4 className={styles.detailsTitle}>Dosage & Instructions</h4>

@@ -8,7 +8,6 @@ import {
   BookOpen,
   Loader2,
   RotateCcw,
-  RotateCcwIcon,
 } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { useToast } from "../ui/use-toast";
@@ -20,8 +19,6 @@ import AddGoalDialog from "../ui/addgoaldialog";
 import styles from "./HealthGoals.module.css";
 import API_URL from "../../config";
 
-// import FileUploadDialog from "../ui/fileupload";
-
 const HealthGoals = () => {
   const [goals, setGoals] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -31,7 +28,21 @@ const HealthGoals = () => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  // GET: Fetch all goals
+
+
+  //sample add kia ha ye...
+  const sampleBiomarkers = [
+    { id: 1, name: "Blood Pressure", value: "120/80 mmHg" },
+    { id: 2, name: "Heart Rate", value: "72 BPM" },
+    { id: 3, name: "Blood Sugar", value: "90 mg/dL" },
+  ];
+
+  const sampleGenes = [
+    { id: 1, name: "BRCA1", significance: "High risk" },
+    { id: 2, name: "APOE", significance: "Moderate risk" },
+    { id: 3, name: "TP53", significance: "Low risk" },
+  ];
+
   const fetchGoals = useCallback(async () => {
     if (!user) return;
     try {
@@ -47,11 +58,6 @@ const HealthGoals = () => {
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching goals:", error);
-      // toast({
-      //   // title: "Error fetching goals",
-      //   description: "Unable to load goals",
-      //   variant: "destructive",
-      // });
       setIsLoading(false);
       setIsError(true);
     }
@@ -84,13 +90,11 @@ const HealthGoals = () => {
       setGoals((prevGoals) => [...prevGoals, response.data]);
       toast({
         title: "Goal added",
-        // description: "New goal has been created successfully.",
       });
       return true;
     } catch (error) {
       console.error("Error adding goal:", error);
       toast({
-        // title: "Error",
         description: "Unable to add goal",
         variant: "destructive",
       });
@@ -110,12 +114,10 @@ const HealthGoals = () => {
       await fetchGoals();
       toast({
         title: "Goal updated",
-        // description: "Your goal has been updated successfully.",
       });
     } catch (error) {
       console.error("Error updating goal:", error);
       toast({
-        // title: "Error",
         description: "Unable to update goal.",
         variant: "destructive",
       });
@@ -134,12 +136,10 @@ const HealthGoals = () => {
       await fetchGoals();
       toast({
         title: "Goal deleted",
-        // description: "Your goal has been deleted successfully.",
       });
     } catch (error) {
       console.error("Error deleting goal:", error);
       toast({
-        // title: "Error",
         description: "Unable to delete goal",
         variant: "destructive",
       });
@@ -169,10 +169,9 @@ const HealthGoals = () => {
           {isLoading && <Loader2 className="animate-spin loader " />}
           {isError && (
             <div className="container">
-              <button className="ghost-btn" onClick={() => handleReloadGoals()}>
+              <button className="ghost-btn" onClick={handleReloadGoals}>
                 <RotateCcw className="info-text" />
               </button>
-
               <p className="info-text">Unable to load goals</p>
             </div>
           )}
@@ -274,11 +273,29 @@ const HealthGoals = () => {
               </TabsContent>
 
               <TabsContent value="biomarker" className={styles.tabContent}>
-                {/* <FileUploadDialog tabName="Biomarker" /> */}
+                <div className={styles.dataContainer}>
+                  {sampleBiomarkers.map((bm) => (
+                    <Card key={bm.id} className={styles.dataCard}>
+                      <CardContent>
+                        <h4>{bm.name}</h4>
+                        <p>{bm.value}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </TabsContent>
 
               <TabsContent value="gene" className={styles.tabContent}>
-                {/* <FileUploadDialog tabName="Gene" /> */}
+                <div className={styles.dataContainer}>
+                  {sampleGenes.map((gene) => (
+                    <Card key={gene.id} className={styles.dataCard}>
+                      <CardContent>
+                        <h4>{gene.name}</h4>
+                        <p>{gene.significance}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </TabsContent>
             </Tabs>
           </div>

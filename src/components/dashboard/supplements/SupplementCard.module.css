@@ -51,6 +51,18 @@
   margin: 16px 0;
 }
 
+.benefitsList {
+  list-style-type: disc;  
+  padding-left: 20px;      
+  margin-top: 10px;
+}
+
+.benefitItem {
+  margin-bottom: 5px;  
+  font-size: 1rem;     
+  color: #333;           
+}
+
 .detailsTitle {
   font-size: 1.1rem;
   font-weight: 500;
