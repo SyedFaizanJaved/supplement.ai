@@ -15,7 +15,7 @@
 }
 
 .attachButton {
-  border:none;
+  border: none;
   flex-shrink: 0;
   background: none;
   color: rgba(255, 255, 255, 0.5);
@@ -34,7 +34,7 @@
 
 .input {
   flex: 1;
-  background: transparent;
+  background-color: transparent;
   border: none;
   color: white;
   font-size: 1rem;
@@ -52,7 +52,7 @@
 }
 
 .submitButton {
-  border:none;
+  border: none;
   flex-shrink: 0;
   border-radius: 0.75rem;
   transition: background-color 0.3s ease;
@@ -60,7 +60,7 @@
 }
 
 .activeSubmitButton {
-  background-color: #0EA5E9;
+  background-color: #0ea5e9;
   color: white;
 }
 
