@@ -302,36 +302,29 @@ const HealthGoals = () => {
 
               <TabsContent value="biomarker" className={styles.tabContent}>
                 <div className={styles.bioContainer}>
-                  {(
-                    (userProfile &&
-                      userProfile?.biomarkers.length > 0 &&
-                      userProfile?.biomarkers) ||
-                    []
-                  ).map((biomarker) => (
-                    <BioInfoCard
-                      bioName={biomarker.name}
-                      currentValue={biomarker.current_value}
-                      normalValue={biomarker.normal_value}
-                    />
-                  ))}
+                  {Array.isArray(userProfile?.biomarkers) &&
+                    userProfile.biomarkers.map((biomarker) => (
+                      <BioInfoCard
+                        key={biomarker.name}
+                        bioName={biomarker.name}
+                        currentValue={biomarker.current_value}
+                        normalValue={biomarker.normal_value}
+                      />
+                    ))}
                 </div>
               </TabsContent>
 
               <TabsContent value="gene" className={styles.tabContent}>
                 <div className={styles.geneContainer}>
-                  {(
-                    (userProfile &&
-                      userProfile?.genetic_variants.length > 0 &&
-                      userProfile?.genetic_variants) ||
-                    []
-                  ).map((variant) => (
-                    <GeneInfoCard
-                      name={variant.name}
-                      impact={variant.impact}
-                      risk_allele={variant.risk_allele}
-                      snp={variant.snp}
-                    />
-                  ))}
+                  {Array.isArray(userProfile?.genetic_variants) &&
+                    userProfile.genetic_variants.map((variant) => (
+                      <GeneInfoCard
+                        name={variant.name}
+                        impact={variant.impact}
+                        risk_allele={variant.risk_allele}
+                        snp={variant.snp}
+                      />
+                    ))}
                 </div>
               </TabsContent>
             </Tabs>
