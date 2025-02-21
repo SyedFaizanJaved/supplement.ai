@@ -8,7 +8,7 @@
 .animatedBackground {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom right, #1A1F2C, #1E293B);
+  background: linear-gradient(to bottom right, #1a1f2c, #1e293b);
   overflow: hidden;
 }
 
@@ -27,25 +27,30 @@
 }
 
 .backgroundPulse1 {
-  background: radial-gradient(circle at 50% 50%, #0EA5E9 0%, transparent 50%);
+  background: radial-gradient(circle at 50% 50%, #0ea5e9 0%, transparent 50%);
   animation: pulse 6s ease-in-out infinite;
 }
 
 .backgroundPulse2 {
-  background: radial-gradient(circle at 80% 20%, #10B981 0%, transparent 50%);
+  background: radial-gradient(circle at 80% 20%, #10b981 0%, transparent 50%);
   animation: pulse 6s ease-in-out infinite;
   animation-delay: 2s;
 }
 
 .backgroundPulse3 {
-  background: radial-gradient(circle at 20% 80%, #0EA5E9 0%, transparent 50%);
+  background: radial-gradient(circle at 20% 80%, #0ea5e9 0%, transparent 50%);
   animation: pulse 6s ease-in-out infinite;
   animation-delay: 4s;
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 .contentWrapper {
@@ -75,16 +80,16 @@
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.3);
   width: 100%;
-  font-weight:600;
+  font-weight: 600;
   transition: background-color 0.3s, border-color 0.3s;
 }
 
 .button:hover {
-  background:#fa7516;
+  background: #fa7516;
 }
 
 .button:active {
-  background: linear-gradient(to right, #0EA5E9, #10B981);
+  background: linear-gradient(to right, #0ea5e9, #10b981);
   border-color: transparent;
 }
 
@@ -174,14 +179,14 @@
 
 .tabsTrigger {
   color: white;
-  font-weight:600;
+  font-weight: 600;
   transition: all 0.3s;
   padding: 0.5rem;
   text-align: center;
 }
 
 .tabsTrigger[data-state="active"] {
-  background-color: #0EA5E9;
+  background-color: #0ea5e9;
   color: white;
   border-radius: 0.25rem;
   padding: 8px 35px;
@@ -198,6 +203,16 @@
 
 .content {
   padding: 1rem;
+}
+.geneContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bioContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 /* Responsive Adjustments */
 @media screen and (max-width: 768px) {
@@ -226,12 +241,12 @@
 }
 
 @media screen and (max-width: 480px) {
- .bottomSection {
-  display: flex;
-  flex-direction:column;
-  gap: 1.5rem;
-  margin: 1.5rem;
-}
+  .bottomSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1.5rem;
+  }
 
   .container {
     overflow-x: hidden;
@@ -248,7 +263,7 @@
 
   .tabsList {
     gap: 25px;
-    display:flex;
+    display: flex;
   }
 }
 

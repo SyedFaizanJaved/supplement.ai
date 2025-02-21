@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../../ui/form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "../../ui/form";
 import styles from "./BasicMetricsInputs.module.css";
 
 export const BasicMetricsInputs = ({ form }) => {
@@ -13,6 +19,15 @@ export const BasicMetricsInputs = ({ form }) => {
   const updateHeight = (newFeet, newInches) => {
     const f = parseInt(newFeet, 10) || 0;
     const i = parseInt(newInches, 10) || 0;
+
+    if (newInches >= 12) {
+      setHeightError("valid inches (0-11)");
+      form.setError("height", {
+        message: "valid inches (0-11)",
+      });
+      form.setValue("height", "");
+      return;
+    }
 
     if (f > 8 || (f === 8 && i > 0)) {
       setHeightError("Height cannot exceed 8'0\"");
@@ -25,6 +40,22 @@ export const BasicMetricsInputs = ({ form }) => {
       form.setValue("height", cm.toString());
     }
   };
+
+  function cmToFeetInches(cm) {
+    const totalInches = Math.round(cm / 2.54);
+    const feet = Math.floor(totalInches / 12);
+    const inches = totalInches % 12;
+
+    return { feet, inches };
+  }
+
+  React.useEffect(() => {
+    const height = form.getValues("height");
+    if (!height) return;
+    const { feet, inches } = cmToFeetInches(height);
+    setFeet(feet);
+    setInches(inches);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -48,7 +79,9 @@ export const BasicMetricsInputs = ({ form }) => {
                     const val = e.target.value;
                     field.onChange(val);
                     if (parseInt(val, 10) > 110) {
-                      form.setError("age", { message: "Age cannot exceed 110 years" });
+                      form.setError("age", {
+                        message: "Age cannot exceed 110 years",
+                      });
                     } else {
                       form.clearErrors("age");
                     }
@@ -59,7 +92,6 @@ export const BasicMetricsInputs = ({ form }) => {
                 <FormMessage />
               </span>
             </FormItem>
-
           )}
         />
 
@@ -120,7 +152,9 @@ export const BasicMetricsInputs = ({ form }) => {
               />
             </div>
           </div>
-          {heightError && <span className={styles.errorMessage}>{heightError}</span>}
+          {heightError && (
+            <span className={styles.errorMessage}>{heightError}</span>
+          )}
         </div>
 
         {/* Weight Field with validation */}
@@ -143,11 +177,14 @@ export const BasicMetricsInputs = ({ form }) => {
                     const val = e.target.value;
                     field.onChange(val);
                     if (parseFloat(val) > 600) {
-                      form.setError("weight", { message: "Weight cannot exceed 600 lbs" });
-                    }else if (parseFloat(val) < 40){
-                      form.setError("weight", { message: "Weight cannot less than 40 lbs" });
-                    }
-                     else {
+                      form.setError("weight", {
+                        message: "Weight cannot exceed 600 lbs",
+                      });
+                    } else if (parseFloat(val) < 40) {
+                      form.setError("weight", {
+                        message: "Weight cannot less than 40 lbs",
+                      });
+                    } else {
                       form.clearErrors("weight");
                     }
                   }}

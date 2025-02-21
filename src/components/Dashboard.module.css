@@ -37,7 +37,7 @@
 }
 
 .adminContainer {
-  margin:auto;
+  margin: auto;
   display: flex;
   justify-content: flex-end;
   margin-bottom: 0.5rem;
@@ -46,18 +46,18 @@
 .adminButton {
   background-color: #0790b3;
   color: white;
-  margin-top:6px;
+  margin-top: 6px;
   border-radius: 0.375rem;
   font-size: 0.875rem;
   font-weight: bold;
 }
 
 .adminButton:hover {
-  background-color: #cad2db ;
+  background-color: #cad2db;
 }
 
 .btnContainer {
-  display:flex;
+  display: flex;
   gap: 0.5rem;
 }
 
@@ -101,14 +101,16 @@
   gap: 0.5rem;
   border-radius: 9999px;
   flex-shrink: 0;
-  padding:20px;
-  font-weight: 500;
+  padding: 20px;
+  font-weight: 700;
+  background-image: linear-gradient(to right, #06b6d4, #14b8a6);
+  color: var(--light);
+
   /* border: 1px solid #e1e8f0; */
 }
 
 .backButton:hover {
-  background-image: linear-gradient(to right, #06b6d4, #14b8a6);
-  color: var(--light);
+  cursor: pointer;
 }
 
 .icon {
@@ -133,7 +135,7 @@
 }
 
 .tabsList {
-  margin:auto;
+  margin: auto;
   background-color: var(--light);
   border: 1px solid var(--border-color);
   border-radius: 50px;
@@ -142,14 +144,14 @@
 
 @media (max-width: 480px) {
   .btnContainer {
-    display:flex;
+    display: flex;
     flex-direction: column;
     justify-content: flex-end;
     gap: 0.5rem;
   }
 }
 
-  @media (min-width: 768px) {
+@media (min-width: 768px) {
   .tabsList {
     width: auto;
   }
@@ -164,7 +166,7 @@
 
 @media (min-width: 768px) {
   .tabsTrigger {
-    font-weight:600;
+    font-weight: 600;
     width: 5rem;
     flex: none;
     color: #324154;

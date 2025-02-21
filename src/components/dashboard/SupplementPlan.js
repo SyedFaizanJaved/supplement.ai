@@ -15,6 +15,7 @@ import {
 } from "../ui/dropdown-menu";
 import API_URL from "../../config";
 import { useAuth } from "../../context/AuthContext"; // Import useAuth
+import { getSupplementPlan } from "../../services/supplement-plan";
 
 export const SupplementPlan = () => {
   const [recommendations, setRecommendations] = useState({});
@@ -22,7 +23,9 @@ export const SupplementPlan = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const intervalId = useRef(null);
+  const updateIntervalId = useRef(null);
   const [error, setError] = useState(false);
+  const [supplementPlanStatus, setSupplementPlanStatus] = useState(false);
 
   // Function to format the supplement data
   const formatSupplementData = (data) => {
@@ -48,12 +51,8 @@ export const SupplementPlan = () => {
   const fetchSupplements = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/api/v1/supplement-plan/`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
+
+      const response = await getSupplementPlan();
 
       if (response.status === 200) {
         const formattedData = formatSupplementData(response.data);
@@ -67,23 +66,52 @@ export const SupplementPlan = () => {
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        // toast({
-        //   title: "Generating Plans",
-        //   description: "Please wait for a while until plans are generated",
-        //   variant: "Info",
-        // });
       } else {
         // Handle other errors if needed
         setLoading(false);
         setError(true);
-        // toast({
-        //   title: "Error",
-        //   description: "An error occurred while fetching supplement plans",
-        //   variant: "destructive",
-        // });
       }
     }
   };
+
+  const fetchNewSupplements = async () => {
+    try {
+      const response = await getSupplementPlan();
+
+      if (response.status === 200) {
+        const formattedData = formatSupplementData(response.data);
+        setRecommendations(formattedData);
+        setSupplementPlanStatus(response.data.is_plan_generating);
+
+        if (response.data.is_plan_generating) {
+          return;
+        }
+        if (updateIntervalId.current) {
+          clearInterval(updateIntervalId.current);
+          updateIntervalId.current = null;
+        }
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+      } else {
+        // Handle other errors if needed
+        setSupplementPlanStatus(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchNewSupplements();
+
+    updateIntervalId.current = setInterval(fetchNewSupplements, 15000);
+
+    return () => {
+      if (updateIntervalId.current) {
+        clearInterval(updateIntervalId.current);
+      }
+    };
+  }, [intervalId]);
+
   useEffect(() => {
     fetchSupplements();
 
@@ -94,11 +122,11 @@ export const SupplementPlan = () => {
         clearInterval(intervalId.current);
       }
     };
-  }, [toast, user]);
+  }, []);
 
   const generatePDF = async () => {
     const pdf = new jsPDF();
-    pdf.setFontSize(18);
+    pdf.setFontSize(16);
     pdf.text("Supplement Plan", 15, 20); // Main Title
 
     let yOffset = 40;
@@ -117,7 +145,7 @@ export const SupplementPlan = () => {
       pdf.text(data.Benefits || "Not specified", 15, yOffset, {
         maxWidth: 180,
       });
-      yOffset += 30;
+      yOffset += 35;
     });
 
     // Add logo at the bottom center
@@ -232,30 +260,34 @@ export const SupplementPlan = () => {
             <h2 className={styles.title}>Personalized Supplement Plan</h2>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className={styles.shareButton}>
+                <Button
+                  onClick={handleDownload}
+                  variant="outline"
+                  className={styles.shareButton}
+                >
                   <div className={styles.shareButtonBackground}></div>
                   <Share className={styles.shareIcon} />
                   <span className={styles.shareText}>Share Plan</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {/* <DropdownMenuItem onClick={handleShare}>
+              {/* <DropdownMenuContent>
+                <DropdownMenuItem onClick={handleShare}>
                   <Share className="mr-2 h-4 w-4" />
                   <span>Share</span>
-                </DropdownMenuItem> */}
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleDownload}>
                   <Download className="mr-2 h-4 w-4" />
                   <span>Download PDF</span>
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem onClick={handleEmail}>
+                <DropdownMenuItem onClick={handleEmail}>
                   <Mail className="mr-2 h-4 w-4" />
                   <span>Email</span>
-                </DropdownMenuItem> */}
-              </DropdownMenuContent>
+                </DropdownMenuItem>
+              </DropdownMenuContent> */}
             </DropdownMenu>
           </div>
           <div className="container">
-            {loading && (
+            {loading ? (
               <div className="container">
                 <Loader2 className="animate-spin loader " />
                 <p className="info-text">
@@ -263,8 +295,15 @@ export const SupplementPlan = () => {
                   supplement plan. This won’t take long.
                 </p>
               </div>
-            )}
-            {error && (
+            ) : supplementPlanStatus ? (
+              <div className="container">
+                <Loader2 className="animate-spin loader " />
+                <p className="info-text">
+                  Hang tight! We're adjusting your personalized supplement plan.
+                  This won’t take long.
+                </p>
+              </div>
+            ) : error ? (
               <div className="container">
                 <button
                   className="ghost-btn"
@@ -277,6 +316,8 @@ export const SupplementPlan = () => {
                   Unable to load your personalized supplement plan
                 </p>
               </div>
+            ) : (
+              ""
             )}
           </div>
 

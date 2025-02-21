@@ -119,14 +119,15 @@ const StepWizard = () => {
   };
 
   const handleNext = async () => {
+    // Explicit email and password validation
     const fieldsToValidate = stepFieldMapping[currentStep] || [];
     const isValid = await form.trigger(fieldsToValidate);
     if (!isValid) {
       return;
     }
-  
+
     if (currentStep === 0) {
-      const formData = form.getValues();   
+      const formData = form.getValues();
       try {
         await checkEmailPhone(formData.email, formData.phoneNumber);
         setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
@@ -137,9 +138,14 @@ const StepWizard = () => {
           if (errorData.email && errorData.phone_number) {
             errorMsg = "Email and phone number already exist";
           } else {
-            const emailError = errorData.email ? errorData.email.join(", ") : "";
-            const phoneError = errorData.phone_number ? errorData.phone_number.join(", ") : "";
-            errorMsg = [emailError, phoneError].filter(Boolean).join(" | ") || errorMsg;
+            const emailError = errorData.email
+              ? errorData.email.join(", ")
+              : "";
+            const phoneError = errorData.phone_number
+              ? errorData.phone_number.join(", ")
+              : "";
+            errorMsg =
+              [emailError, phoneError].filter(Boolean).join(" | ") || errorMsg;
           }
         }
         toast({
@@ -251,14 +257,19 @@ const StepWizard = () => {
             {steps.map((_, index) => (
               <div
                 key={index}
-                className={`${styles.progressStep} ${index <= currentStep ? styles.progressStepActive : ""}`}
+                className={`${styles.progressStep} ${
+                  index <= currentStep ? styles.progressStepActive : ""
+                }`}
               />
             ))}
           </div>
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className={styles.form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className={styles.form}
+          >
             <div className={styles.stepContent}>{renderStep()}</div>
 
             <div className={styles.buttonContainer}>
@@ -274,7 +285,11 @@ const StepWizard = () => {
               </Button>
 
               {currentStep < steps.length - 1 && (
-                <Button type="button" onClick={handleNext} className={styles.nextButton}>
+                <Button
+                  type="button"
+                  onClick={handleNext}
+                  className={styles.nextButton}
+                >
                   Next
                   <ArrowRight className={styles.buttonIcon} />
                 </Button>

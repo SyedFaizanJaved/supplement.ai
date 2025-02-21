@@ -3,12 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { Button } from "../ui/button";
-import {
-  HelpCircle,
-  BookOpen,
-  Loader2,
-  RotateCcw,
-} from "lucide-react";
+import { HelpCircle, BookOpen, Loader2, RotateCcw } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { useToast } from "../ui/use-toast";
 import { GoalItem } from "./goals/GoalItem";
@@ -18,7 +13,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import AddGoalDialog from "../ui/addgoaldialog";
 import styles from "./HealthGoals.module.css";
 import API_URL from "../../config";
-
+import { getProfile } from "../../services/auth";
+import GeneInfoCard from "../Cards/gene-info";
+import BioInfoCard from "../Cards/bio-info";
 const HealthGoals = () => {
   const [goals, setGoals] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -28,7 +25,8 @@ const HealthGoals = () => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-
+  const [tabIndex, setTabIndex] = useState(0);
+  const [userProfile, setUserProfile] = useState(0);
 
   //sample add kia ha ye...
   const sampleBiomarkers = [
@@ -62,6 +60,14 @@ const HealthGoals = () => {
       setIsError(true);
     }
   }, [user, toast]);
+
+  useEffect(() => {
+    getProfile()
+      .then((data) => {
+        setUserProfile(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleJournalClick = () => {
     navigate("journal");
@@ -149,6 +155,14 @@ const HealthGoals = () => {
   const handleReloadGoals = () => {
     fetchGoals();
   };
+
+  useEffect(() => {
+    getProfile()
+      .then((data) => {
+        console.log("profile", data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     fetchGoals();
@@ -243,27 +257,41 @@ const HealthGoals = () => {
                   <BookOpen className={styles.icon} />
                   Journal
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={() =>
-                    isEditing ? handleSave() : setIsEditing(true)
-                  }
-                  className={styles.button}
-                >
-                  {isEditing ? "Save Changes" : "Edit Goals"}
-                </Button>
+                {tabIndex === 0 && (
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      isEditing ? handleSave() : setIsEditing(true)
+                    }
+                    className={styles.button}
+                  >
+                    {isEditing ? "Save Changes" : "Edit Goals"}
+                  </Button>
+                )}
               </div>
             </div>
 
             <Tabs defaultValue="goal" className={styles.tabsContainer}>
               <TabsList className={styles.tabsList}>
-                <TabsTrigger value="goal" className={styles.tabsTrigger}>
+                <TabsTrigger
+                  onClick={() => setTabIndex(0)}
+                  value="goal"
+                  className={styles.tabsTrigger}
+                >
                   Goals
                 </TabsTrigger>
-                <TabsTrigger value="biomarker" className={styles.tabsTrigger}>
+                <TabsTrigger
+                  onClick={() => setTabIndex(1)}
+                  value="biomarker"
+                  className={styles.tabsTrigger}
+                >
                   Biomarkers
                 </TabsTrigger>
-                <TabsTrigger value="gene" className={styles.tabsTrigger}>
+                <TabsTrigger
+                  onClick={() => setTabIndex(2)}
+                  value="gene"
+                  className={styles.tabsTrigger}
+                >
                   Genes
                 </TabsTrigger>
               </TabsList>
@@ -273,28 +301,29 @@ const HealthGoals = () => {
               </TabsContent>
 
               <TabsContent value="biomarker" className={styles.tabContent}>
-                <div className={styles.dataContainer}>
-                  {sampleBiomarkers.map((bm) => (
-                    <Card key={bm.id} className={styles.dataCard}>
-                      <CardContent>
-                        <h4>{bm.name}</h4>
-                        <p>{bm.value}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
+                <div className={styles.bioContainer}>
+                  {userProfile &&
+                    userProfile?.biomarkers.map((biomarker) => (
+                      <BioInfoCard
+                        bioName={biomarker.name}
+                        currentValue={biomarker.current_value}
+                        normalValue={biomarker.normal_value}
+                      />
+                    ))}
                 </div>
               </TabsContent>
 
               <TabsContent value="gene" className={styles.tabContent}>
-                <div className={styles.dataContainer}>
-                  {sampleGenes.map((gene) => (
-                    <Card key={gene.id} className={styles.dataCard}>
-                      <CardContent>
-                        <h4>{gene.name}</h4>
-                        <p>{gene.significance}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
+                <div className={styles.geneContainer}>
+                  {userProfile &&
+                    userProfile?.genetic_variants.map((variant) => (
+                      <GeneInfoCard
+                        name={variant.name}
+                        impact={variant.impact}
+                        risk_allele={variant.risk_allele}
+                        snp={variant.snp}
+                      />
+                    ))}
                 </div>
               </TabsContent>
             </Tabs>

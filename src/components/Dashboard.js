@@ -12,11 +12,13 @@ import { useIsMobile } from "./hooks/use-mobile";
 import { useToast } from "./hooks/use-toast";
 import BASE_URL from "../config";
 import styles from "./Dashboard.module.css";
+import { useAuth } from "../context/AuthContext";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { toast } = useToast();
+  const { logout } = useAuth();
 
   // State to manage admin status
   const [isAdmin, setIsAdmin] = useState(false);
@@ -49,6 +51,11 @@ export const Dashboard = () => {
     fetchProfile();
   }, [toast]);
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -56,13 +63,13 @@ export const Dashboard = () => {
           <div className={styles.header}>
             <div className={styles.headerLeft}>
               <Button
-                variant="ghost"
+                // variant="ghost"
                 size="sm"
                 className={styles.backButton}
-                onClick={() => navigate("/")}
+                onClick={() => handleLogout()}
               >
-                <ChevronLeft className={styles.icon} />
-                Back
+                {/* <ChevronLeft className={styles.icon} /> */}
+                Logout
               </Button>
             </div>
 

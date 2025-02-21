@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import { Button } from "../components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import  StepWizard from "../components/health-form/StepWizard";
-import styles from './InputPage.module.css';
+import StepWizard from "../components/health-form/StepWizard";
+import styles from "./InputPage.module.css";
 
 const InputPage = () => {
   const navigate = useNavigate();
@@ -15,15 +15,15 @@ const InputPage = () => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/login")}
             className={styles.backButton}
           >
             <ChevronLeft className={styles.backIcon} />
             Back
           </Button>
-          <img 
-            src="/lovable-uploads/logo.png" 
-            alt="SupplementScribe Logo" 
+          <img
+            src="/lovable-uploads/logo.png"
+            alt="SupplementScribe Logo"
             className={styles.logo}
           />
         </div>

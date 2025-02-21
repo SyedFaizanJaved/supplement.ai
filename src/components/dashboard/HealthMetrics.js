@@ -11,16 +11,20 @@ import { Share2 } from "lucide-react";
 import styles from "./HealthMetrics.module.css";
 import { useAuth } from "../../context/AuthContext";
 import LabTestsSection from "./metrics/LabTestsSection";
-
+import Popup from "../ui/pop-up";
 // Helper functions.
 const processMultilineList = (text) =>
-  text.split("\n").filter(Boolean).map((item) => item.replace(/^- /, ""));
+  text
+    .split("\n")
+    .filter(Boolean)
+    .map((item) => item.replace(/^- /, ""));
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const HealthMetrics = () => {
   const { toast } = useToast();
   const { user } = useAuth();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [personalInfo, setPersonalInfo] = useState({
@@ -33,7 +37,11 @@ export const HealthMetrics = () => {
     exerciseLevel: "",
     medications: "",
     conditions: "",
+    referral_code: "",
   });
+
+  const openPopup = () => setIsPopupOpen(true);
+  const closePopup = () => setIsPopupOpen(false);
 
   // Store file objects (or null) for lab tests.
   const [labTests, setLabTests] = useState({
@@ -59,6 +67,7 @@ export const HealthMetrics = () => {
       conditions: data.medical_conditions
         ? data.medical_conditions.map((cond) => `- ${cond}`).join("\n")
         : "",
+      referral_code: data.referral_code,
     };
   }, []);
 
@@ -84,7 +93,7 @@ export const HealthMetrics = () => {
 
   useEffect(() => {
     fetchProfile();
-  }, [fetchProfile]);
+  }, []);
 
   const handleSave = async () => {
     if (!user?.token) return;
@@ -109,7 +118,10 @@ export const HealthMetrics = () => {
         });
         return;
       }
-      if (heightMatch && (height_in_feet > 8 || (height_in_feet === 8 && height_in_inches > 0))) {
+      if (
+        heightMatch &&
+        (height_in_feet > 8 || (height_in_feet === 8 && height_in_inches > 0))
+      ) {
         toast({
           title: "Invalid Height",
           description: "Height cannot exceed 8'0''",
@@ -151,7 +163,7 @@ export const HealthMetrics = () => {
       formData.append("height_in_feet", height_in_feet);
       formData.append("height_in_inches", height_in_inches);
       formData.append("weight", weightNumber);
-      
+
       if (labTests.blood_work_test.length > 0) {
         formData.append("blood_work_test", labTests.blood_work_test[0]);
       }
@@ -180,34 +192,14 @@ export const HealthMetrics = () => {
       console.error("Error saving profile:", error);
       toast({
         title: "Error",
-        description:
-          error?.response?.data?.message || "Failed to save changes",
+        description: error?.response?.data?.message || "Failed to save changes",
         variant: "destructive",
       });
     }
   };
 
   const handleReferFriend = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Join me on Health Dashboard',
-        text: 'I\'ve been using this great health tracking app. Join me!',
-        url: window.location.origin
-      }).catch((error) => {
-        console.log('Error sharing:', error);
-        toast({
-          title: "Error sharing",
-          description: "There was an error sharing the link.",
-          variant: "destructive"
-        });
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.origin);
-      toast({
-        title: "Link copied to clipboard",
-        description: "Share this link with your friends to invite them!",
-      });
-    }
+    openPopup();
   };
 
   return (
@@ -237,6 +229,11 @@ export const HealthMetrics = () => {
             >
               <Share2 className={styles.referIcon} /> Refer a Friend
             </Button>
+            <Popup
+              isOpen={isPopupOpen}
+              onClose={() => closePopup()}
+              referralCode={personalInfo?.referral_code}
+            />
           </div>
         </div>
 
@@ -256,7 +253,7 @@ export const HealthMetrics = () => {
         {/* <VitaminMetricsSection /> */}
 
         <LabTestsSection
-          isEditing={isEditing} 
+          isEditing={isEditing}
           bloodTestFile={labTests.blood_work_test[0] || null}
           geneticTestFile={labTests.genetic_test[0] || null}
           onBloodTestUpload={(file) =>

@@ -8,7 +8,7 @@
 .backgroundAnimation {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom right, #1A1F2C, #1E293B);
+  background: linear-gradient(to bottom right, #1a1f2c, #1e293b);
   overflow: hidden;
 }
 
@@ -32,25 +32,30 @@
 }
 
 .animationOne {
-  background: radial-gradient(circle at 50% 50%, #0EA5E9 0%, transparent 50%);
+  background: radial-gradient(circle at 50% 50%, #0ea5e9 0%, transparent 50%);
   animation: pulse 6s ease-in-out infinite;
 }
 
 .animationTwo {
-  background: radial-gradient(circle at 80% 20%, #10B981 0%, transparent 50%);
+  background: radial-gradient(circle at 80% 20%, #10b981 0%, transparent 50%);
   animation: pulse 6s ease-in-out infinite;
   animation-delay: 2s;
 }
 
 .animationThree {
-  background: radial-gradient(circle at 20% 80%, #0EA5E9 0%, transparent 50%);
+  background: radial-gradient(circle at 20% 80%, #0ea5e9 0%, transparent 50%);
   animation: pulse 6s ease-in-out infinite;
   animation-delay: 4s;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .card {
@@ -82,7 +87,7 @@
 .title {
   font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: bold;
-  background: linear-gradient(to right, #10B981, #0EA5E9);
+  background: linear-gradient(to right, #10b981, #0ea5e9);
   background-clip: text;
   color: transparent;
   animation: text-shimmer 4s ease-in-out infinite;
@@ -99,13 +104,14 @@
 }
 
 .shareButton:hover {
-  border-color: #0EA5E9;
+  border-color: #0ea5e9;
+  cursor: pointer;
 }
 
 .shareButtonBackground {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, #0EA5E9, #10B981);
+  background: linear-gradient(to right, #0ea5e9, #10b981);
   opacity: 0;
   transition: opacity 0.5s ease;
 }
@@ -118,26 +124,31 @@
   width: 1rem;
   height: 1rem;
   margin-right: 0.5rem;
-  color: #0EA5E9;
+  color: #0ea5e9;
   transition: color 0.5s ease;
 }
 
 .shareButton:hover .shareIcon {
-  color: #10B981;
+  color: #10b981;
 }
 
 .shareText {
-  color: #0EA5E9;
+  color: #0ea5e9;
   transition: color 0.5s ease;
 }
 
 .shareButton:hover .shareText {
-  color: #10B981;
+  color: #10b981;
 }
 
 @keyframes text-shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* Responsive Adjustments */
