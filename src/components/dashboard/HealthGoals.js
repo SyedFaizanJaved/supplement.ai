@@ -305,10 +305,10 @@ const HealthGoals = () => {
                   {Array.isArray(userProfile?.biomarkers) &&
                     userProfile.biomarkers.map((biomarker) => (
                       <BioInfoCard
-                        key={biomarker.name}
-                        bioName={biomarker.name}
-                        currentValue={biomarker.current_value}
-                        normalValue={biomarker.normal_value}
+                        key={biomarker?.name}
+                        bioName={biomarker?.name}
+                        currentValue={biomarker?.current_value}
+                        normalValue={biomarker?.normal_value}
                       />
                     ))}
                 </div>
@@ -319,10 +319,10 @@ const HealthGoals = () => {
                   {Array.isArray(userProfile?.genetic_variants) &&
                     userProfile.genetic_variants.map((variant) => (
                       <GeneInfoCard
-                        name={variant.name}
-                        impact={variant.impact}
-                        risk_allele={variant.risk_allele}
-                        snp={variant.snp}
+                        name={variant?.name}
+                        impact={variant?.impact}
+                        risk_allele={variant?.risk_allele}
+                        snp={variant?.snp}
                       />
                     ))}
                 </div>
