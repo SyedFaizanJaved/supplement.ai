@@ -61,7 +61,15 @@ export const ChatInput = ({ onSendMessage, onFileUpload, isLoading }) => {
 
         <Input
           type="text"
-          styles={{ background: "transparent" }}
+          styles={{
+            background: "transparent",
+            flex: "1",
+            border: "none",
+            color: "white",
+            fontSize: "1rem",
+            outline: "none",
+            padding: "0 0.5rem",
+          }}
           placeholder="Ask anything"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
