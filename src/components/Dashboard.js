@@ -49,7 +49,7 @@ export const Dashboard = () => {
     };
 
     fetchProfile();
-  }, [toast]);
+  }, []);
 
   const handleLogout = () => {
     logout();
