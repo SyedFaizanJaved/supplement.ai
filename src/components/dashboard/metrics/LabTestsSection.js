@@ -48,7 +48,7 @@ const LabTestsSection = ({
     setTimeout(() => {
       toast({
         title: "File uploaded successfully",
-        description: "Your lab test file has been uploaded.",
+        // variant: "info",
       });
       setUploading((prev) => ({ ...prev, blood: false }));
       onBloodTestUpload(file);
@@ -63,9 +63,9 @@ const LabTestsSection = ({
 
     if (!supportedFiles.includes(file.type)) {
       toast({
-        title: "Invalid file type",
-        description: "Please upload a PDF file.",
-        variant: "destructive",
+        title: "Only pdf, csv, text are supported",
+
+        variant: "warning",
       });
       return;
     }
@@ -75,7 +75,6 @@ const LabTestsSection = ({
     setTimeout(() => {
       toast({
         title: "File uploaded successfully",
-        description: "Your genetic test file has been uploaded.",
       });
       setUploading((prev) => ({ ...prev, genetic: false }));
       onGeneticTestUpload(file);

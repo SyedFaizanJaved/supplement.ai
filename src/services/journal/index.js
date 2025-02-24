@@ -15,14 +15,22 @@ export const getTodayWellnessJournal = async () => {
   return response.data;
 };
 
-export const submitSymptomTracking = async (energyLevel, sleepQuality, stressLevel, otherSymptoms) => {
+export const submitSymptomTracking = async (
+  energyLevel,
+  sleepQuality,
+  stressLevel,
+  otherSymptoms
+) => {
   const payload = {
     energy_level: energyLevel,
     sleep_quality: sleepQuality,
     stress_level: stressLevel,
-    other_symptoms_notes: otherSymptoms || "", 
+    other_symptoms_notes: otherSymptoms || "",
   };
 
-  const response = await axiosInstance.post("/api/v1/wellness-journal/", payload);
+  const response = await axiosInstance.post(
+    "/api/v1/wellness-journal/",
+    payload
+  );
   return response.data;
 };

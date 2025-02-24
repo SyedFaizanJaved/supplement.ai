@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getTodaySupplementLog, submitSupplementTracking } from "../services/journal/index";
+import {
+  getTodaySupplementLog,
+  submitSupplementTracking,
+} from "../services/journal/index";
 import { SymptomTracker } from "../components/dashboard/goals/SymptomTracker";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
@@ -31,18 +34,14 @@ const Journal = () => {
   const handleSupplementsSubmit = async () => {
     try {
       await submitSupplementTracking(tookSupplements);
-
       toast({
-        title: "Recorded successfully",
-        description: "Your supplement intake has been tracked.",
+        title: "Your supplement intake is recorded",
       });
       setTookSupplements("");
     } catch (error) {
       console.error("Error tracking supplements:", error);
       toast({
-        title: "Error",
-        description: error?.response?.data?.error || "Failed to save. Please try again.",
-        variant: "destructive",
+        title: error?.response?.data?.error || "Failed to save",
       });
     }
   };
@@ -80,7 +79,11 @@ const Journal = () => {
                     <div key={value} className={styles.radioWrapper}>
                       <div className={styles.radioInner}>
                         <div className={styles.radioBox}>
-                          <RadioGroupItem value={value} id={value} className={styles.radio} />
+                          <RadioGroupItem
+                            value={value}
+                            id={value}
+                            className={styles.radio}
+                          />
                         </div>
                         <Label htmlFor={value} className={styles.radioLabel}>
                           {value.charAt(0).toUpperCase() + value.slice(1)}
@@ -89,7 +92,7 @@ const Journal = () => {
                     </div>
                   ))}
                 </RadioGroup>
-                <Button 
+                <Button
                   onClick={handleSupplementsSubmit}
                   className={styles.submitButton}
                   disabled={!tookSupplements}

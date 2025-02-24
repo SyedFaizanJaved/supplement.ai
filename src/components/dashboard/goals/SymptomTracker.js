@@ -3,7 +3,10 @@ import { Card } from "../../ui/card";
 import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
 import { useToast } from "../../hooks/use-toast";
-import { getTodayWellnessJournal, submitSymptomTracking } from "../../../services/journal/index";
+import {
+  getTodayWellnessJournal,
+  submitSymptomTracking,
+} from "../../../services/journal/index";
 import { Label } from "../../ui/label";
 import { Slider } from "../../ui/slider";
 import styles from "./SymptomTracker.module.css";
@@ -21,7 +24,7 @@ export const SymptomTracker = () => {
         const data = await getTodayWellnessJournal();
         setEnergyLevel(3);
         setStressLevel(3);
-        setSleepQuality( 3);
+        setSleepQuality(3);
         setOtherSymptoms("");
       } catch (error) {
         console.error("Error fetching wellness journal:", error);
@@ -33,13 +36,17 @@ export const SymptomTracker = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      await submitSymptomTracking(energyLevel, sleepQuality, stressLevel, otherSymptoms);
+      await submitSymptomTracking(
+        energyLevel,
+        sleepQuality,
+        stressLevel,
+        otherSymptoms
+      );
 
       toast({
-        title: "Wellness tracked",
-        description: "Your wellness entry has been recorded successfully.",
+        title: "Your wellness is recorded",
       });
 
       setEnergyLevel(3);
@@ -49,9 +56,8 @@ export const SymptomTracker = () => {
     } catch (error) {
       console.error("Error tracking wellness:", error);
       toast({
-        title: "Error",
-        description: error?.response?.data?.error || "Failed to save. Please try again.",
-        variant: "destructive",
+        title:
+          error?.response?.data?.error || "Failed to save. Please try again.",
       });
     }
   };

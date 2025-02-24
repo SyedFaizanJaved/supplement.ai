@@ -16,3 +16,19 @@ export const getProfile = async () => {
   const response = await axiosInstance.get("/api/v1/users/profile");
   return response.data;
 };
+
+export const forgotPassword = async (body) => {
+  const response = await axiosInstance("/api/v1/forgot-password", body, {
+    auth: false,
+  });
+
+  return response;
+};
+
+export const resetPassword = async (body) => {
+  const response = await axiosInstance("/api/v1/reset-password", body, {
+    auth: false,
+  });
+
+  return response;
+};

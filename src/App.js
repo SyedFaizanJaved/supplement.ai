@@ -4,7 +4,6 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
-// import { Toaster } from "./components/ui/toaster";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import PurchaseTestsPage from "./pages/PurchaseTestsPage";
@@ -22,6 +21,9 @@ const RewardsPage = lazy(() => import("./pages/Rewards"));
 const Login = lazy(() => import("./pages/Login"));
 const TermsandConditions = lazy(() => import("./pages/TermsandConditions"));
 const StudentsPage = lazy(() => import("./pages/Student"));
+const ForgotPasswordPage = lazy(() => import("./pages/forgot-password"));
+const ResetPasswordPage = lazy(() => import("./pages/reset-password"));
+const PaymentSuccessPage = lazy(() => import("./pages/payment/success"));
 // const FamilyPlanPage = lazy(() => import("./pages/FamilyPlanPage"));
 
 const ProtectedRoute = ({ children }) => {
@@ -52,6 +54,30 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/forgot-password",
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <ForgotPasswordPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/reset-password/:passwordResetToken",
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <ResetPasswordPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/payment/success",
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <PaymentSuccessPage />
+      </Suspense>
+    ),
+  },
+  {
     path: "/dashboard/*",
     element: (
       <ProtectedRoute>
@@ -73,7 +99,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/payment",
-    element: <Suspense fallback={<LoadingSpinner />}><PaymentPage /></Suspense>
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <PaymentPage />
+      </Suspense>
+    ),
   },
   {
     path: "/input",
@@ -162,11 +192,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <RouterProvider router={router}>
-      {/* <Toaster /> */}
-    </RouterProvider>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

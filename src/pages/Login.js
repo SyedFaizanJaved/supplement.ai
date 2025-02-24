@@ -206,7 +206,7 @@ const Login = () => {
               />
               <label htmlFor="remember">Remember me</label>
             </div>
-            <a href="#" className={styles.forgotPassword}>
+            <a href="/#" className={styles.forgotPassword}>
               Forgot password?
             </a>
           </div>
