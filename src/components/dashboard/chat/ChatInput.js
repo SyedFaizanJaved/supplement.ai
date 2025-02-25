@@ -59,17 +59,8 @@ export const ChatInput = ({ onSendMessage, onFileUpload, isLoading }) => {
           style={{ display: "none" }}
         />
 
-        <Input
+        <input
           type="text"
-          styles={{
-            background: "transparent",
-            flex: "1",
-            border: "none",
-            color: "white",
-            fontSize: "1rem",
-            outline: "none",
-            padding: "0 0.5rem",
-          }}
           placeholder="Ask anything"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -78,10 +69,11 @@ export const ChatInput = ({ onSendMessage, onFileUpload, isLoading }) => {
 
         <Button
           type="submit"
+          variant="ghost"
           disabled={!message.trim() || isLoading}
           className={getSubmitButtonClasses()}
         >
-          <SendIcon className={styles.sendIcon} />
+          <SendIcon />
         </Button>
       </div>
     </form>

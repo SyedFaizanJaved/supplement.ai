@@ -42,7 +42,7 @@ const greeting = [
     timestamp: new Date().toISOString(),
   },
 ];
-export const HealthAssistant = () => {
+const HealthAssistant = () => {
   const {
     chatHistory,
     isLoading,
@@ -253,3 +253,5 @@ export const HealthAssistant = () => {
     </div>
   );
 };
+
+export default HealthAssistant;

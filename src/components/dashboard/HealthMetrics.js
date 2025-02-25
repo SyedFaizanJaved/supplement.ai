@@ -21,7 +21,7 @@ const processMultilineList = (text) =>
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
-export const HealthMetrics = () => {
+const HealthMetrics = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -273,3 +273,5 @@ export const HealthMetrics = () => {
     </Card>
   );
 };
+
+export default HealthMetrics;

@@ -28,7 +28,7 @@ const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
 
   if (!user) {
-    // return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return children;
@@ -151,14 +151,21 @@ const router = createBrowserRouter([
       </Suspense>
     ),
   },
+  {
+    path: "/*",
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <Navigate to="/login" replace />
+      </Suspense>
+    ),
+  },
 ]);
 
 function App() {
   return (
-    <AuthProvider>
-      <RouterProvider router={router} />
+    <RouterProvider router={router}>
       <Toaster />
-    </AuthProvider>
+    </RouterProvider>
   );
 }
 

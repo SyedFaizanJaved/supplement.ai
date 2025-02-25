@@ -40,7 +40,13 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { login: authLogin } = useAuth();
+  const { login: authLogin, user } = useAuth();
+
+  React.useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user]);
 
   const validateForm = () => {
     const newErrors = {};

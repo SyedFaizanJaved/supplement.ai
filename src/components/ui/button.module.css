@@ -86,21 +86,21 @@
 /* Sizes */
 .sizeDefault {
   background-color: var(--secondary);
-  color:#fff;
-  margin-top: 5px ;
+  color: #fff;
+  /* margin-top: 5px; */
   height: 2.5rem;
-  border:1px solid #e5e7eb;
+  border: 1px solid #e5e7eb;
   padding: 0.5rem 1rem;
 }
 
 .sizeDefault:hover {
-  background-color: #89CFF0;
-  color:#fff;
+  background-color: #89cff0;
+  color: #fff;
 }
 
 .sizeSm {
   height: 2.25rem;
-  border:none;
+  border: none;
   border-radius: 0.375rem;
   padding: 0 0.75rem;
 }
@@ -115,4 +115,3 @@
   height: 2.5rem;
   width: 2.5rem;
 }
-

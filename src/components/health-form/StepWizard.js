@@ -183,13 +183,9 @@ const StepWizard = () => {
         })),
       };
 
-      const userData = await registerUser(formattedData);
-      const userDataWithFirstName = {
-        ...userData,
-        first_name: data.firstName,
-      };
+      await registerUser(formattedData);
 
-      authLogin(userDataWithFirstName);
+      // authLogin(userDataWithFirstName);
 
       toast({
         title: "Registration successful",

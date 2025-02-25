@@ -49,14 +49,6 @@ const HealthGoals = () => {
     }
   }, [user, toast]);
 
-  useEffect(() => {
-    getProfile()
-      .then((data) => {
-        setUserProfile(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   const handleJournalClick = () => {
     navigate("journal");
   };
@@ -144,18 +136,6 @@ const HealthGoals = () => {
     fetchGoals();
   };
 
-  useEffect(() => {
-    getProfile()
-      .then((data) => {
-        console.log("profile", data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    fetchGoals();
-  }, [fetchGoals]);
-
   const renderGoalsList = (category) => {
     let filteredGoals;
     if (category === "Goal") {
@@ -195,6 +175,18 @@ const HealthGoals = () => {
       </>
     );
   };
+
+  useEffect(() => {
+    fetchGoals();
+  }, [fetchGoals]);
+
+  useEffect(() => {
+    getProfile()
+      .then((data) => {
+        setUserProfile(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className={styles.container}>
