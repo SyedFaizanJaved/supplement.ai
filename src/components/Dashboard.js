@@ -1,18 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import axios from "axios";
 import { Button } from "./ui/button";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { HealthAssistant } from "./dashboard/HealthAssistant";
-import { HealthMetrics } from "./dashboard/HealthMetrics";
-import { SupplementPlan } from "./dashboard/SupplementPlan";
-import HealthGoals from "./dashboard/HealthGoals";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+
+// import { HealthAssistant } from "./dashboard/HealthAssistant";
+// import { HealthMetrics } from "./dashboard/HealthMetrics";
+// import { SupplementPlan } from "./dashboard/SupplementPlan";
+// import HealthGoals from "./dashboard/HealthGoals";
+
 import { useIsMobile } from "./hooks/use-mobile";
 import { useToast } from "./hooks/use-toast";
 import BASE_URL from "../config";
 import styles from "./Dashboard.module.css";
 import { useAuth } from "../context/AuthContext";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import Loader from "./fallback";
+const HealthAssistant = React.lazy(() => import("./dashboard/HealthAssistant"));
+const HealthMetrics = React.lazy(() => import("./dashboard/HealthMetrics"));
+const SupplementPlan = React.lazy(() => import("./dashboard/SupplementPlan"));
+const HealthGoals = React.lazy(() => import("./dashboard/HealthGoals"));
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -103,16 +110,24 @@ export const Dashboard = () => {
           </div>
           <div className={styles.content}>
             <TabsContent value="assistant" className={styles.tabContent}>
-              <HealthAssistant />
+              <Suspense fallback={<Loader />}>
+                <HealthAssistant />
+              </Suspense>
             </TabsContent>
             <TabsContent value="metrics" className={styles.tabContent}>
-              <HealthMetrics />
+              <Suspense fallback={<Loader />}>
+                <HealthMetrics />
+              </Suspense>
             </TabsContent>
             <TabsContent value="supplements" className={styles.tabContent}>
-              <SupplementPlan />
+              <Suspense fallback={<Loader />}>
+                <SupplementPlan />
+              </Suspense>
             </TabsContent>
             <TabsContent value="goals" className={styles.tabContent}>
-              <HealthGoals />
+              <Suspense fallback={<Loader />}>
+                <HealthGoals />
+              </Suspense>
             </TabsContent>
           </div>
         </Tabs>

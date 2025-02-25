@@ -151,14 +151,21 @@ const router = createBrowserRouter([
       </Suspense>
     ),
   },
+  {
+    path: "/*",
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <Navigate to="/login" replace />
+      </Suspense>
+    ),
+  },
 ]);
 
 function App() {
   return (
-    <AuthProvider>
-      <RouterProvider router={router} />
+    <RouterProvider router={router}>
       <Toaster />
-    </AuthProvider>
+    </RouterProvider>
   );
 }
 

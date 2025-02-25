@@ -28,19 +28,6 @@ const HealthGoals = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [userProfile, setUserProfile] = useState(0);
 
-  //sample add kia ha ye...
-  const sampleBiomarkers = [
-    { id: 1, name: "Blood Pressure", value: "120/80 mmHg" },
-    { id: 2, name: "Heart Rate", value: "72 BPM" },
-    { id: 3, name: "Blood Sugar", value: "90 mg/dL" },
-  ];
-
-  const sampleGenes = [
-    { id: 1, name: "BRCA1", significance: "High risk" },
-    { id: 2, name: "APOE", significance: "Moderate risk" },
-    { id: 3, name: "TP53", significance: "Low risk" },
-  ];
-
   const fetchGoals = useCallback(async () => {
     if (!user) return;
     try {
@@ -60,14 +47,6 @@ const HealthGoals = () => {
       setIsError(true);
     }
   }, [user, toast]);
-
-  useEffect(() => {
-    getProfile()
-      .then((data) => {
-        setUserProfile(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   const handleJournalClick = () => {
     navigate("journal");
@@ -156,18 +135,6 @@ const HealthGoals = () => {
     fetchGoals();
   };
 
-  useEffect(() => {
-    getProfile()
-      .then((data) => {
-        console.log("profile", data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    fetchGoals();
-  }, [fetchGoals]);
-
   const renderGoalsList = (category) => {
     let filteredGoals;
     if (category === "Goal") {
@@ -207,6 +174,18 @@ const HealthGoals = () => {
       </>
     );
   };
+
+  useEffect(() => {
+    fetchGoals();
+  }, [fetchGoals]);
+
+  useEffect(() => {
+    getProfile()
+      .then((data) => {
+        setUserProfile(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className={styles.container}>
