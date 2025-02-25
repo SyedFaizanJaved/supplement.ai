@@ -17,14 +17,14 @@ export default function PaymentPage() {
   const familyMemberCount = Math.max(0, parseInt(new URLSearchParams(search).get('familyInput')) || 0);
 
   const pricePerPerson = 20;
-  const totalPersons = familyMemberCount > 0 ? familyMemberCount + 1 : 1; // Add 1 for the user
+  const totalPersons = familyMemberCount > 0 ? familyMemberCount + 1 : 1; 
   const baseTotal = pricePerPerson * totalPersons;
 
-  useEffect(() => {
-    if (!email) {
-      navigate('/input');
-    }
-  }, [email, navigate]);
+  // useEffect(() => {
+  //   if (!email) {
+  //     navigate('/input');
+  //   }
+  // }, [email, navigate]);
 
   useEffect(() => {
     let intervalId;

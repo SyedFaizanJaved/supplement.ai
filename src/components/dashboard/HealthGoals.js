@@ -16,6 +16,7 @@ import API_URL from "../../config";
 import { getProfile } from "../../services/auth";
 import GeneInfoCard from "../Cards/gene-info";
 import BioInfoCard from "../Cards/bio-info";
+
 const HealthGoals = () => {
   const [goals, setGoals] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -27,19 +28,6 @@ const HealthGoals = () => {
   const [isError, setIsError] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [userProfile, setUserProfile] = useState(0);
-
-  //sample add kia ha ye...
-  const sampleBiomarkers = [
-    { id: 1, name: "Blood Pressure", value: "120/80 mmHg" },
-    { id: 2, name: "Heart Rate", value: "72 BPM" },
-    { id: 3, name: "Blood Sugar", value: "90 mg/dL" },
-  ];
-
-  const sampleGenes = [
-    { id: 1, name: "BRCA1", significance: "High risk" },
-    { id: 2, name: "APOE", significance: "Moderate risk" },
-    { id: 3, name: "TP53", significance: "Low risk" },
-  ];
 
   const fetchGoals = useCallback(async () => {
     if (!user) return;

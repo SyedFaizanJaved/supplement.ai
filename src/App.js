@@ -13,7 +13,7 @@ const Index = lazy(() => import("./pages/Index"));
 const InputPage = lazy(() => import("./pages/InputPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const Admin = lazy(() => import("./pages/Admin"));
-// const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 const ContentPage = lazy(() => import("./pages/Content"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
@@ -71,10 +71,10 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  // {
-  //   path: "/payment",
-  //   element: <Suspense fallback={<LoadingSpinner />}><PaymentPage /></Suspense>
-  // },
+  {
+    path: "/payment",
+    element: <Suspense fallback={<LoadingSpinner />}><PaymentPage /></Suspense>
+  },
   {
     path: "/input",
     element: (

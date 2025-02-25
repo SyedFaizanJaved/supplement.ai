@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { SymptomTracker } from "../components/dashboard/goals/SymptomTracker";
+import { submitSupplementTracking } from "../services/journal/index"; // <-- import the function
+import {SymptomTracker} from "../components/dashboard/goals/SymptomTracker";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { ChevronLeft } from "lucide-react";
@@ -7,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
 import { Label } from "../components/ui/label";
 import { useToast } from "../components/ui/use-toast";
-import { supabase } from "../components/integrations/supabase/client";
 import styles from "./Journal.module.css";
 
 const Journal = () => {
@@ -17,18 +17,7 @@ const Journal = () => {
 
   const handleSupplementsSubmit = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("No user found");
-
-      const { error } = await supabase
-        .from('supplement_tracking')
-        .insert({
-          took_supplements: tookSupplements === "yes",
-          date: new Date().toISOString(),
-          user_id: user.id
-        });
-
-      if (error) throw error;
+      await submitSupplementTracking(tookSupplements);
 
       toast({
         title: "Recorded successfully",
@@ -37,7 +26,7 @@ const Journal = () => {
       
       setTookSupplements("");
     } catch (error) {
-      console.error('Error tracking supplements:', error);
+      console.error("Error tracking supplements:", error);
       toast({
         title: "Error",
         description: "Failed to save. Please try again.",
