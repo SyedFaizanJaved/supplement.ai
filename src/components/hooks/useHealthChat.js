@@ -39,7 +39,7 @@ export const useHealthChat = () => {
   const fetchChatHistory = async () => {
     let token = localStorage.getItem("accessToken");
     try {
-      // setChatLoading(true);
+      setChatLoading(true);
       const response = await axios.get(
         `${API_URL}/api/v1/assistant/chat-history/`,
         {
