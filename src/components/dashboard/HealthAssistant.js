@@ -58,7 +58,7 @@ const HealthAssistant = () => {
   const { toast } = useToast();
   const { user } = useAuth();
 
-  const [assistantLoading, setAssistantLoading] = useState(true);
+  const [assistantLoading, setAssistantLoading] = useState(false);
 
   // State to hold the user's first name from the profile API
   const [firstName, setFirstName] = useState("");
@@ -99,9 +99,9 @@ const HealthAssistant = () => {
     }
   }, [chatHistory, isTyping, chatLoading]);
 
-  useEffect(() => {
-    setAssistantLoading(false);
-  }, [chatLoading]);
+  // useEffect(() => {
+  //   setAssistantLoading(false);
+  // }, [chatLoading]);
 
   const handleClearChat = async () => {
     try {

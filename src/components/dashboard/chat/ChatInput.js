@@ -9,6 +9,7 @@ export const ChatInput = ({
   onFileUpload,
   isLoading,
   isTyping,
+  isChatLoading,
 }) => {
   const [message, setMessage] = useState("");
   const fileInputRef = useRef(null);
@@ -75,7 +76,7 @@ export const ChatInput = ({
         <Button
           type="submit"
           variant="ghost"
-          disabled={!message.trim() || isLoading || isTyping}
+          disabled={!message.trim() || isLoading || isTyping || isChatLoading}
           className={getSubmitButtonClasses()}
         >
           <SendIcon />

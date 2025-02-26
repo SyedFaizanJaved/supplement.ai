@@ -7,7 +7,7 @@ import { useToast } from "../hooks/use-toast";
 import { PersonalInfoSection } from "./metrics/PersonalInfoSection";
 import { HealthStatusSection } from "./metrics/HealthStatusSection";
 // import { VitaminMetricsSection } from "./metrics/VitaminMetricsSection";
-import { Share2 } from "lucide-react";
+import { Share2, Loader2 } from "lucide-react";
 import styles from "./HealthMetrics.module.css";
 import { useAuth } from "../../context/AuthContext";
 import LabTestsSection from "./metrics/LabTestsSection";
@@ -26,7 +26,7 @@ const HealthMetrics = () => {
   const { user } = useAuth();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [personalInfo, setPersonalInfo] = useState({
     first_name: "",
     last_name: "",
@@ -74,7 +74,6 @@ const HealthMetrics = () => {
   const fetchProfile = useCallback(async () => {
     if (!user?.token) return;
     try {
-      setIsLoading(true);
       const { data } = await axios.get(`${BASE_URL}/api/v1/users/profile/`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
@@ -87,7 +86,6 @@ const HealthMetrics = () => {
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
     }
   }, [user, toast, transformProfileData]);
 
@@ -171,6 +169,8 @@ const HealthMetrics = () => {
         formData.append("genetic_test", labTests.genetic_test[0]);
       }
 
+      setIsLoading(true);
+
       const { data } = await axios.patch(
         `${BASE_URL}/api/v1/users/profile/`,
         formData,
@@ -184,11 +184,14 @@ const HealthMetrics = () => {
 
       setPersonalInfo(transformProfileData(data));
       setIsEditing(false);
+      setIsLoading(false);
       toast({
         title: "Changes saved",
         description: "Your health information has been updated",
       });
     } catch (error) {
+      setIsEditing(false);
+      setIsLoading(false);
       console.error("Error saving profile:", error);
       toast({
         title: "Error",
@@ -220,6 +223,7 @@ const HealthMetrics = () => {
               onClick={isEditing ? handleSave : () => setIsEditing(true)}
               className={styles.referButton}
             >
+              {isLoading && <Loader2 className="animate-spin " />}
               {isEditing ? "Save Changes" : "Edit Information"}
             </Button>
             <Button

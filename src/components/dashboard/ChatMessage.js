@@ -99,7 +99,9 @@ export const ChatMessage = ({ role, content, timestamp }) => {
                 : ""
             }`}
           >
-            <div className={styles.prose}>{formatContent(content)}</div>
+            <div className={`${styles.prose} `}>
+              <p>{formatContent(content)}</p>
+            </div>
           </div>
           <div className={styles.timestampContainer}>
             <span className={styles.timestamp}>
