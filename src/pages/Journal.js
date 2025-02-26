@@ -1,19 +1,32 @@
-import React, { useState } from "react";
-import { submitSupplementTracking } from "../services/journal/index"; // <-- import the function
-import {SymptomTracker} from "../components/dashboard/goals/SymptomTracker";
+import React, { useState, useEffect } from "react";
+import { getTodaySupplementLog, submitSupplementTracking } from "../services/journal/index";
+import { SymptomTracker } from "../components/dashboard/goals/SymptomTracker";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
 import { Label } from "../components/ui/label";
-import { useToast } from "../components/ui/use-toast";
+import { useToast } from "../components/hooks/use-toast";
 import styles from "./Journal.module.css";
 
 const Journal = () => {
   const navigate = useNavigate();
   const [tookSupplements, setTookSupplements] = useState("");
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchSupplementLog = async () => {
+      try {
+        const data = await getTodaySupplementLog();
+        setTookSupplements("");
+      } catch (error) {
+        console.error("Error fetching supplement log:", error);
+      }
+    };
+
+    fetchSupplementLog();
+  }, []);
 
   const handleSupplementsSubmit = async () => {
     try {
@@ -23,13 +36,12 @@ const Journal = () => {
         title: "Recorded successfully",
         description: "Your supplement intake has been tracked.",
       });
-      
       setTookSupplements("");
     } catch (error) {
       console.error("Error tracking supplements:", error);
       toast({
         title: "Error",
-        description: "Failed to save. Please try again.",
+        description: error?.response?.data?.error || "Failed to save. Please try again.",
         variant: "destructive",
       });
     }

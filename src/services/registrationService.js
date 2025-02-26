@@ -123,19 +123,14 @@ export const registerUser = async (formData) => {
   payload.append("activity_level", mapActivityLevel(formData.activityLevel));
   payload.append("allergies", JSON.stringify(formData.allergies));
   payload.append("medical_conditions", JSON.stringify(medicalConditions));
-  payload.append(
-    "current_medications",
-    JSON.stringify(formData.currentMedications)
-  );
+  payload.append("current_medications", JSON.stringify(formData.currentMedications));
   payload.append("diet_restriction", mapDietType(formData.dietType));
   payload.append("smoking_status", mapSmokingStatus(formData.smokingStatus));
-  payload.append(
-    "alcohol_consumption",
-    mapAlcoholConsumption(formData.alcoholConsumption)
-  );
+  payload.append("alcohol_consumption", mapAlcoholConsumption(formData.alcoholConsumption));
   payload.append("monthly_budget", mapBudget(formData.monthlyBudget));
   payload.append("average_sleep", formData.sleepHours);
   payload.append("concerns", formData.concerns);
+  payload.append("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 
   if (formData.bloodWorkFiles && formData.bloodWorkFiles.length > 0) {
     const bloodFile = formData.bloodWorkFiles[0];

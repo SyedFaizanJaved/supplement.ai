@@ -192,8 +192,8 @@ const StepWizard = () => {
       });
 
       await new Promise((resolve) => setTimeout(resolve, 500));
-      // navigate("/login");
-      navigate("/payment");
+      navigate("/login");
+      // navigate("/payment");
     } catch (error) {
       console.log("error:", error);
       toast({

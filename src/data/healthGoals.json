@@ -38,7 +38,7 @@
       "description": "Monitor and log blood pressure weekly",
       "progress":4,
       "target": 7,
-      "category": "biomarkers"
+      "category": ""
     }
   ]
 }

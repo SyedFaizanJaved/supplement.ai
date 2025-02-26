@@ -4,7 +4,7 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
-import { Toaster } from "./components/ui/toaster";
+// import { Toaster } from "./components/ui/toaster";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import PurchaseTestsPage from "./pages/PurchaseTestsPage";
@@ -164,7 +164,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <RouterProvider router={router}>
-      <Toaster />
+      {/* <Toaster /> */}
     </RouterProvider>
   );
 }
