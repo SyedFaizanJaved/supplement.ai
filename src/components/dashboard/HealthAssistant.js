@@ -58,7 +58,7 @@ const HealthAssistant = () => {
   const { toast } = useToast();
   const { user } = useAuth();
 
-  const [assistantLoading, setAssistantLoading] = useState(true);
+  const [assistantLoading, setAssistantLoading] = useState(false);
 
   // State to hold the user's first name from the profile API
   const [firstName, setFirstName] = useState("");
@@ -97,15 +97,11 @@ const HealthAssistant = () => {
         block: "end",
       });
     }
-  }, [chatHistory, isTyping]);
+  }, [chatHistory, isTyping, chatLoading]);
 
-  useEffect(() => {
-    let timeout;
-
-    setTimeout(() => {
-      setAssistantLoading(false);
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   setAssistantLoading(false);
+  // }, [chatLoading]);
 
   const handleClearChat = async () => {
     try {
@@ -191,14 +187,8 @@ const HealthAssistant = () => {
               <section>
                 {/* Default greetings */}
                 {greeting.map((msg, index) => {
-                  // Attach the ref to the last chat message if the assistant is not typing.
-                  const isLastMessage =
-                    index === chatHistory.length - 1 && !isTyping;
                   return (
-                    <div
-                      key={index}
-                      ref={isLastMessage ? lastMessageRef : null}
-                    >
+                    <div key={index}>
                       <ChatMessage
                         role={msg.role}
                         content={msg.content}
@@ -210,12 +200,12 @@ const HealthAssistant = () => {
 
                 {/* Chat History listing */}
                 {chatHistory.map((msg, index) => {
-                  const isLastMessage =
-                    index === chatHistory.length - 1 && !isTyping;
                   return (
                     <div
                       key={index}
-                      ref={isLastMessage ? lastMessageRef : null}
+                      ref={
+                        chatHistory.length - 1 === index ? lastMessageRef : null
+                      }
                     >
                       {msg && (
                         <ChatMessage
@@ -246,6 +236,7 @@ const HealthAssistant = () => {
             <ChatInput
               onSendMessage={handleSendMessage}
               isLoading={isLoading}
+              isTyping={isTyping}
             />
           </div>
         </div>

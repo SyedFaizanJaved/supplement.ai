@@ -115,15 +115,6 @@ const Login = () => {
         console.error("Token verification error:", verifyError);
       }
 
-      try {
-        const refreshResult = await refreshToken(refresh);
-        if (refreshResult.access) {
-          localStorage.setItem("accessToken", refreshResult.access);
-        }
-      } catch (refreshError) {
-        console.error("Token refresh error:", refreshError);
-      }
-
       navigate("/dashboard");
     } catch (error) {
       console.log("ERROR:", error);

@@ -4,7 +4,13 @@ import { PaperclipIcon, SendIcon } from "lucide-react";
 import { useState, useRef } from "react";
 import styles from "./ChatInput.module.css";
 
-export const ChatInput = ({ onSendMessage, onFileUpload, isLoading }) => {
+export const ChatInput = ({
+  onSendMessage,
+  onFileUpload,
+  isLoading,
+  isTyping,
+  isChatLoading,
+}) => {
   const [message, setMessage] = useState("");
   const fileInputRef = useRef(null);
 
@@ -70,7 +76,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, isLoading }) => {
         <Button
           type="submit"
           variant="ghost"
-          disabled={!message.trim() || isLoading}
+          disabled={!message.trim() || isLoading || isTyping || isChatLoading}
           className={getSubmitButtonClasses()}
         >
           <SendIcon />
