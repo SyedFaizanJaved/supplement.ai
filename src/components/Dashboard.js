@@ -3,12 +3,6 @@ import axios from "axios";
 import { Button } from "./ui/button";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-// import { HealthAssistant } from "./dashboard/HealthAssistant";
-// import { HealthMetrics } from "./dashboard/HealthMetrics";
-// import { SupplementPlan } from "./dashboard/SupplementPlan";
-// import HealthGoals from "./dashboard/HealthGoals";
-
 import { useIsMobile } from "./hooks/use-mobile";
 import { useToast } from "./hooks/use-toast";
 import BASE_URL from "../config";
@@ -16,6 +10,7 @@ import styles from "./Dashboard.module.css";
 import { useAuth } from "../context/AuthContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import Loader from "./fallback";
+import HamburgerMenu from "./hamburger-menu";
 const HealthAssistant = React.lazy(() => import("./dashboard/HealthAssistant"));
 const HealthMetrics = React.lazy(() => import("./dashboard/HealthMetrics"));
 const SupplementPlan = React.lazy(() => import("./dashboard/SupplementPlan"));
@@ -64,23 +59,24 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <Tabs defaultValue="assistant" className={styles.tabs}>
+    <div>
+      <div>
+        <div className={styles.hamburgerMenu}>
+          <HamburgerMenu onLogout={handleLogout} />
+        </div>
+        <Tabs defaultValue="assistant">
           <div className={styles.header}>
-            <div className={styles.headerLeft}>
+            <div className={styles.logoutContainer}>
               <Button
-                // variant="ghost"
                 size="sm"
                 className={styles.backButton}
                 onClick={() => handleLogout()}
               >
-                {/* <ChevronLeft className={styles.icon} /> */}
                 Logout
               </Button>
             </div>
 
-            <div className={styles.btnContainer}>
+            <div>
               <div className={styles.adminContainer}>
                 {isAdmin && (
                   <Button
@@ -108,6 +104,7 @@ export const Dashboard = () => {
               </TabsList>
             </div>
           </div>
+
           <div className={styles.content}>
             <TabsContent value="assistant" className={styles.tabContent}>
               <Suspense fallback={<Loader />}>
