@@ -44,7 +44,7 @@ export const Dashboard = () => {
         console.error("Error fetching profile:", error);
         toast({
           title: "Unable to load profile",
-          // description: "Failed to fetch user profile.",
+
           variant: "destructive",
         });
       }
