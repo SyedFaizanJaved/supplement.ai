@@ -5,19 +5,19 @@ import { Card } from "../components/ui/card";
 import { useToast } from "../components/ui/use-toast";
 import { Progress } from "../components/ui/progress";
 import { supabase } from "../components/integrations/supabase/client";
-import styles from './PaymentPage.module.css';
+import styles from "./PaymentPage.module.css";
 
 export default function PaymentPage() {
-  const { search } = useLocation();
+  const { search, state } = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const email = new URLSearchParams(search).get('email');
-  const familyMemberCount = Math.max(0, parseInt(new URLSearchParams(search).get('familyInput')) || 0);
+  const email = new URLSearchParams(search).get("email");
+  const [familyMemberCount, setFamilyMemberCount] = useState(0);
 
   const pricePerPerson = 20;
-  const totalPersons = familyMemberCount > 0 ? familyMemberCount + 1 : 1; 
+  const totalPersons = familyMemberCount > 0 ? familyMemberCount + 1 : 1;
   const baseTotal = pricePerPerson * totalPersons;
 
   // useEffect(() => {
@@ -25,6 +25,12 @@ export default function PaymentPage() {
   //     navigate('/input');
   //   }
   // }, [email, navigate]);
+
+  useEffect(() => {
+    if (state?.members) {
+      setFamilyMemberCount(Math.max(0, parseInt(state.members || 0)));
+    }
+  }, [state]);
 
   useEffect(() => {
     let intervalId;
@@ -43,13 +49,16 @@ export default function PaymentPage() {
   const handleSubscribe = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: { 
-          email, 
-          totalPersons, 
-          baseTotal 
-        },
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "create-checkout",
+        {
+          body: {
+            email,
+            totalPersons,
+            baseTotal,
+          },
+        }
+      );
 
       if (error) throw error;
       if (data?.url) {
@@ -58,10 +67,10 @@ export default function PaymentPage() {
           window.location.href = data.url;
         }, 500);
       } else {
-        throw new Error('No checkout URL received');
+        throw new Error("No checkout URL received");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       toast({
         title: "Error",
         description: "Failed to create checkout session. Please try again.",
@@ -78,9 +87,9 @@ export default function PaymentPage() {
         <div className={styles.header}>
           <h1 className={styles.title}>Complete Your Subscription</h1>
           <p className={styles.subtitle}>
-            {familyMemberCount > 0 
-              ? `Family Plan for ${totalPersons} members` 
-              : 'Individual Health Assistant Subscription'}
+            {familyMemberCount > 0
+              ? `Family Plan for ${totalPersons} members`
+              : "Individual Health Assistant Subscription"}
           </p>
         </div>
 
@@ -89,9 +98,7 @@ export default function PaymentPage() {
             <div className={styles.planHeader}>
               <h3 className={styles.planTitle}>Health Assistant Pro</h3>
               <div className={styles.pricing}>
-                <span className={styles.price}>
-                  ${baseTotal}/month
-                </span>
+                <span className={styles.price}>${baseTotal}/month</span>
               </div>
             </div>
             <ul className={styles.featureList}>
@@ -114,7 +121,7 @@ export default function PaymentPage() {
             </div>
           )}
 
-          <Button 
+          <Button
             className={styles.subscribeButton}
             onClick={handleSubscribe}
             disabled={loading}

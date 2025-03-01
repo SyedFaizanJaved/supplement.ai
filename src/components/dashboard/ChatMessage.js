@@ -2,8 +2,18 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { format } from "date-fns";
 import styles from "./ChatMessage.module.css";
+import StreamingContainer from "../streaming-container";
 
-export const ChatMessage = ({ role, content, timestamp }) => {
+export const ChatMessage = ({
+  role,
+  content,
+  timestamp,
+  isLastMessage,
+  handleStreamingStatus,
+  isTyping,
+  isChatLoading,
+}) => {
+  const [isStreaming, setIsStreaming] = React.useState(true);
   const cleanMarkdown = (text) => {
     return text
       .replace(/#{1,6}\s/g, "")
@@ -100,7 +110,17 @@ export const ChatMessage = ({ role, content, timestamp }) => {
             }`}
           >
             <div className={`${styles.prose} `}>
-              <p>{formatContent(content)}</p>
+              {console.log("content:", content)}
+              {content && isLastMessage && role === "ai" && !isChatLoading ? (
+                <StreamingContainer
+                  handleStreamingStatus={handleStreamingStatus}
+                  content={content}
+                  speed={200}
+                  isStreaming={isStreaming}
+                />
+              ) : (
+                <p>{formatContent(content)}</p>
+              )}
             </div>
           </div>
           <div className={styles.timestampContainer}>
