@@ -184,28 +184,31 @@ const StepWizard = () => {
 
       const response = await registerUser(formattedData);
 
+      toast({
+        title: "Registration successful",
+      });
+
+
       /*
         
         Redirect to the stripe payment session
       
       */
+     
+      console.log('response-data',response);
+      if (response.data) {
+        setTimeout(()=>{
+          navigate("/payment", {
+            state: {
+              members: validFamilyMembers.length,
+              stripeSessionUrl: response.data.checkout_session_url,
+            },
+          });
+        },1000)
+      
+      }
 
-      // if (response) {
-      //   navigate("/payment", {
-      //     state: {
-      //       members: validFamilyMembers.length,
-      //       stripSession: response.session,
-      //     },
-      //   });
-      // }
-
-      toast({
-        title: "Registration successful",
-      });
-
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-      // navigate("/login");
-      // navigate("/payment");
+    
     } catch (error) {
       console.log("error:", error);
       toast({

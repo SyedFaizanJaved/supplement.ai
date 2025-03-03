@@ -36,7 +36,7 @@ export default function PaymentSuccess() {
             Payment Successful
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        {/* <CardContent>
           <p className={styles.message}>
             Thank you for your purchase! Your payment has been processed
             successfully.
@@ -53,7 +53,7 @@ export default function PaymentSuccess() {
               <strong>Order ID:</strong> {paymentDetails?.orderId}
             </p>
           </div>
-        </CardContent>
+        </CardContent> */}
         <CardFooter className={styles.footer}>
           <Button
             className={styles.button}

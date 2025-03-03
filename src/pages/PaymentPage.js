@@ -15,16 +15,14 @@ export default function PaymentPage() {
   const [progress, setProgress] = useState(0);
   const email = new URLSearchParams(search).get("email");
   const [familyMemberCount, setFamilyMemberCount] = useState(0);
+  const [discount,setDiscount] = useState(0);
 
   const pricePerPerson = 20;
   const totalPersons = familyMemberCount > 0 ? familyMemberCount + 1 : 1;
-  const baseTotal = pricePerPerson * totalPersons;
+  const baseTotal = (pricePerPerson * totalPersons) - discount;
 
-  // useEffect(() => {
-  //   if (!email) {
-  //     navigate('/input');
-  //   }
-  // }, [email, navigate]);
+
+
 
   useEffect(() => {
     if (state?.members) {
@@ -32,55 +30,69 @@ export default function PaymentPage() {
     }
   }, [state]);
 
-  useEffect(() => {
-    let intervalId;
-    if (loading) {
-      setProgress(0);
-      intervalId = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 90) return prev;
-          return prev + 10;
-        });
-      }, 500);
+  useEffect(()=>{
+    if(totalPersons > 3){
+      setDiscount(totalPersons * 5);
     }
-    return () => clearInterval(intervalId);
-  }, [loading]);
+  },[totalPersons])
 
-  const handleSubscribe = async () => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke(
-        "create-checkout",
-        {
-          body: {
-            email,
-            totalPersons,
-            baseTotal,
-          },
-        }
-      );
 
-      if (error) throw error;
-      if (data?.url) {
-        setProgress(100);
-        setTimeout(() => {
-          window.location.href = data.url;
-        }, 500);
-      } else {
-        throw new Error("No checkout URL received");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to create checkout session. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
+  // useEffect(() => {
+  //   let intervalId;
+  //   if (loading) {
+  //     setProgress(0);
+  //     intervalId = setInterval(() => {
+  //       setProgress((prev) => {
+  //         if (prev >= 90) return prev;
+  //         return prev + 10;
+  //       });
+  //     }, 500);
+  //   }
+  //   return () => clearInterval(intervalId);
+  // }, [loading]);
+
+  // const handleSubscribe = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const { data, error } = await supabase.functions.invoke(
+  //       "create-checkout",
+  //       {
+  //         body: {
+  //           email,
+  //           totalPersons,
+  //           baseTotal,
+  //         },
+  //       }
+  //     );
+
+  //     if (error) throw error;
+  //     if (data?.url) {
+  //       setProgress(100);
+  //       setTimeout(() => {
+  //         window.location.href = data.url;
+  //       }, 500);
+  //     } else {
+  //       throw new Error("No checkout URL received");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to create checkout session. Please try again.",
+  //       variant: "destructive",
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+ const handleSubscribe = () => {
+  if(state.stripeSessionUrl){
+    window.open(state.stripeSessionUrl,'_blank')
+  }
+
+
+ }
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
@@ -123,7 +135,7 @@ export default function PaymentPage() {
 
           <Button
             className={styles.subscribeButton}
-            onClick={handleSubscribe}
+            onClick={()=>handleSubscribe()}
             disabled={loading}
           >
             {loading ? "Please wait..." : "Subscribe Now"}

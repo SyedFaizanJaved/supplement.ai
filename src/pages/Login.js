@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import API_URL from "../config";
 import styles from "./Login.module.css";
-
+import { useToast } from "../components/hooks/use-toast";
 export const verifyToken = async (token) => {
   try {
     const response = await axios.post(`${API_URL}/api/v1/auth/token/verify/`, {
@@ -31,6 +31,7 @@ export const refreshToken = async (refresh) => {
 };
 
 const Login = () => {
+ const {toast} = useToast();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -109,15 +110,21 @@ const Login = () => {
         email: formData.email,
       });
 
-      try {
-        await verifyToken(access);
-      } catch (verifyError) {
-        console.error("Token verification error:", verifyError);
-      }
+
 
       navigate("/dashboard");
     } catch (error) {
-      console.log("ERROR:", error);
+      if(error?.response?.data?.checkout_session_url){
+ 
+        setErrors({
+          submit:error?.response?.data?.error
+        });
+
+       return setTimeout(()=>{
+          window.open(error?.response?.data?.checkout_session_url,'_self')
+        },2000)
+      }
+      
       setErrors({
         submit:
           error.response?.data?.message || "username/password is incorrect",

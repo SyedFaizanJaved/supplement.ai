@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--secondary);
+  color: black
 }
 
 .icon {
@@ -47,10 +47,13 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+
+
 }
 
 .button > a {
   color: white;
+
 }
 
 .buttonIcon {
