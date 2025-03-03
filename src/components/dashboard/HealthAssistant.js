@@ -87,9 +87,7 @@ const HealthAssistant = () => {
     fetchProfile();
   }, []);
 
-  useEffect(() => {
-    console.log("chatloading:", chatLoading);
-  }, [chatLoading]);
+
 
   // Scroll to the last element (message or typing indicator) whenever chatHistory updates or assistant is typing
   useEffect(() => {

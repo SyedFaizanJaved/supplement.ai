@@ -110,8 +110,8 @@ export const ChatMessage = ({
             }`}
           >
             <div className={`${styles.prose} `}>
-              {console.log("content:", content)}
-              {content && isLastMessage && role === "ai" && !isChatLoading ? (
+         
+              {/* {content && isLastMessage && role === "ai" && !isChatLoading ? (
                 <StreamingContainer
                   handleStreamingStatus={handleStreamingStatus}
                   content={content}
@@ -120,7 +120,9 @@ export const ChatMessage = ({
                 />
               ) : (
                 <p>{formatContent(content)}</p>
-              )}
+              )} */}
+                <p>{formatContent(content)}</p>
+
             </div>
           </div>
           <div className={styles.timestampContainer}>
