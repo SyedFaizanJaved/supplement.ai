@@ -7,6 +7,7 @@ export const getTodaySupplementLog = async () => {
 
 export const submitSupplementTracking = async () => {
   const response = await axiosInstance.post("/api/v1/supplement-log/");
+  console.log('resopnse',response)
   return response.data;
 };
 

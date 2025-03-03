@@ -4,12 +4,13 @@ import { ChatMessage } from "./ChatMessage";
 import { ChatInput } from "./chat/ChatInput";
 import { useHealthChat } from "../hooks/useHealthChat";
 import { Loader2, Trash2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../hooks/use-toast";
 import styles from "./HealthAssistant.module.css";
 import API_URL from "../../config";
+import streamingContainer from "../streaming-container";
 import { useNavigate } from "react-router";
 
 const quickReplies = [
@@ -57,10 +58,7 @@ const HealthAssistant = () => {
   const lastMessageRef = useRef(null); // This ref will always be attached to the very last element
   const { toast } = useToast();
   const { user } = useAuth();
-
-  const [assistantLoading, setAssistantLoading] = useState(false);
-
-  // State to hold the user's first name from the profile API
+  const [isStreaming, setIsStreaming] = useState(false);
   const [firstName, setFirstName] = useState("");
 
   // Fetch the user profile on component mount and extract first_name
@@ -89,6 +87,8 @@ const HealthAssistant = () => {
     fetchProfile();
   }, []);
 
+
+
   // Scroll to the last element (message or typing indicator) whenever chatHistory updates or assistant is typing
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -99,16 +99,27 @@ const HealthAssistant = () => {
     }
   }, [chatHistory, isTyping, chatLoading]);
 
-  // useEffect(() => {
-  //   setAssistantLoading(false);
-  // }, [chatLoading]);
+  useEffect(() => {
+    if (!isStreaming) return;
+
+    const interval = setInterval(() => {
+      if (lastMessageRef.current) {
+        lastMessageRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      }
+    }, 50);
+
+    return () => clearInterval(interval); // Cleanup on unmount or when isStreaming changes
+  }, [isStreaming]); // Depend on isStreaming
 
   const handleClearChat = async () => {
     try {
       await clearHistory();
       toast({
-        // title: "Chat history cleared",
-        description: "History cleared",
+        title: "History cleared",
+        // description: "History cleared",
       });
     } catch (error) {
       toast({
@@ -118,6 +129,8 @@ const HealthAssistant = () => {
       });
     }
   };
+
+  const handleStreamingStatus = (state) => setIsStreaming(state);
 
   return (
     <div className={styles.container}>
@@ -176,58 +189,53 @@ const HealthAssistant = () => {
 
         <ScrollArea className={styles.scrollArea} ref={scrollAreaRef}>
           <div className={styles.chatMessages}>
-            {assistantLoading ? (
-              <div className="container">
-                <Loader2 className="animate-spin loader " />
-                <p className="info-text">
-                  Your AI assistant is almost ready to chat.
-                </p>
-              </div>
-            ) : (
-              <section>
-                {/* Default greetings */}
-                {greeting.map((msg, index) => {
-                  return (
-                    <div key={index}>
+            <section>
+              {/* Default greetings */}
+              {greeting.map((msg, index) => {
+                return (
+                  <div key={index}>
+                    <ChatMessage
+                      role={msg.role}
+                      content={msg.content}
+                      timestamp={msg.timestamp || new Date().toISOString()}
+                    />
+                  </div>
+                );
+              })}
+
+              {/* Chat History listing */}
+              {chatHistory.map((msg, index) => {
+                return (
+                  <div
+                    key={index}
+                    ref={
+                      chatHistory.length - 1 === index ? lastMessageRef : null
+                    }
+                  >
+                    {msg && (
                       <ChatMessage
+                        handleStreamingStatus={handleStreamingStatus}
+                        isLastMessage={chatHistory.length - 1 === index}
+                        isChatLoading={chatLoading}
+                        isTyping={isTyping}
                         role={msg.role}
                         content={msg.content}
                         timestamp={msg.timestamp || new Date().toISOString()}
                       />
-                    </div>
-                  );
-                })}
-
-                {/* Chat History listing */}
-                {chatHistory.map((msg, index) => {
-                  return (
-                    <div
-                      key={index}
-                      ref={
-                        chatHistory.length - 1 === index ? lastMessageRef : null
-                      }
-                    >
-                      {msg && (
-                        <ChatMessage
-                          role={msg.role}
-                          content={msg.content}
-                          timestamp={msg.timestamp || new Date().toISOString()}
-                        />
-                      )}
-                    </div>
-                  );
-                })}
-
-                {isTyping && (
-                  <div ref={lastMessageRef} className={styles.typingIndicator}>
-                    <Loader2 className={styles.loaderIcon} />
-                    <span className={styles.typingText}>
-                      <Loader2 className="animate-spin loader" />
-                    </span>
+                    )}
                   </div>
-                )}
-              </section>
-            )}
+                );
+              })}
+
+              {isTyping && (
+                <div ref={lastMessageRef} className={styles.typingIndicator}>
+                  <Loader2 className={styles.loaderIcon} />
+                  <span className={styles.typingText}>
+                    <Loader2 className="animate-spin loader" />
+                  </span>
+                </div>
+              )}
+            </section>
           </div>
         </ScrollArea>
 

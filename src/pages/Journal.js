@@ -22,7 +22,7 @@ const Journal = () => {
     const fetchSupplementLog = async () => {
       try {
         const data = await getTodaySupplementLog();
-        setTookSupplements("");
+        setTookSupplements("yes");
       } catch (error) {
         console.error("Error fetching supplement log:", error);
       }
@@ -38,10 +38,10 @@ const Journal = () => {
         title: "Your supplement intake is recorded",
       });
       setTookSupplements("");
-    } catch (error) {
-      console.error("Error tracking supplements:", error);
+    } catch (err) {
+     
       toast({
-        title: error?.response?.data?.error || "Failed to save",
+        title: err?.response?.data?.error || "Unable to save",
       });
     }
   };

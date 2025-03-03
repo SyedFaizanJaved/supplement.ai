@@ -1,0 +1,41 @@
+.container {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: #f3f4f6;
+}
+
+.line {
+  min-height: 1.5em;
+}
+
+.animatePulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.paragraph {
+  margin-bottom: 0.5rem;
+}
+
+.emptyParagraph {
+  min-height: 1rem;
+}
+
+.listItem {
+  margin-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.link {
+  color: #3b82f6;
+  text-decoration: underline;
+}

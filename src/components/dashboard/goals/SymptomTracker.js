@@ -22,10 +22,11 @@ export const SymptomTracker = () => {
     const fetchWellnessJournal = async () => {
       try {
         const data = await getTodayWellnessJournal();
-        setEnergyLevel(3);
-        setStressLevel(3);
-        setSleepQuality(3);
-        setOtherSymptoms("");
+        console.log('today-energy-level',data);
+        setEnergyLevel(data?.energy_level);
+        setStressLevel(data?.stress_level);
+        setSleepQuality(data?.sleep_quality);
+        setOtherSymptoms(data?.other_symptoms_notes);
       } catch (error) {
         console.error("Error fetching wellness journal:", error);
       }
@@ -57,7 +58,7 @@ export const SymptomTracker = () => {
       console.error("Error tracking wellness:", error);
       toast({
         title:
-          error?.response?.data?.error || "Failed to save. Please try again.",
+          error?.response?.data?.error || "Unable to save",
       });
     }
   };

@@ -119,7 +119,6 @@ const StepWizard = () => {
   };
 
   const handleNext = async () => {
-    // Explicit email and password validation
     const fieldsToValidate = stepFieldMapping[currentStep] || [];
     const isValid = await form.trigger(fieldsToValidate);
     if (!isValid) {
@@ -183,16 +182,29 @@ const StepWizard = () => {
         })),
       };
 
-      await registerUser(formattedData);
+      const response = await registerUser(formattedData);
 
-      // authLogin(userDataWithFirstName);
+      /*
+        
+        Redirect to the stripe payment session
+      
+      */
+
+      // if (response) {
+      //   navigate("/payment", {
+      //     state: {
+      //       members: validFamilyMembers.length,
+      //       stripSession: response.session,
+      //     },
+      //   });
+      // }
 
       toast({
         title: "Registration successful",
       });
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      navigate("/login");
+      // await new Promise((resolve) => setTimeout(resolve, 500));
+      // navigate("/login");
       // navigate("/payment");
     } catch (error) {
       console.log("error:", error);

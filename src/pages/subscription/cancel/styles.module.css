@@ -1,0 +1,274 @@
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+  
+  .header {
+    margin-bottom: 2rem;
+  }
+  
+  .header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .header p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  
+  .subscriptionInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .subscriptionInfo h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 1rem 0;
+  }
+  
+  .planName {
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.25rem 0;
+  }
+  
+  .planPrice {
+    color: #4b5563;
+    margin: 0 0 0.25rem 0;
+  }
+  
+  .renewalDate {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  .cancelButton {
+    background: transparent;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  
+  .cancelButton:hover {
+    background: #fef2f2;
+  }
+  
+  .cancelButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    color: #6b7280;
+  }
+  
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .modalHeader {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    position: relative;
+  }
+  
+  .warningIcon {
+    color: #f59e0b;
+    margin-right: 0.75rem;
+  }
+  
+  .modalHeader h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+  
+  .closeButton {
+    position: absolute;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    display: flex;
+    padding: 0;
+  }
+  
+  .closeButton:hover {
+    color: #111827;
+  }
+  
+  .modalContent {
+    padding: 1.5rem;
+  }
+  
+  .modalContent p {
+    margin: 0 0 1.25rem 0;
+    color: #4b5563;
+  }
+  
+  .consequencesList {
+    margin: 0 0 1.5rem 0;
+    padding-left: 1.5rem;
+    color: #4b5563;
+  }
+  
+  .consequencesList li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .consequencesList li:last-child {
+    margin-bottom: 0;
+  }
+  
+  .errorMessage {
+    background: #fef2f2;
+    color: #b91c1c;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .keepButton {
+    background: transparent;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  
+  .keepButton:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+  
+  .confirmCancelButton {
+    background: #ef4444;
+    border: 1px solid #ef4444;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  
+  .confirmCancelButton:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+  }
+  
+  .confirmCancelButton:disabled,
+  .keepButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .successMessage {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .successIcon {
+    width: 64px;
+    height: 64px;
+    background: #ecfdf5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: #059669;
+  }
+  
+  .successMessage h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 1rem 0;
+  }
+  
+  .successMessage p {
+    color: #4b5563;
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  
