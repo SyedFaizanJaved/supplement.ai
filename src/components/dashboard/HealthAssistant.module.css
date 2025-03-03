@@ -66,7 +66,9 @@
   height: calc(100vh - 8rem);
   position: relative;
   z-index: 10;
-  margin: 1.5rem;
+  margin-top: 1.5rem;
+  margin-left: 1.2rem;
+  margin-right: 1.4rem;
   backdrop-filter: blur(20px);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(14, 165, 233, 0.2);
