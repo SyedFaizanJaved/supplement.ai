@@ -55,7 +55,7 @@ const validationSchema = z
   });
 
 const Login = () => {
-  const toast = useToast();
+  const {toast} = useToast();
   const navigate = useNavigate();
   const params = useParams();
   const { login: authLogin, user } = useAuth();
@@ -75,10 +75,19 @@ const Login = () => {
       .then((res) => {
         setIsLoading(false);
         setIsSuccess(true);
+        toast({
+          title: "Success",
+          description: "Password changed successfully",
+        });
       })
       .catch((err) => {
         setIsLoading(false);
         setIsError(true);
+        toast({
+          title: "Error",
+          description: "An error occurred. Please try again.",
+          variant: "destructive",
+        });
       });
   };
 
@@ -149,6 +158,7 @@ const Login = () => {
                             type={showPassword ? "text" : "password"}
                             className={styles.input}
                             disabled={isLoading}
+                            placeholder="Enter your password"
                             maxLength={16}
                           />
                           <button
@@ -183,6 +193,7 @@ const Login = () => {
                             type={showPassword ? "text" : "password"}
                             className={styles.input}
                             disabled={isLoading}
+                            placeholder="Confirm your password"
                             maxLength={16}
                           />
                           <button
