@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Eye, EyeOff, Lock, Save, X } from "lucide-react"
 import styles from "./styles.module.css"

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
+import { Loader2, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -18,13 +18,11 @@ import {
   FormControl,
   FormMessage,
 } from "../../components/ui/form";
-
 import { Input } from "../../components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import styles from "./styles.module.css";
-import { useParams } from "react-router";
 import { forgotPassword } from "../../services/auth";
 import { useToast } from "../../components/hooks/use-toast";
 
@@ -33,19 +31,14 @@ const defaultSchema = {
 };
 
 const validationSchema = z.object({
-  email: z.string().email({
-    message: "provide valid email",
-  }),
+  email: z.string().email({ message: "Please provide a valid email" }),
 });
 
-const Login = () => {
-  const toast = useToast();
+const ForgotPassword = () => {
+  const { toast } = useToast();
   const navigate = useNavigate();
-  const params = useParams();
-  const { login: authLogin, user } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({
@@ -56,25 +49,31 @@ const Login = () => {
   const onSubmit = (formValues) => {
     setIsLoading(true);
     forgotPassword(formValues)
-      .then((res) => {
+      .then(() => {
         setIsLoading(false);
         setIsSuccess(true);
+        toast({
+          title: "Success",
+          description: "Check your inbox for the next steps.",
+        });
       })
       .catch((err) => {
         setIsLoading(false);
-        setIsError(true);
+        toast({
+          title: "Error",
+          description: "No account exists with that email address.",
+          variant: "destructive",
+        });
       });
   };
 
-  React.useEffect(() => {
-    form.setValue("passwordResetToken", params.passwordResetToken);
-  }, []);
-
+  // Redirect if already logged in
   React.useEffect(() => {
     if (user) {
       navigate("/dashboard");
     }
-  }, [user]);
+  }, [user, navigate]);
+
 
   return (
     <div className={styles.container}>
@@ -124,6 +123,7 @@ const Login = () => {
                           <input
                             {...field}
                             type="email"
+                            placeholder="Enter your email"
                             className={styles.input}
                             disabled={isLoading}
                           />
@@ -166,4 +166,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

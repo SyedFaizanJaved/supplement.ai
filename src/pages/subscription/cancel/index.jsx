@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { AlertTriangle, Check, X } from "lucide-react"
 import styles from "./styles.module.css"
