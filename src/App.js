@@ -24,6 +24,7 @@ const StudentsPage = lazy(() => import("./pages/Student"));
 const ForgotPasswordPage = lazy(() => import("./pages/forgot-password"));
 const ResetPasswordPage = lazy(() => import("./pages/reset-password"));
 const PaymentSuccessPage = lazy(() => import("./pages/payment/success"));
+const PaymentRequiredPage = lazy(() => import("./pages/payment/required"));
 // const FamilyPlanPage = lazy(() => import("./pages/FamilyPlanPage"));
 
 const ProtectedRoute = ({ children }) => {
@@ -74,6 +75,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<LoadingSpinner />}>
         <PaymentSuccessPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/payment/required",
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <PaymentRequiredPage />
       </Suspense>
     ),
   },
@@ -192,7 +201,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router}></RouterProvider>;
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -97,22 +97,18 @@ const Login = () => {
         password: formData.password,
       });
 
-      // Assume the response includes `first_name`
       const { access, refresh } = response.data;
 
       localStorage.setItem("accessToken", access);
       localStorage.setItem("refreshToken", refresh);
 
-      // Pass first_name along with the other user data.
       authLogin({
         token: access,
         refreshToken: refresh,
         email: formData.email,
       });
 
-
-
-      navigate("/dashboard");
+      navigate("/payment/required");
     } catch (error) {
       if(error?.response?.data?.checkout_session_url){
  

@@ -15,7 +15,7 @@ const InputPage = () => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/")}
             className={styles.backButton}
           >
             <ChevronLeft className={styles.backIcon} />

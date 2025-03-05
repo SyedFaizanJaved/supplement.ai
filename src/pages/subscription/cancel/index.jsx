@@ -1,49 +1,43 @@
-import { useState } from "react"
-import { AlertTriangle, Check, X } from "lucide-react"
-import styles from "./styles.module.css"
+import { useState } from "react";
+import { AlertTriangle, Check, X } from "lucide-react";
+import styles from "./styles.module.css";
+import { cancelSubscription } from "../../../services/subscription-cancel";
 
 export default function CancelSubscription() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isCancelled, setIsCancelled] = useState(false)
-  const [error, setError] = useState("")
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCancelled, setIsCancelled] = useState(false);
+  const [error, setError] = useState("");
 
   const openModal = () => {
-    setIsModalOpen(true)
-    setError("")
-  }
+    setIsModalOpen(true);
+    setError("");
+  };
 
   const closeModal = () => {
-    setIsModalOpen(false)
-    setError("")
-  }
+    setIsModalOpen(false);
+    setError("");
+  };
 
   const handleCancelSubscription = async () => {
     try {
-      setIsLoading(true)
-      setError("")
+      setIsLoading(true);
+      setError("");
 
-      // API call would go here
-      // const response = await fetch('/api/cancel-subscription', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' }
-      // })
+      await cancelSubscription();
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // if (!response.ok) throw new Error('Failed to cancel subscription')
-
-      setIsCancelled(true)
+      setIsCancelled(true);
       setTimeout(() => {
-        setIsModalOpen(false)
-      }, 3000)
+        setIsModalOpen(false);
+      }, 3000);
     } catch (error) {
-      setError(error.message || "Unable to cancel your subscription")
+      setError(
+        error.response?.data?.message || "Unable to cancel your subscription"
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -61,7 +55,11 @@ export default function CancelSubscription() {
             <p className={styles.renewalDate}>Renews on April 3, 2025</p>
           </div>
 
-          <button onClick={openModal} className={styles.cancelButton} disabled={isCancelled}>
+          <button
+            onClick={openModal}
+            className={styles.cancelButton}
+            disabled={isCancelled}
+          >
             {isCancelled ? "Subscription Cancelled" : "Cancel Subscription"}
           </button>
         </div>
@@ -81,18 +79,25 @@ export default function CancelSubscription() {
 
                   <div className={styles.modalContent}>
                     <p>Are you sure you want to cancel your subscription?</p>
-
-                    <ul className={styles.consequencesList}>
+                    {/* <ul className={styles.consequencesList}>
                       <li>You will lose access to premium features</li>
-                      <li>Your subscription will remain active until the end of your current billing period</li>
+                      <li>
+                        Your subscription will remain active until the end of your
+                        current billing period
+                      </li>
                       <li>You can resubscribe at any time</li>
-                    </ul>
-
-                    {error && <p className={styles.errorMessage}>{error}</p>}
+                    </ul> */}
+                    {error && (
+                      <p className={styles.errorMessage}>{error}</p>
+                    )}
                   </div>
 
                   <div className={styles.modalActions}>
-                    <button onClick={closeModal} className={styles.keepButton} disabled={isLoading}>
+                    <button
+                      onClick={closeModal}
+                      className={styles.keepButton}
+                      disabled={isLoading}
+                    >
                       Keep Subscription
                     </button>
                     <button
@@ -111,8 +116,9 @@ export default function CancelSubscription() {
                   </div>
                   <h3>Subscription Cancelled</h3>
                   <p>
-                    Your subscription has been cancelled successfully. You will have access to premium features until
-                    the end of your current billing period.
+                    Your subscription has been cancelled successfully. You will
+                    have access to premium features until the end of your
+                    current billing period.
                   </p>
                 </div>
               )}
@@ -121,6 +127,5 @@ export default function CancelSubscription() {
         )}
       </div>
     </div>
-  )
+  );
 }
-

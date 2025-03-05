@@ -1,0 +1,85 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  padding: 1rem;
+}
+
+.card {
+  max-width: 400px;
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: black
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.message {
+  margin-bottom: 1rem;
+}
+
+.details {
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.details p {
+  margin: 0.5rem 0;
+}
+
+.footer {
+  justify-content: flex-end;
+  gap: .5rem;
+}
+
+.cancelButton{
+  background-color:  #ef4444;
+  color: #fff;
+  border: 1px solid #d1d5db;
+}
+
+.cancelButton:hover {
+  background-color: #dc2600;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+
+
+}
+
+.button > a {
+  color: white;
+
+}
+
+.buttonIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #6b7280;
+}
+
+@media (max-width: 640px) {
+  .card {
+    max-width: 100%;
+  }
+}

@@ -1,10 +1,5 @@
 .container {
   min-height: 100vh;
-  background: linear-gradient(
-    to bottom right,
-    rgba(22, 78, 99, 0.1),
-    rgba(13, 148, 136, 0.1)
-  );
   backdrop-filter: blur(4px);
   padding: 2rem 0;
 }

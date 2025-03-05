@@ -1,7 +1,6 @@
 import React, { useEffect, useState, Suspense } from "react";
 import axios from "axios";
 import { Button } from "./ui/button";
-import { ChevronLeft, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "./hooks/use-mobile";
 import { useToast } from "./hooks/use-toast";
@@ -11,10 +10,12 @@ import { useAuth } from "../context/AuthContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import Loader from "./fallback";
 import HamburgerMenu from "./hamburger-menu";
+
 const HealthAssistant = React.lazy(() => import("./dashboard/HealthAssistant"));
 const HealthMetrics = React.lazy(() => import("./dashboard/HealthMetrics"));
 const SupplementPlan = React.lazy(() => import("./dashboard/SupplementPlan"));
 const HealthGoals = React.lazy(() => import("./dashboard/HealthGoals"));
+const CancelSubscription = React.lazy(() => import("../pages/subscription/cancel"));
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -44,7 +45,6 @@ export const Dashboard = () => {
         console.error("Error fetching profile:", error);
         toast({
           title: "Unable to load profile",
-
           variant: "destructive",
         });
       }
@@ -70,7 +70,7 @@ export const Dashboard = () => {
               <Button
                 size="sm"
                 className={styles.backButton}
-                onClick={() => handleLogout()}
+                onClick={handleLogout}
               >
                 Logout
               </Button>
@@ -101,6 +101,12 @@ export const Dashboard = () => {
                 <TabsTrigger value="goals" className={styles.tabsTrigger}>
                   Goals
                 </TabsTrigger>
+                <TabsTrigger
+                  value="subscription"
+                  className={styles.tabsTrigger}
+                >
+                  Subscription
+                </TabsTrigger>
               </TabsList>
             </div>
           </div>
@@ -124,6 +130,11 @@ export const Dashboard = () => {
             <TabsContent value="goals" className={styles.tabContent}>
               <Suspense fallback={<Loader />}>
                 <HealthGoals />
+              </Suspense>
+            </TabsContent>
+            <TabsContent value="subscription" className={styles.tabContent}>
+              <Suspense fallback={<Loader />}>
+                <CancelSubscription />
               </Suspense>
             </TabsContent>
           </div>
